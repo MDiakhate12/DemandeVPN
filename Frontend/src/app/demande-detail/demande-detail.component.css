@@ -1,0 +1,11 @@
+.example-tab-icon {
+    margin-right: 8px;
+}
+
+.detail {
+    margin: 20px;
+}
+
+mat-tab > * {
+    overflow: hidden;
+}

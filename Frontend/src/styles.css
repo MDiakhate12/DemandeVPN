@@ -1,0 +1,41 @@
+/* You can add global styles to this file, and also import other style files */
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+#demandeForm {
+    background-image: url('./assets/img/curves_left.jpg');
+    background-size: cover;
+    background-position: center center;
+}
+#app-login{
+    background-image: url('./assets/img/curves_left.jpg');
+    background-size: cover;
+    background-position: center center;
+    height: 100%;
+    width: 100%;
+}
+
+#app-demande {
+    overflow-y: hidden;
+    height: 100%;
+}
+
+#app-demande-detail {
+    background-image: url('./assets/img/curves_right.jpg');
+    background-size: cover;
+    background-position: center center;
+    height: 100%;
+}
+
+app-demande-validation-detail {
+    overflow: hidden;
+}
+
+#validation-hierarchique {
+    background-image: url('./assets/img/curves_down.jpg');
+    background-size: 100% 100%;
+    background-position: center center;
+    background-repeat: repeat-y;
+    height: 100%;
+}

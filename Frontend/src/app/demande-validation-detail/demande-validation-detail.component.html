@@ -1,0 +1,107 @@
+<mat-card class="col-sm-6 detail-card">
+    <mat-card-header>
+        <mat-card-title>
+            <mat-card-title>{{ demande.objet }}</mat-card-title>
+        </mat-card-title>
+    </mat-card-header>
+
+    <mat-divider></mat-divider>
+
+    <mat-card-content>
+
+
+        <mat-list>
+            <mat-list-item>
+
+                <mat-icon color="warn" mat-list-icon>hourglass_full</mat-icon>
+                <h4 mat-line>Status : {{ demande.status_demande }}</h4>
+                <mat-checkbox disabled [checked]="checked"></mat-checkbox>
+
+            </mat-list-item>
+
+            <mat-divider></mat-divider>
+
+            <h3 mat-subheader>Validateurs</h3>
+
+            <mat-list-item>
+                <mat-icon color="warn" mat-list-icon>account_box</mat-icon>
+                <h4 mat-line>Validateur hierarchique : {{ demande.validateur_hierarchique.username }}</h4>
+            </mat-list-item>
+
+            <mat-list-item>
+                <mat-icon color="warn" mat-list-icon>account_box</mat-icon>
+                <h4 mat-line>Validateur sécurité : {{ demande.validateur_securite.user.username }}</h4>
+            </mat-list-item>
+
+
+            <mat-divider></mat-divider>
+
+            <h3 mat-subheader>Progression</h3>
+
+            <mat-list-item> 
+                <mat-icon color="warn" mat-list-icon>trending_up</mat-icon>
+                <mat-progress-bar *ngIf="progress <= 100" mat-line color="warn" mode="determinate" [value]="progress"></mat-progress-bar>
+                <mat-progress-bar *ngIf="demande.status_demande === statuses[4]" mat-line color="warn" mode="determinate" [value]="progress"></mat-progress-bar>
+            </mat-list-item>
+
+            <mat-list-item>
+                <mat-icon color="warn">how_to_reg</mat-icon>
+                <mat-slide-toggle labelPosition="before" [style.color]="color"
+                    [checked]="demande.validation_hierarchique" disabled>Supérieur
+                </mat-slide-toggle>
+            </mat-list-item>
+
+            <mat-list-item>
+                <mat-icon color="warn">security</mat-icon>
+                <mat-slide-toggle labelPosition="before" [style.color]="color" [checked]="demande.validation_securite"
+                    disabled>Sécurité
+                </mat-slide-toggle>
+            </mat-list-item>
+
+            <mat-list-item>
+                <mat-icon color="warn">rss_feed</mat-icon>
+                <mat-slide-toggle labelPosition="before" [style.color]="color" [checked]="demande.validation_admin"
+                    disabled>Réseau VPN
+                </mat-slide-toggle>
+            </mat-list-item>
+
+            <mat-divider></mat-divider>
+
+            <h3 mat-subheader>Historisation</h3>
+
+            <mat-list-item>
+                <mat-icon color="warn" mat-list-icon>calendar_today</mat-icon>
+                <h4 mat-line>Date de validation hierarchique : {{ demande.date_expiration | date: 'full' }}</h4>
+            </mat-list-item>
+
+            <mat-list-item>
+                <mat-icon color="warn" mat-list-icon>calendar_today</mat-icon>
+                <h4 mat-line>Date de validation sécurité : {{ demande.date_expiration | date: 'full' }}</h4>
+            </mat-list-item>
+            <mat-list-item>
+                <mat-icon color="warn" mat-list-icon>calendar_today</mat-icon>
+                <h4 mat-line>Date d'obtention du VPN : {{ demande.date_expiration | date: 'full' }}</h4>
+            </mat-list-item>
+            <mat-list-item>
+                <mat-icon color="warn" mat-list-icon>calendar_today</mat-icon>
+                <h4 mat-line>Date d'expiration accordée : {{ demande.date_expiration | date: 'full' }}</h4>
+            </mat-list-item>
+            <mat-list-item>
+                <mat-icon color="warn" mat-list-icon>calendar_today</mat-icon>
+                <h4 mat-line>Date de fermeture aprés expiration : {{ demande.date_expiration | date: 'full' }}</h4>
+            </mat-list-item>
+
+            <mat-divider></mat-divider>
+
+            <h3 mat-subheader>Actions</h3>
+            <button mat-raised-button [style.backgroundColor]="'#f16e00'" [style.color]="'white'">
+                <mat-icon mat-list-icon>repeat</mat-icon>
+                Relancer demande
+            </button>
+        </mat-list>
+    </mat-card-content>
+    <mat-card-actions></mat-card-actions>
+    <mat-card-footer></mat-card-footer>
+</mat-card>
+
+<br>

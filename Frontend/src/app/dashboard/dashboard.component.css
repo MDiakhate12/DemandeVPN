@@ -1,0 +1,9 @@
+.example-card {
+    max-width: 250px;
+    margin-bottom: 15px;
+}
+
+mat-card-content mat-icon {
+    font-size: 100px;
+    margin-left: 45px;
+}

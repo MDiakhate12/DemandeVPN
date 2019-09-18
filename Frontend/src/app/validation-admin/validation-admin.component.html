@@ -1,0 +1,71 @@
+<app-navbar></app-navbar>
+<div class="container-fluid" id="validation-hierarchique" hideToggle>
+    <div class="col-md-8 m-auto">
+        <mat-accordion>
+            <mat-expansion-panel [expanded]="step === i" (opened)="setStep(i)"
+                *ngFor="let demande of demandes; index as i; first as f">
+                <mat-expansion-panel-header>
+                    <mat-panel-title>{{ demande.objet }}</mat-panel-title>
+                    <mat-panel-description>{{ demande.description }}</mat-panel-description>
+                </mat-expansion-panel-header>
+
+                <div class="list">
+                    <mat-list>
+                        <mat-list-item>
+                            <mat-icon color="warn" mat-list-icon>account_box</mat-icon>
+                            <h4 mat-line>Bénéficiaire : {{ demande.beneficiaire.username }}</h4>
+                        </mat-list-item>
+
+                        <mat-divider></mat-divider>
+
+                        <h3 mat-subheader>Dates</h3>
+
+
+                        <mat-list-item>
+                            <mat-icon color="warn" mat-list-icon>today</mat-icon>
+                            <h4 mat-line>Date de création : {{ demande.date | date: 'full' }}</h4>
+                        </mat-list-item>
+
+                        <mat-list-item>
+                            <mat-icon color="warn" mat-list-icon>not_interested</mat-icon>
+                            <h4 mat-line>Date d'expiration demandée : {{ demande.date_expiration | date: 'full' }}
+                            </h4>
+                        </mat-list-item>
+
+                        <mat-divider></mat-divider>
+
+                        <h3 mat-subheader>Applications demandées</h3>
+
+                        <mat-list-item *ngFor="let application of demande.applications">
+                            <mat-icon color="warn" mat-list-icon>apps</mat-icon>
+                            <h4 mat-line>{{application.nom}} ({{application.adresse_ip}})</h4>
+                        </mat-list-item>
+
+                        <mat-divider></mat-divider>
+
+                        <h3 mat-subheader>Protocoles demandés</h3>
+                        <mat-list-item *ngFor="let protocole of demande.protocoles">
+                            <mat-icon color="warn" mat-list-icon>import_export</mat-icon>
+                            <h4 mat-line>{{protocole.nom}}</h4>
+                        </mat-list-item>
+                    </mat-list>
+                </div>
+
+                <mat-action-row>
+                    <button *ngIf="!f" mat-button color="warn" (click)="prevStep()">
+                        <mat-icon>navigate_before</mat-icon>Previous
+                    </button>
+                    <button mat-button color="primary" (click)="nextStep()">Next<mat-icon>navigate_next</mat-icon>
+                    </button>
+                    <button mat-button class="btn btn-danger" (click)="openDialog(demande.id, expirerDemande)">
+                            <mat-icon>not_interested</mat-icon> Faire expirer
+                        </button>
+                        <button mat-button class="btn btn-success" (click)="openDialog(demande.id, validerDemande)">
+                            <mat-icon>done</mat-icon> Valider demande
+                        </button>
+                </mat-action-row>
+                
+            </mat-expansion-panel>
+        </mat-accordion>
+    </div>
+</div>

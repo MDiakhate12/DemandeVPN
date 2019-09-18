@@ -1,0 +1,62 @@
+<<<<<<< HEAD
+<div id="app-login" class="container-fluid">
+    <div class="row">
+        <div class="col-sm-12 offset-md-4 col-md-4 p-5">
+            <form action="" class="login-form" method="post">
+                <div class="acc_cp">
+                    <mat-icon class="acc_c">account_circle</mat-icon>
+                </div><br><br> <br><br>
+                <div class="mt-20">
+                    <mat-form-field appearance="outline" color="warn" class="mat-focused">
+                        <mat-label class="ml">Username</mat-label>
+                        <input class="ml" matInput [(ngModel)]="input.username" name="usern">
+                    </mat-form-field>
+                </div>
+                <div>
+                    <mat-form-field appearance="outline" color="warn">
+                        <mat-label class="ml">Password</mat-label>
+                        <input class="ml" matInput [type]="hide ? 'password' : 'text'" [(ngModel)]="input.password"
+                            name="pass">
+                        <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'"
+                            [attr.aria-pressed]="hide">
+                            <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                        </button>
+                    </mat-form-field>
+                </div>
+                <button mat-raised-button name="submit" class="btn btn-lg btn-block" id="submit" type="submit"
+                    (click)='onLogin()'>Se
+                    connecter</button>
+            </form>
+        </div>
+=======
+
+<div id="app-login">
+    <div class="container col-sm-12 col-md-4">
+        <div class="row">
+        <form action="" class="mt-20" method="post">
+            <div class="acc_cp">
+                <mat-icon class="acc_c">account_circle</mat-icon>
+            </div><br><br> <br><br>
+            <div class="mt-20" > 
+                <mat-form-field appearance="outline" color="warn" class="mat-focused">
+                    <mat-label class="ml">Username</mat-label>
+                    <input class="ml" matInput [(ngModel)]="input.username" name="usern">
+                   
+                </mat-form-field>
+            </div>
+            <div>
+                <mat-form-field appearance="outline" color="warn">
+                    <mat-label class="ml">Password</mat-label>
+                    <input class="ml" matInput [type]="hide ? 'password' : 'text'" [(ngModel)]="input.password" name="pass">
+                    <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+                            <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                            </button>
+                </mat-form-field>
+            </div>
+            <button mat-raised-button name="submit" class="btn btn-lg btn-block" id="submit" type="submit" (click)='onLogin()'>Se
+                connecter</button>
+        </form>
+    </div>
+>>>>>>> 415bbd88e393b27b477579788bcaa614148ea803
+    </div>
+</div>

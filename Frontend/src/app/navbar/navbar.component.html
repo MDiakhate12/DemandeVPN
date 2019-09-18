@@ -1,0 +1,39 @@
+<mat-toolbar color="warn" id="navbar" class="sticky-top">
+    <mat-toolbar-row>
+        <a routerLink="/accueil">
+            <mat-icon class="example-icon">home</mat-icon>
+            <span class="align">VPN à la demande</span>
+        </a>
+
+        <a routerLink="/dashboard">
+            <mat-icon class="example-icon">dashboard</mat-icon>
+            <span class="align">Dashboard</span>
+        </a>
+
+        <a routerLink="/nouvelle-demande">
+            <mat-icon class="example-icon">post_add</mat-icon>
+            <span class="align">Nouvelle demande</span>
+        </a>
+
+        <span class="example-spacer"></span>
+
+        <mat-menu #optionMenu=matMenu>
+            <button mat-menu-item routerLink="/profil">
+                <span class="align">Mon profil</span>
+                <mat-icon class="example-icon">account_box</mat-icon>
+            </button>
+
+            <button (click)="logout()" mat-menu-item>
+                <span>Deconnexion</span>
+                <mat-icon class="example-icon">logout</mat-icon>
+            </button>
+        </mat-menu>
+
+        <button mat-icon-button [matMenuTriggerFor]="optionMenu">
+            <mat-icon>settings_applications</mat-icon>
+            <mat-icon>arrow_drop_down</mat-icon>
+        </button>
+
+
+    </mat-toolbar-row>
+</mat-toolbar>
