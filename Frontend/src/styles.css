@@ -8,12 +8,22 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
     background-size: cover;
     background-position: center center;
 }
+#loginForm{
+    
+}
 #app-login{
-    background-image: url('./assets/img/curves_left.jpg');
+    background-image: url('./assets/img/orangeSenegal.jpg');
     background-size: cover;
     background-position: center center;
     height: 100%;
     width: 100%;
+}
+#app-page-not-found{
+    background-image: url('./assets/img/404Error.jpg');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size:contain;
+   
 }
 
 #app-demande {

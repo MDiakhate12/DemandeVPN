@@ -19,6 +19,10 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { ValidationSecuriteComponent } from './validation-securite/validation-securite.component';
 import { ValidationAdminComponent } from './validation-admin/validation-admin.component';
 import { DialogComponent } from './dialog/dialog.component';
+import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
+import { LoginService } from './services/login.service';
+import { AuthService } from './services/auth.service';
+import { AuthGuard } from './auth/auth.guard';
 
 @NgModule({
   declarations: [
@@ -33,7 +37,8 @@ import { DialogComponent } from './dialog/dialog.component';
     DashboardComponent,
     ValidationSecuriteComponent,
     ValidationAdminComponent,
-    DialogComponent
+    DialogComponent,
+    PageNotFoundComponent
   ],
   imports: [
     BrowserModule,
@@ -44,7 +49,7 @@ import { DialogComponent } from './dialog/dialog.component';
     HttpClientModule
   ],
   entryComponents: [DialogComponent],
-  providers: [DemandeService],
+  providers: [DemandeService, LoginService, AuthService, AuthGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

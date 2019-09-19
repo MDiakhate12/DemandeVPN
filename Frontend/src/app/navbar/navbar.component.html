@@ -16,13 +16,23 @@
         </a>
 
         <span class="example-spacer"></span>
+        <button mat-button [matMenuTriggerFor]="menu">
+            <mat-icon>dehaze</mat-icon>
+        </button>
+        <mat-menu #menu>
+            <button mat-menu-item routerLink="/profil">
+                <a >
+                    <mat-icon class="example-icon" color="warn">person_outline</mat-icon>
+                    <span class="align">Mon Profil</span>
+                </a>
+            </button>
+            <button mat-menu-item (click)="loginService.logOut()">
+                <a>
+                    <mat-icon class="example-icon" color="warn">logout</mat-icon>
+                    <span class="align">Log Out</span>
+                </a>
+            </button>
+        </mat-menu>
 
-        <a routerLink="/profil">
-            <mat-icon class="example-icon">user</mat-icon>
-            <span class="align">Mon profil</span>
-        </a>
-        <a routerLink="/deconnexion">
-            <mat-icon class="example-icon">logout</mat-icon>
-        </a>
     </mat-toolbar-row>
 </mat-toolbar>

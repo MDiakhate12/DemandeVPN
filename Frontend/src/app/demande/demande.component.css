@@ -1,13 +1,17 @@
 mat-form-field {
     display: block;
+    position: relative;
 }
 
 form {
-    height: 800px;
+    height: 650px;
     margin-top: 40px;
     box-shadow: 0 0 25px;
     padding: 30px;
     border-radius: 10px;
+}
+#containerId{
+    height: 800px;
 }
 
 mat-sidenav-container {

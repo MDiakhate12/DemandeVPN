@@ -5,10 +5,16 @@ mat-form-field {
 form {
     height: 400px;
     position: relative;
-    top: 40px;
+    top: 100px;
     box-shadow: 0 0 25px;
     padding: 30px;
     border-radius: 10px;
+    
+    color:white;
+}
+input, mat-label{
+    color:white;
+  
 }
 .acc_c{
     font-size: 100px;
@@ -18,10 +24,7 @@ form {
     width: 50%;
     color:#f16e00;
 }
-.container{
-    text-align: center;
-    display: block;
-}
+
 .acc_cp{
  display: block;
  text-align: center;
@@ -35,9 +38,6 @@ mat-sidenav-container {
     color: white;
 }
 
-form {
-    opacity: 1;
-}
 
 #menu-btn {
     position: fixed;

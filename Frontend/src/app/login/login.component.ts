@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { LoginService } from '../services/login.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: '#app-login',
@@ -9,8 +10,14 @@ import { LoginService } from '../services/login.service';
 export class LoginComponent implements OnInit {
   input = {};
   key: String;
+  message: String;
 
-  constructor(private _loginService:LoginService) { }
+  constructor(private _loginService:LoginService,
+              private router: Router) {
+                if(this._loginService.loggedIn()){
+                  this.router.navigate(['/dashboard'])
+                }
+              }
 
   ngOnInit() {
     this.input = {
@@ -22,14 +29,19 @@ export class LoginComponent implements OnInit {
   }
   onLogin(){
     this._loginService.loginUser(this.input)
-    .subscribe(response => {this.key=response;
-      console.log(response);
+    .subscribe(
+      response => {
+        this.key=response;
+        console.log(response);
+        this.router.navigate(['/dashboard']);
+        localStorage.setItem("key",response.key);
+        
     },
     error =>{
-      console.log('error',error);
-      console.log("Wrong credentials !");
+      this.message="Les informations fournies sont incorrectes.";
+      // console.log('error',error);
     } 
     );
   };
-
+ 
 }

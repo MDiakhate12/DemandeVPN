@@ -2,3 +2,8 @@ venv/
 .vscode/
 Demande-VPN-Frontend/node_modules/
 TemplateComponents/
+Backend/Demande_VPN/settings.py/
+Backend/Demande_VPN/__pycache__
+Backend/api/__pycache__
+Backend/api/migrations
+

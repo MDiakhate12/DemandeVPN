@@ -18,6 +18,7 @@ export class DemandeFormDetailComponent implements OnInit {
   protocoles: Protocole[] = [];;
   applications: Application[] = [];;
   demande: Demande = new Demande();
+  "desactiverBoutonModif": boolean;
 
   constructor(private demandeService: DemandeService, private genericService: GenericService, private router: Router, private route: ActivatedRoute) { }
 
@@ -32,6 +33,7 @@ export class DemandeFormDetailComponent implements OnInit {
       response => {
         // this.demande = this.demande.deserialize(data);
         this.demande = response.body;
+        this.desactiverBoutonModif = this.demande.validation_hierarchique
         console.log(this.demande);
       }
     );
