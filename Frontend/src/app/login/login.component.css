@@ -5,11 +5,7 @@ mat-form-field {
 form {
     height: 400px;
     position: relative;
-<<<<<<< HEAD
     top: 70px;
-=======
-    top: 40px;
->>>>>>> 415bbd88e393b27b477579788bcaa614148ea803
     box-shadow: 0 0 25px;
     padding: 30px;
     border-radius: 10px;
@@ -22,17 +18,10 @@ form {
     width: 50%;
     color:#f16e00;
 }
-<<<<<<< HEAD
 login-form {
     max-width: 340px;
 }
 
-=======
-.container{
-    text-align: center;
-    display: block;
-}
->>>>>>> 415bbd88e393b27b477579788bcaa614148ea803
 .acc_cp{
  display: block;
  text-align: center;

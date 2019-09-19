@@ -27,7 +27,7 @@ export class LoginComponent implements OnInit {
       console.log(response);
       localStorage.setItem('token', response.key);
 
-      // this.router.navigate(['/dashboard']);
+      this.router.navigate(['/dashboard']);
     },
     error =>{
       console.log(this.authService);

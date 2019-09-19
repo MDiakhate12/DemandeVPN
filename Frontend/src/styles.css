@@ -36,6 +36,12 @@ app-demande-validation-detail {
     background-image: url('./assets/img/curves_down.jpg');
     background-size: 100% 100%;
     background-position: center center;
-    background-repeat: repeat-y;
+    height: 100%;
+}
+
+#app-dashboard {
+    background-image: url('./assets/img/curves_down.jpg');
+    background-size: 100% 100%;
+    background-position: center center;
     height: 100%;
 }

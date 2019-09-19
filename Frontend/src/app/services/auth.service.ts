@@ -27,6 +27,7 @@ export class AuthService {
   //   );
   // }
   logout(): Observable<any> {
+      localStorage.removeItem("token");
     return this.http.get(this.logoutURL);
   }
 

@@ -1,9 +1,20 @@
-.example-card {
-    max-width: 250px;
-    margin-bottom: 15px;
+
+mat-card {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    align-content: flex-end;
+    flex-direction: column;
+    text-align: center;
+    box-shadow: 0 0 20px 2px!important;
+    height: 262px;
+    cursor: pointer;
 }
 
 mat-card-content mat-icon {
     font-size: 100px;
-    margin-left: 45px;
+    text-align: center;
+    position: relative;
+    right: 40px;
+    cursor: pointer;
 }
