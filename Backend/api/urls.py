@@ -17,6 +17,8 @@ urlpatterns = [
     path('demandes/', views.DemandeList.as_view()),
     path('demandes/<int:id>/', views.DemandeDetail.as_view()),
     path('demandes/create/', views.DemandeCreate.as_view()),
+    path('demandes/acceptees/<str:username>/', views.DemandeAccepteesList.as_view()),
+    path('demandes/refusees/<str:username>/', views.DemandeRefuseesList.as_view()),
 
     # Demandes en attente
     path('demandes/en-attente/securite/', views.DemandesEnAttenteSecurite.as_view(), name='demandes-en-attente-securite'),

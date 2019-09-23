@@ -16,17 +16,24 @@ export class DemandeComponent implements OnInit {
 
   public isOpen: boolean = false;
 
-  users: User[]= [];;
-  protocoles: Protocole[]= [];;
-  applications: Application[]= [];;
-  demande: Demande = new Demande();
+  users: User[];
+  protocoles: Protocole[];
+  applications: Application[];
+  demande: Demande;
 
   constructor(private demandeService: DemandeService, private genericService: GenericService, private router: Router) {
+    this.applications = [];
+    this.protocoles = [];
+    this.users = [];
+    this.demande = new Demande();
     console.log(this.applications);
   }
 
   ngOnInit() {
+    
     this.genericService.init(this);
+    console.log(this.applications);
+
   }
 
   onSubmit() {
@@ -34,7 +41,9 @@ export class DemandeComponent implements OnInit {
     this.demandeService.sendDemande(this.demande).subscribe(
       response => {
         this.demande = response.body;
-        console.log(this.demande.id);
+        console.log("###########################");
+        console.log(this.demande);
+        console.log("###########################");
         this.router.navigate(['/demande', this.demande.id]);
 
       },

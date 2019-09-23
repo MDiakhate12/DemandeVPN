@@ -26,15 +26,17 @@ export class DemandeFormDetailComponent implements OnInit {
     this.genericService.init(this);
      let id = this.route.snapshot.paramMap.get('id');
      this.getDemandeWithId(id);
-  }
+  } 
 
   getDemandeWithId(id) {
     this.demandeService.getDemandeWithId(id).subscribe(
       response => {
         // this.demande = this.demande.deserialize(data);
         this.demande = response.body;
-        this.desactiverBoutonModif = this.demande.validation_hierarchique
+        console.log("------------------------------Visulaize---------")
         console.log(this.demande);
+        console.log(this.demande.demandeur);
+        console.log("------------------------------Visulaize---------")
       }
     );
   }

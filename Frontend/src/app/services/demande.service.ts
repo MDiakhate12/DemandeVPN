@@ -3,6 +3,7 @@ import { HttpClient, HttpHeaders, HttpResponse, HttpErrorResponse } from '@angul
 import { Observable, throwError } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
 import { Demande } from '../models/demande.model';
+import { LoginService } from './login.service';
 
 @Injectable({
     providedIn: 'root',
@@ -10,9 +11,11 @@ import { Demande } from '../models/demande.model';
 
 export class DemandeService {
 
-    baseURL = "http://127.0.0.1:8000/api/demandes/";
+    baseURL = "http://127.0.0.1:8080/api/demandes/";
     httpHeaders = new HttpHeaders({
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'Authorization': 'Token ' + this.loginService.getToken()
+        
     })
     STATUS = [
         "En attente de la validation du supérieur hierarchique",
@@ -23,7 +26,7 @@ export class DemandeService {
         "Refus du supérieur hierarchique",
         "Redus de la sécurité",
    ]
-    constructor(private http: HttpClient) {
+    constructor(private http: HttpClient,private loginService: LoginService) {
 
     }
 

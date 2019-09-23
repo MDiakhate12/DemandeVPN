@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 })
 export class UserService {
 
-  basURL:string = "http://localhost:8000/api/users/";
+  basURL:string = "http://localhost:8080/api/users/";
   httpHeaders = new HttpHeaders({
     'Content-Type': 'application/json'
   })

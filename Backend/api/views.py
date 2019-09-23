@@ -6,6 +6,7 @@ from rest_framework.response import Response
 from .constants import *
 from rest_framework.viewsets import ModelViewSet
 from django.contrib.auth.models import User
+from django.db.models import Q
 
 STATUS = Status()
 
@@ -22,8 +23,27 @@ class ProtocoleList(ModelViewSet):
     serializer_class = ProtocoleSeriallizer
 
 class DemandeList(ListAPIView):
-    queryset = Demande.objects.all()
+    queryset = Demande.objects.all().order_by("-date")
     serializer_class = DemandeListSerializer
+
+class DemandeAccepteesList(ListAPIView):
+    serializer_class = DemandeListSerializer
+    
+    def get_queryset(self):
+        demandeur = self.kwargs['username']
+        demandes = Demande.objects.filter(demandeur__profil__user__username=demandeur,status_demande=STATUS.valide, validation_hierarchique=True, validation_securite=True, validation_admin=True).order_by("-date")
+        return demandes
+
+class DemandeRefuseesList(ListAPIView):
+    serializer_class = DemandeListSerializer
+    
+    def get_queryset(self):
+        demandeur = self.kwargs['username']
+        demandes = Demande.objects.filter( Q(status_demande=STATUS.refus_hierarchie) | Q(status_demande=STATUS.refus_securite),demandeur__profil__user__username=demandeur).order_by("-date")
+        return demandes
+
+    
+    
 
 class DemandeUpdate(UpdateAPIView):
     queryset = Demande.objects.all()
@@ -42,8 +62,9 @@ class DemandeCreate(CreateAPIView):
     def perform_create(self, serializer):
         demande = serializer.validated_data
         user = serializer.context['request'].user
-        # demande['demandeur'] = user
-        # demande['validateur_hierarchique'] = user.profil.superieur
+        print("Utilisateur : "+str(user))
+        demande['demandeur'] = user
+        demande['validateur_hierarchique'] = user.profil.superieur
         demande['status_demande'] = STATUS.attente_hierarchie
         return super().perform_create(serializer)
 
@@ -52,7 +73,7 @@ class DemandesEnAttenteSecurite(ListAPIView):
     serializer_class = DemandesSecuriteSerializer
     
     def get_queryset(self):
-        demandes = Demande.objects.filter(status_demande=STATUS.attente_securite, validation_hierarchique=True)
+        demandes = Demande.objects.filter(status_demande=STATUS.attente_securite, validation_hierarchique=True).order_by("-date")
         return demandes
 
 
@@ -61,14 +82,14 @@ class DemandesEnAttenteHierarchie(ListAPIView):
 
     def get_queryset(self):
         username = self.kwargs['username']
-        demandes = Demande.objects.filter(demandeur__profil__superieur__username=username, validation_hierarchique=False)
+        demandes = Demande.objects.filter(demandeur__profil__superieur__username=username, validation_hierarchique=False).order_by("-date")
         return demandes
 
 class DemandesEnAttenteAdmin(ListAPIView):
     serializer_class = DemandesAdminSerializer
 
     def get_queryset(self):
-        demandes = Demande.objects.filter(validation_hierarchique=True, validation_securite=True)
+        demandes = Demande.objects.filter(validation_hierarchique=True, validation_securite=True).order_by("-date")
         return demandes
 
 
