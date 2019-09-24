@@ -37,5 +37,7 @@ urlpatterns = [
 
     #Expiration
     path('demandes/expiration-admin/<int:id>/', views.Expiration.as_view(), name="expiration-demande"),
+    
+    path('demandes/validees/securite', views.DemandesValideesSecurite.as_view(), name="demandes-validees-securite")
 
 ]

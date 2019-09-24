@@ -76,6 +76,14 @@ class DemandesEnAttenteSecurite(ListAPIView):
         demandes = Demande.objects.filter(status_demande=STATUS.attente_securite, validation_hierarchique=True).order_by("-date")
         return demandes
 
+class DemandesValideesSecurite(ListAPIView):
+    serializer_class = DemandesSecuriteSerializer
+
+    def get_queryset(self):
+        demandes =  Demande.objects.filter(validation_hierarchique=True, validation_securite=True).order_by("-date")
+        return demandes
+
+
 
 class DemandesEnAttenteHierarchie(ListAPIView):
     serializer_class = DemandesHierarchieSerializer
