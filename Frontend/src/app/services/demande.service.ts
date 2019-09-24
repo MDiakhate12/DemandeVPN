@@ -34,9 +34,37 @@ export class DemandeService {
         return this.http.post<Demande>(url, demande, { headers: this.httpHeaders, observe: 'response' });
     }
 
+
     getDemandeWithId(id: number): Observable<HttpResponse<Demande>> {
         let url = this.baseURL + id + "/";
         return this.http.get<Demande>(url, { headers: this.httpHeaders, observe: 'response' });
+    }
+
+
+    getDemandeEnAttenteOf(username: string): Observable<HttpResponse<Demande[]>> {
+        let url = this.baseURL + "en-attente/" + username + "/";
+        return this.http.get<Demande[]>(url, { headers: this.httpHeaders, observe: 'response' }).pipe(
+            tap(_ => console.log(`Fetched ${this.getDemandeEnAttenteOf.name} ${username} from ${url}`)),
+            catchError(this.handleError)
+        )
+    }
+
+
+    getDemandeAccepteesOf(username: string): Observable<HttpResponse<Demande[]>> {
+        let url = this.baseURL + "acceptees/" + username + "/";
+        return this.http.get<Demande[]>(url, { headers: this.httpHeaders, observe: 'response' }).pipe(
+            tap(_ => console.log(`Fetched ${this.getDemandeAccepteesOf.name} ${username} from ${url}`)),
+            catchError(this.handleError)
+        )
+    }
+
+
+    getDemandeRefuseesOf(username: string): Observable<HttpResponse<Demande[]>> {
+        let url = this.baseURL + "refusees/" + username + "/";
+        return this.http.get<Demande[]>(url, { headers: this.httpHeaders, observe: 'response' }).pipe(
+            tap(_ => console.log(`Fetched ${this.getDemandeRefuseesOf.name} ${username} from ${url}`)),
+            catchError(this.handleError)
+        )
     }
 
 
@@ -48,6 +76,7 @@ export class DemandeService {
         )
     }
 
+
     getDemandeEnAttenteSecuriteOf(): Observable<HttpResponse<Demande[]>> {
         let url = this.baseURL + "en-attente/securite/";
         return this.http.get<Demande[]>(url, { headers: this.httpHeaders, observe: 'response' }).pipe(
@@ -55,6 +84,7 @@ export class DemandeService {
             catchError(this.handleError)
         )
     }
+
 
     getDemandeEnAttenteAdminOf(): Observable<HttpResponse<Demande[]>> {
         let url = this.baseURL + "en-attente/admin/";
@@ -64,12 +94,14 @@ export class DemandeService {
         )
     }
 
+
     acceptDemandeWithId(id: number): Observable<HttpResponse<Demande>> {
         let url = this.baseURL + "validation-hierarchie/" + id + "/";
         return this.http.put<Demande>(url, null, { headers: this.httpHeaders, observe: 'response' }).pipe(
             tap(_ => console.log(`Validated demande with id ${id} at ${this.baseURL + id + "/"}`))
         );
     }
+
 
     validateDemandeWithId(id: number): Observable<HttpResponse<Demande>> {
         let url = this.baseURL + "validation-securite/" + id + "/";
@@ -78,12 +110,14 @@ export class DemandeService {
         );
     }
 
+
     configureDemandeWithId(id: number): Observable<HttpResponse<Demande>> {
         let url = this.baseURL + "validation-admin/" + id + "/";
         return this.http.put<Demande>(url, null, { headers: this.httpHeaders, observe: 'response' }).pipe(
             tap(_ => console.log(`Configured demande with id ${id} at ${this.baseURL + id + "/"}`))
         );
     }
+
 
     rejectDemandeWithId(id: number): Observable<HttpResponse<Demande>> {
         let url = this.baseURL + "refus-hierarchie/" + id + "/";
@@ -92,6 +126,7 @@ export class DemandeService {
         );
     }
 
+
     declineDemandeWithId(id: number): Observable<HttpResponse<Demande>> {
         let url = this.baseURL + "refus-securite/" + id + "/";
         return this.http.put<Demande>(url, null, { headers: this.httpHeaders, observe: 'response' }).pipe(
@@ -99,12 +134,15 @@ export class DemandeService {
         );
     }
 
+
     expirationDemandeWithId(id: number): Observable<HttpResponse<Demande>> {
         let url = this.baseURL + "expiration-admin/" + id + "/";
         return this.http.put<Demande>(url, null, { observe: 'response' }).pipe(
             tap(_ => console.log(`Expiration demande with id ${id} at ${this.baseURL + id + "/"}`))
         );
     }
+
+
 
     //Error handling
 

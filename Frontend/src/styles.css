@@ -28,10 +28,6 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
     height: 100%;
 }
 
-app-demande-validation-detail {
-    overflow: hidden;
-}
-
 #validation-hierarchique {
     background-image: url('./assets/img/curves_down.jpg');
     background-size: 100% 100%;
@@ -41,7 +37,26 @@ app-demande-validation-detail {
 
 #app-dashboard {
     background-image: url('./assets/img/curves_down.jpg');
+    background-size: cover;
+    background-position: center center;
+    height: 100%;
+}
+
+#app-demande-en-attente-user {
+    background-image: url('./assets/img/curves_down.jpg');
     background-size: 100% 100%;
     background-position: center center;
     height: 100%;
+}
+
+
+
+#app-dialog-demande-detail {
+    max-height: 50%;
+}
+
+#entete {
+    background-image: url('./assets/img/orange_swoosh.png');
+    background-size: cover;
+    background-position: center center;
 }

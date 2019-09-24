@@ -6,6 +6,7 @@ import { Protocole } from '../models/protocole.model';
 import { Application } from '../models/application.model';
 import { GenericService } from '../services/generic.service';
 import { Router } from '@angular/router';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: '#app-demande',
@@ -20,9 +21,16 @@ export class DemandeComponent implements OnInit {
   protocoles: Protocole[]= [];;
   applications: Application[]= [];;
   demande: Demande = new Demande();
+  user: User = new User();
 
-  constructor(private demandeService: DemandeService, private genericService: GenericService, private router: Router) {
+  constructor(private demandeService: DemandeService, private genericService: GenericService, private router: Router, private authService: AuthService) {
     console.log(this.applications);
+    this.authService.getLoggedUser().subscribe(
+      user => {
+        this.user = user;
+      }
+    );
+
   }
 
   ngOnInit() {

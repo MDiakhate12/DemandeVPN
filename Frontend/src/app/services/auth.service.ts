@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable, of } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { User } from '../models/user.model';
+
 
 @Injectable({
   providedIn: 'root'
@@ -12,10 +13,16 @@ export class AuthService {
 
   loginURL = "http://localhost:8000/api/login/";
   logoutURL = "http://localhost:8000/api/logout/";
+  userURL = "http://localhost:8000/api/users/";
+
+  httpHeaders = new HttpHeaders({
+    'Content-Type': 'application/json',
+    'Authorization': 'Token ' + this.getToken()
+  })
 
   redirectURL: string;
 
-  
+
   login(user): Observable<any> {
     return this.http.post(this.loginURL, user);
   }
@@ -27,24 +34,45 @@ export class AuthService {
   //   );
   // }
   logout(): Observable<any> {
-      localStorage.removeItem("token");
+    localStorage.removeItem("token");
     return this.http.get(this.logoutURL);
   }
 
-  authenticate(user) {
-
-  }
-
-  isAuthenticates(user) {
+  getUsername() {
+    return localStorage.getItem('username');
   }
 
   getToken() {
     return localStorage.getItem('token');
   }
 
-
-  
-  isLoggedIn() {
-    return !!localStorage.getItem('token');
+  getUserId() {
+    return localStorage.getItem('id');
   }
+
+  isLoggedIn() {
+    return !!this.getToken();
+  }
+
+  getUserWithId(id: number): Observable<User> {
+    let url = this.userURL + id + "/";
+    return this.http.get<User>(url, { headers: this.httpHeaders });
+  }
+
+  getLoggedUser() {
+    let id = parseInt(this.getUserId());
+    return this.getUserWithId(id);
+  }
+
+  isSecurite() {
+    let role = localStorage.getItem('is_securite');
+    return true ? role === 'true' : false;
+  }
+
+  isAdmin() {
+    let role = localStorage.getItem('is_admin');
+    return true ? role === 'true' : false;
+  }
+
+
 }

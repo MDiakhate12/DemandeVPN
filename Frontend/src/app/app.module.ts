@@ -19,6 +19,10 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { ValidationSecuriteComponent } from './validation-securite/validation-securite.component';
 import { ValidationAdminComponent } from './validation-admin/validation-admin.component';
 import { DialogComponent } from './dialog/dialog.component';
+import { DialogErrorComponent } from './dialog-error/dialog-error.component';
+import { DemandeEnAttenteUserComponent } from './demande-en-attente-user/demande-en-attente-user.component';
+import { DialogDemandeDetailComponent } from './dialog-demande-detail/dialog-demande-detail.component';
+import { HistoriqueComponent } from './historique/historique.component';
 
 @NgModule({
   declarations: [
@@ -34,6 +38,10 @@ import { DialogComponent } from './dialog/dialog.component';
     ValidationSecuriteComponent,
     ValidationAdminComponent,
     DialogComponent,
+    DialogErrorComponent,
+    DemandeEnAttenteUserComponent,
+    DialogDemandeDetailComponent,
+    HistoriqueComponent,
   ],
   imports: [
     BrowserModule,
@@ -43,7 +51,7 @@ import { DialogComponent } from './dialog/dialog.component';
     FormsModule,
     HttpClientModule,
   ],
-  entryComponents: [DialogComponent],
+  entryComponents: [DialogComponent, DialogDemandeDetailComponent, DialogErrorComponent],
   providers: [DemandeService],
   bootstrap: [AppComponent]
 })

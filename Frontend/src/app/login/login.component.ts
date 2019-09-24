@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
+import { stringify } from '@angular/compiler/src/util';
 
 @Component({
   selector: '#app-login',
@@ -10,7 +11,11 @@ import { AuthService } from '../services/auth.service';
 export class LoginComponent implements OnInit {
   input = {};
 
-  constructor(private authService: AuthService, private router: Router) { }
+  constructor(private authService: AuthService, private router: Router) {
+    if(this.authService.isLoggedIn()) {
+      this.router.navigate(['/dashboard']);
+    }
+   }
 
   ngOnInit() {
     this.input = {
@@ -25,7 +30,9 @@ export class LoginComponent implements OnInit {
     this.authService.login(this.input)
     .subscribe(response => {
       console.log(response);
-      localStorage.setItem('token', response.key);
+      for(let [key, value] of Object.entries(response)) {
+      localStorage.setItem(key, (value as string));
+    }
 
       this.router.navigate(['/dashboard']);
     },

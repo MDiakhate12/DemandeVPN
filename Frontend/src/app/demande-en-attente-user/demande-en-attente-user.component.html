@@ -1,0 +1,27 @@
+<app-navbar></app-navbar>
+
+<div id="app-demande-en-attente-user">
+    <div class="container">
+        <div class="row">
+            <table class="table table-hover mt-5">
+                <thead>
+                    <tr>
+                        <th scope="col">Id</th>
+                        <th scope="col">Objet</th>
+                        <th scope="col">Status actuel</th>
+                        <th scope="col">Date d'envoi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let demande of demandes" (click)="openDetailDialog(demande.id)">
+                        <th scope="row">{{demande.id}}</th>
+                        <td>{{demande.objet}}</td>
+                        <td>{{demande.status_demande}}</td>
+                        <td>{{demande.date | date: "fullDate" }}</td>
+                    </tr>
+                </tbody>
+            </table> 
+        </div>
+    </div>
+
+</div>

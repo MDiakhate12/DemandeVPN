@@ -19,7 +19,6 @@ export class GenericService {
   getAllApplication (): Observable<any> {    
     let url = "applications/";
     return this.http.get(this.baseURL + url, {headers: this.httpHeaders});
-
   }
 
   getAllProtocole(): Observable<any> {
@@ -59,6 +58,4 @@ export class GenericService {
       }
     );
   }
-
-
 }

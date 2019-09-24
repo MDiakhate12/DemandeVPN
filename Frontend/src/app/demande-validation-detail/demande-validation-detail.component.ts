@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { DemandeService } from '../services/demande.service';
 import { Demande } from '../models/demande.model';
 import { User } from '../models/user.model';
@@ -23,12 +23,25 @@ export class DemandeValidationDetailComponent implements OnInit {
   statuses = this.demandeService.STATUS;
   checked = false;
 
+  cardClasses = { }
+
+  @Input() id;
+
   constructor(private demandeService: DemandeService, private genericService: GenericService, private route: ActivatedRoute) { }
 
   ngOnInit() {
     this.genericService.init(this);
     let id = this.route.snapshot.paramMap.get('id');
-    this.getDemandeWithId(id);
+    console.log("ID from validation : " + id);
+    if(id) {
+      this.getDemandeWithId(id);
+      this.cardClasses = {'col-sm-6': id};
+     } else {
+      this.getDemandeWithId(this.id);
+      this.cardClasses = {'col-sm-12': !id};
+      console.log("ID from else validation : " + this.id);
+     }
+     
     this.demande.status_demande == 'statuses[3]' ? this.checked = true : this.checked = false;
 
   }
