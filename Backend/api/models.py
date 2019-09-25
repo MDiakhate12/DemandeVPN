@@ -1,8 +1,9 @@
 from django.db import models
 from django.contrib.auth.models import User
 from .constants import *
-from django.contrib.postgres.fields import JSONField
+
 STATUS = Status()
+
 
 class Protocole(models.Model):
     nom = models.CharField(max_length=255, null=True, blank=True)
@@ -10,6 +11,13 @@ class Protocole(models.Model):
     def __str__(self):
         return self.nom
 
+# class Notification(models.Model):
+#     genre = models.CharField(max_length=50, choices=TYPES)
+#     message = models.CharField(max_length=255)
+#     user  = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name='notifications')
+
+#     def __str__(self):
+#         return self.user.username + ' ' + genre
 
 class Application(models.Model):
     nom = models.CharField(max_length=255, null=True, blank=True)
@@ -27,20 +35,24 @@ class Profil(models.Model):
         User, on_delete=models.SET_NULL, null=True, related_name='agents')
     telephone = models.IntegerField(null=True, blank=True)
     departement = models.CharField(max_length=100, choices=DEPARTEMENTS)
+    is_securite = models.BooleanField(default=False)
+    is_admin = models.BooleanField(default=False)
 
     def __str__(self):
         return self.user.username
 
 
 class Admin(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(
+        User, on_delete=models.CASCADE, related_name='profil_admin')
 
     def __str__(self):
         return self.user.username
 
 
 class ValidateurSecurite(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(
+        User, on_delete=models.CASCADE, related_name='profil_securite')
 
     def __str__(self):
         return self.user.username
@@ -65,7 +77,8 @@ class Demande(models.Model):
     date_expiration = models.DateTimeField(null=True, blank=True)
     protocoles = models.ManyToManyField(Protocole)
     applications = models.ManyToManyField(Application)
-    status_demande = models.CharField(max_length=100, default=STATUS.attente_hierarchie)
+    status_demande = models.CharField(
+        max_length=100, default=STATUS.attente_hierarchie)
 
     def __str__(self):
         return self.objet

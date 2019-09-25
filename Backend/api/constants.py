@@ -25,3 +25,17 @@ PROTOCOLES = (
     ('tcp', 'TCP'),
     ('ip', 'IP')
 )
+
+TYPES = (
+    ('validation-hierarchique','validation-hierarchique'),
+    ('validation-securite','validation-securite'),
+    ('validation-admin','validation-admin'),
+    ('refus-hierarchie','refus-hierarchie'),
+    ('refus-securite','refus-securite'),
+    ('expiration-admin','expiration-admin'),
+    ('reception-user','reception-user'),
+    ('reception-hierarchie','reception-hierarchie'),
+    ('reception-securite','reception-securite'),
+    ('reception-admin','reception-admin'),
+    ('expiration','expiration'),
+)

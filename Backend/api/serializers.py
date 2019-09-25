@@ -3,20 +3,20 @@ from rest_framework import serializers, exceptions
 from .models import *
 from django.contrib.auth.models import User
 from .constants import *
-
+from rest_auth.models import TokenModel
 
 class ProfilSerializer(serializers.ModelSerializer):
     class Meta:
         model = Profil
-        fields = ['entreprise', 'telephone', 'departement', 'superieur']
+        fields = ['is_securite', 'is_admin', 'entreprise', 'telephone', 'departement', 'superieur']
 
 
 class UserSerializer(serializers.ModelSerializer):
     profil = ProfilSerializer()
-
+    auth_token = models.CharField()
     class Meta:
         model = User
-        fields = ('id', 'username', 'email', 'profil')
+        fields = ('id', 'username', 'email', 'profil', 'auth_token')
 
 
 class ProtocoleSeriallizer(serializers.ModelSerializer):
@@ -124,22 +124,3 @@ class DemandesAdminSerializer(serializers.ModelSerializer):
 
         read_only_fields = ('id', 'objet', 'description', 'date', 'date_expiration',
                             'beneficiaire', 'demandeur', 'protocoles', 'status_demande', 'applications', 'validation_hierarchique', 'validateur_hierarchique', 'validation_securite', 'validateur_securite', 'validation_admin')
-
-
-class LoginSerializer(serializers.Serializer):
-    username = serializers.CharField()
-    password = serializers.CharField()
-
-    def validate(self, data):
-        username = data.get('username', None)
-        password = data.get('password', None)
-        if username and password:
-            user = authenticate(username=username, password=password)
-            if user:
-                data["user"] = user
-            else:
-                raise exceptions.ValidationError(
-                    "Unable to login with the given credentials.")
-        else:
-            raise exceptions.ValidationError(
-                "Must provide username and password.")
