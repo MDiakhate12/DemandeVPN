@@ -67,6 +67,14 @@ export class DemandeService {
         )
     }
 
+    getDemandeValideesSecurite(): Observable<HttpResponse<Demande[]>> {
+        let url = this.baseURL + "validees/securite/";
+        return this.http.get<Demande[]>(url, { headers: this.httpHeaders, observe: 'response' }).pipe(
+            tap(_ => console.log(`Fetched ${this.getDemandeValideesSecurite.name} from ${url}`)),
+            catchError(this.handleError)
+        )
+    }
+
 
     getDemandeEnAttenteHierarchiqueOf(username: string): Observable<HttpResponse<Demande[]>> {
         let url = this.baseURL + "en-attente/hierarchie/" + username + "/";

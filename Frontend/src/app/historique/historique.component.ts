@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { DemandeService } from '../services/demande.service';
 import { ActivatedRoute } from '@angular/router';
 import { Demande } from '../models/demande.model';
+import { DialogDemandeDetailComponent } from '../dialog-demande-detail/dialog-demande-detail.component';
+import { MatDialog } from '@angular/material';
+import { DialogDemandeHistoriqueComponent } from '../dialog-demande-historique/dialog-demande-historique.component';
 
 @Component({
   selector: 'app-historique',
@@ -13,7 +16,7 @@ export class HistoriqueComponent implements OnInit {
   demandesAcceptees: Demande[] = [];
   demandesRefusees: Demande[] = [];
 
-  constructor(private demandeService: DemandeService, private route: ActivatedRoute) { }
+  constructor(private demandeService: DemandeService, private route: ActivatedRoute, private dialog: MatDialog) { }
 
   ngOnInit() {
 
@@ -25,8 +28,8 @@ export class HistoriqueComponent implements OnInit {
   initDemandesAcceptees(username: string) {
     this.demandeService.getDemandeAccepteesOf(username).subscribe(
       responses => {
-        console.log(responses.body)
         this.demandesAcceptees = responses.body
+        console.log(this.demandesAcceptees)
       },
       error => {
         console.error(error);
@@ -37,7 +40,6 @@ export class HistoriqueComponent implements OnInit {
   initDemandesRefusees(username: string) {
     this.demandeService.getDemandeRefuseesOf(username).subscribe(
       responses => {
-        console.log(responses.body)
         this.demandesRefusees = responses.body
       },
       error => {
@@ -46,5 +48,9 @@ export class HistoriqueComponent implements OnInit {
     )
   }
 
+  openDetailDialog(demande) {
+    let dialogRef = this.dialog.open(DialogDemandeHistoriqueComponent, { data: {demande: demande} } );
+    console.log(dialogRef); 
+  }
 }
 

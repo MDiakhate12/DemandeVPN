@@ -2,7 +2,7 @@
 <div class="container-fluid" id="validation-hierarchique" hideToggle>
     <div class="col-md-8 m-auto">
         <mat-accordion>
-            <mat-expansion-panel [expanded]="step === i" (opened)="setStep(i)"
+            <mat-expansion-panel class="animated fadeInDown" [expanded]="step === i" (opened)="setStep(i)"
                 *ngFor="let demande of demandes; index as i; first as f">
                 <mat-expansion-panel-header>
                     <mat-panel-title>{{ demande.objet }}</mat-panel-title>
@@ -11,6 +11,11 @@
 
                 <div class="list">
                     <mat-list>
+                        <mat-list-item>
+                            <mat-icon color="warn" mat-list-icon>account_box</mat-icon>
+                            <h4 mat-line>Demandeur : {{ demande.demandeur.username }}</h4>
+                        </mat-list-item>
+
                         <mat-list-item>
                             <mat-icon color="warn" mat-list-icon>account_box</mat-icon>
                             <h4 mat-line>Bénéficiaire : {{ demande.beneficiaire.username }}</h4>

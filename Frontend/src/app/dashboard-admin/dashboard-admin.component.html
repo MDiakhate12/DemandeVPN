@@ -1,0 +1,30 @@
+<div class="row">
+
+        <mat-card routerLink="/validation-admin" class="btn btn-light animated fadeInUp  col-md-3 m-4">
+            <mat-card-header>
+                <mat-card-title>Demandes à valider</mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+                <mat-icon>thumbs_up_down</mat-icon>
+            </mat-card-content>
+        </mat-card>
+    
+        <mat-card [routerLink]="['/demandes/historique/', user.username]" class="btn btn-light animated fadeInUp col-md-3 m-4">
+            <mat-card-header>
+                <mat-card-title>Historique</mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+                <mat-icon>library_books</mat-icon>
+            </mat-card-content>
+        </mat-card>
+    
+        <mat-card [routerLink]="['/demandes/notifications/', user.username]" class="btn btn-light animated fadeInUp  col-md-3 m-4">
+            <mat-card-header>
+                <mat-card-title>Notifications</mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+                <mat-icon>notification_important</mat-icon>
+            </mat-card-content>
+        </mat-card>
+    
+    </div>

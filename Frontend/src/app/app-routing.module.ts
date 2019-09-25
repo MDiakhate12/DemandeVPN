@@ -13,6 +13,7 @@ import { SecuriteGuard } from './guards/securite.guard';
 import { AdminGuard } from './guards/admin.guard';
 import { HierarchieGuard } from './guards/hierarchie.guard';
 import { HistoriqueComponent } from './historique/historique.component';
+import { HistoriqueSecuriteComponent } from './historique-securite/historique-securite.component';
 
 const routes: Routes = [
   // {path: '', component: DashboardComponent, pathMatch: 'full'},
@@ -26,11 +27,13 @@ const routes: Routes = [
   {path: 'validation-admin', component:  ValidationAdminComponent, canActivate: [AuthGuard, AdminGuard]},
   {path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard]},
   {path: 'login', component: LoginComponent},
-  {path: 'demandes/:username', component: LoginComponent},
-  {path: 'demandes/en-attente/:username', component: DemandeEnAttenteUserComponent},
+  // {path: 'demandes/:username', component: LoginComponent},
+  {path: 'demandes/en-attente/:username', component: DemandeEnAttenteUserComponent, canActivate: [AuthGuard]},
+
+  {path: 'demandes/historique-securite', component: HistoriqueSecuriteComponent, canActivate: [AuthGuard, SecuriteGuard]},
   
-  {path: 'demandes/historique/:username', component: HistoriqueComponent},
-  {path: 'demandes/notifications/:username', component: LoginComponent}
+  {path: 'demandes/historique/:username', component: HistoriqueComponent, canActivate: [AuthGuard]},
+  {path: 'demandes/notifications/:username', component: LoginComponent, canActivate: [AuthGuard]}
 ];
 
 @NgModule({

@@ -8,8 +8,6 @@ export class User {
     public email: string;
     public profil: Profil;
     public auth_token: string;
-    public is_securite: boolean;
-    public is_admin: boolean;
 
     // deserialize(input: any): this {
     //     Object.assign(this, input);

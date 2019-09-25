@@ -3,82 +3,21 @@
 <div id="app-dashboard">
     <div id="entete" class="container-fluid">
         <div class="row">
-            <img class="col-md-3 float-left fibre" src="assets/img/entete.png" height="400" alt="">
+            <img class="col-md-3 float-left animated fadeInLeft fibre" src="assets/img/entete.png" height="400" alt="">
             <div class="col-md-6 mt-5 mr-auto">
                 <h1 class="mat-display-3 title">VPN à la demande</h1>
                 <h1 class="mat-display-1 text-muted subtitle">Le S.I. avec vous partout où vous êtes</h1>
             </div>
-            <img class="col-md-3" src="assets/img/secure.png" height="300" alt="">
+            <img class="col-md-3 animated fadeInDown" src="assets/img/secure.png" height="300" alt="">
         </div>
     </div>
-    <div class="container">
-        <div class="row"> 
-            <mat-card routerLink="/nouvelle-demande" class="btn btn-light  col-md-3 m-4">
-                <mat-card-header>
-                    <mat-card-title>Nouvelle Demande</mat-card-title>
-                </mat-card-header>
-                <mat-card-content>
-                    <mat-icon>post_add</mat-icon>
-                </mat-card-content>
-
-            </mat-card>
-
-            <mat-card (click)="demandesEnAttenteUser()" class="btn btn-light  col-md-3 m-4">
-                <mat-card-header>
-                    <mat-card-title>Mes demandes en attentes</mat-card-title>
-                </mat-card-header>
-                <mat-card-content>
-                    <mat-icon>watch_later</mat-icon>
-                </mat-card-content>
-
-            </mat-card>
-
-            <mat-card [routerLink]="['/demandes/notifications/', user.username]" class="btn btn-light  col-md-3 m-4">
-                <mat-card-header>
-                    <mat-card-title>Notifications</mat-card-title>
-                </mat-card-header>
-                <mat-card-content>
-                    <mat-icon>notification_important</mat-icon>
-                </mat-card-content>
-
-            </mat-card>
-        </div>
-        <div class="row">
-
-            <mat-card routerLink="/dashboard" class="btn btn-light  col-md-3 m-4">
-                <mat-card-header>
-                    <mat-card-title>Dashboard</mat-card-title>
-                </mat-card-header>
-                <mat-card-content>
-                    <mat-icon>dashboard</mat-icon>
-                </mat-card-content>
-
-            </mat-card>
-
-
-
-            <mat-card [routerLink]="['/validation-hierarchique/', user.username]" class="btn btn-light  col-md-3 m-4">
-                <mat-card-header>
-                    <mat-card-title>Demandes à valider</mat-card-title>
-                </mat-card-header>
-                <mat-card-content>
-                    <mat-icon>thumbs_up_down</mat-icon>
-                </mat-card-content>
-
-            </mat-card>
-
-
-
-            <mat-card [routerLink]="['/demandes/historique/', user.username]" class="btn btn-light col-md-3 m-4">
-                <mat-card-header>
-                    <mat-card-title>Historique</mat-card-title>
-                </mat-card-header>
-                <mat-card-content>
-                    <mat-icon>library_books</mat-icon>
-                </mat-card-content>
-            </mat-card>
-
-
-        </div>
+    <div class="container" *ngIf="isSecurite() === false && isAdmin() === false">
+        <app-dashboard-user></app-dashboard-user>
+    </div>
+    <div class="container" *ngIf="isSecurite() === true && isAdmin() === false">
+        <app-dashboard-securite></app-dashboard-securite>
+    </div>
+    <div class="container" *ngIf="isSecurite() === false && isAdmin() === true">
+        <app-dashboard-admin></app-dashboard-admin>
     </div>
 </div>

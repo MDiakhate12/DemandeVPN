@@ -23,6 +23,7 @@ export class DemandeEnAttenteUserComponent implements OnInit {
 
 
   ngOnInit() {
+    window.scroll(0,0);
     this.initUser();
     let username = this.route.snapshot.paramMap.get('username');
     this.initDemandeEnAttenteUser(username);

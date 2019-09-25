@@ -8,7 +8,7 @@ import { Router } from '@angular/router';
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css']
 })
-export class DashboardComponent implements OnInit {
+export class DashboardComponent  implements OnInit {
 
   user: User = new User();
 
@@ -20,8 +20,14 @@ export class DashboardComponent implements OnInit {
     );
   }
 
-  demandesEnAttenteUser() {
-    this.router.navigate(['/demandes/en-attente/', this.user.username]);
+  isSecurite() {
+    let role = this.authService.isSecurite();
+    console.log("securite from dashboard : ", role);
+    return role;
   }
-
+  isAdmin() {
+    let role = this.authService.isAdmin();
+    console.log("admin from dashboard : ", role);
+    return role;
+  }
 }

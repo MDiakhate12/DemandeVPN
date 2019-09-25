@@ -1,25 +1,4 @@
 
-mat-card {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    align-content: flex-end;
-    flex-direction: column;
-    text-align: center;
-    box-shadow: 0 0 20px 2px!important;
-    height: 222px;
-    cursor: pointer;
-}
-
-mat-card-content mat-icon {
-    font-size: 100px;
-    text-align: center;
-    position: relative;
-    right: 40px;
-    cursor: pointer;
-    color: #f16e00;
-}
-
 .title {
     color: #f16e00;
     position: relative;

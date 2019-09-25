@@ -28,6 +28,7 @@ export class ValidationHierarchiqueComponent implements OnInit {
   constructor(private demandeService: DemandeService, private genericService: GenericService, private router: ActivatedRoute, public dialog: MatDialog, public snackbar: MatSnackBar) { }
 
   ngOnInit() {
+    window.scroll(0,0);
     this.genericService.init(this);
     this.initDemandeEnAttenteHierarchique();
     console.log(this.router);

@@ -31,6 +31,7 @@ export class ValidationSecuriteComponent implements OnInit {
   constructor(private demandeService: DemandeService, private genericService: GenericService, private router: ActivatedRoute, public dialog: MatDialog, public snackbar: MatSnackBar) { }
 
   ngOnInit() {
+    window.scroll(0,0);
     this.genericService.init(this);
     this.initDemandeEnAttenteSecurite();
     console.log(this.router);

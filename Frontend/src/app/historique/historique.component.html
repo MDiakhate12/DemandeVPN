@@ -8,11 +8,21 @@
         </ng-template>
 
         <br>
-        <div class="detail">
-            <pre>
-                {{ demandesAcceptees | json }}
-            </pre>
-        </div>
+            <mat-list>
+
+                <div class="mat-display-1" mat-header>Historique des demandes acceptées</div>
+
+                <mat-divider></mat-divider>
+                <div (click)="openDetailDialog(demande)" matRipple class="list-group" *ngFor="let demande of demandesAcceptees">
+                    <h3 mat-subheader>{{demande.objet}}</h3>
+                    <mat-list-item>
+                        <mat-icon mat-list-icon>account_box</mat-icon>
+                        <h4 mat-line>Bénéficiaire | {{demande.beneficiaire.username}}</h4>
+                        <p mat-line>Date demande | {{demande.date | date: "fullDate"}} </p>
+                    </mat-list-item>
+                    <mat-divider></mat-divider>
+                </div>
+            </mat-list>
     </mat-tab>
 
     <mat-tab>
@@ -22,11 +32,9 @@
         </ng-template>
 
         <br>
-        <div class="detail">
             <pre>
                 {{ demandesRefusees | json }}
             </pre>
-        </div>
     </mat-tab>
 
     <mat-tab>

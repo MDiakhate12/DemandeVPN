@@ -23,6 +23,11 @@ import { DialogErrorComponent } from './dialog-error/dialog-error.component';
 import { DemandeEnAttenteUserComponent } from './demande-en-attente-user/demande-en-attente-user.component';
 import { DialogDemandeDetailComponent } from './dialog-demande-detail/dialog-demande-detail.component';
 import { HistoriqueComponent } from './historique/historique.component';
+import { DashboardUserComponent } from './dashboard-user/dashboard-user.component';
+import { DashboardSecuriteComponent } from './dashboard-securite/dashboard-securite.component';
+import { DashboardAdminComponent } from './dashboard-admin/dashboard-admin.component';
+import { HistoriqueSecuriteComponent } from './historique-securite/historique-securite.component';
+import { DialogDemandeHistoriqueComponent } from './dialog-demande-historique/dialog-demande-historique.component';
 
 @NgModule({
   declarations: [
@@ -42,6 +47,11 @@ import { HistoriqueComponent } from './historique/historique.component';
     DemandeEnAttenteUserComponent,
     DialogDemandeDetailComponent,
     HistoriqueComponent,
+    DashboardUserComponent,
+    DashboardSecuriteComponent,
+    DashboardAdminComponent,
+    HistoriqueSecuriteComponent,
+    DialogDemandeHistoriqueComponent,
   ],
   imports: [
     BrowserModule,
@@ -51,7 +61,7 @@ import { HistoriqueComponent } from './historique/historique.component';
     FormsModule,
     HttpClientModule,
   ],
-  entryComponents: [DialogComponent, DialogDemandeDetailComponent, DialogErrorComponent],
+  entryComponents: [DialogComponent, DialogDemandeDetailComponent, DialogErrorComponent, DialogDemandeHistoriqueComponent],
   providers: [DemandeService],
   bootstrap: [AppComponent]
 })
