@@ -30,6 +30,7 @@ import { HistoriqueSecuriteComponent } from './historique-securite/historique-se
 import { DialogDemandeHistoriqueComponent } from './dialog-demande-historique/dialog-demande-historique.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { LoadingComponent } from './loading/loading.component';
+import { ValidationVideComponent } from './validation-vide/validation-vide.component';
 
 @NgModule({
   declarations: [
@@ -56,6 +57,7 @@ import { LoadingComponent } from './loading/loading.component';
     DialogDemandeHistoriqueComponent,
     PageNotFoundComponent,
     LoadingComponent,
+    ValidationVideComponent,
   ],
   imports: [
     BrowserModule,

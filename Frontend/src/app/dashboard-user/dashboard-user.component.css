@@ -18,3 +18,9 @@ mat-card-content mat-icon {
     cursor: pointer;
     color: #f16e00;
 }
+
+
+div.row {
+    display: flex;
+    justify-content: center;
+}

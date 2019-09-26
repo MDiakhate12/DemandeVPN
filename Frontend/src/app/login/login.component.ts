@@ -33,7 +33,9 @@ export class LoginComponent implements OnInit {
       console.log(response);
       for(let [key, value] of Object.entries(response)) {
       localStorage.setItem(key, (value as string));
-      await this.router.navigate(['/dashboard']);
+      await this.router.navigate(['/dashboard']).then(() => {
+        window.location.reload();
+      });
     }
 
     },

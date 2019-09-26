@@ -12,6 +12,7 @@ import { DialogDemandeHistoriqueComponent } from '../dialog-demande-historique/d
 export class HistoriqueSecuriteComponent implements OnInit {
 
   demandesValideesSecurite: Demande[] = [];
+  loading: boolean = false;
 
   constructor(private demandeService: DemandeService, private dialog: MatDialog) { }
 
@@ -20,9 +21,11 @@ export class HistoriqueSecuriteComponent implements OnInit {
   }
 
   initDemandeValideesSecurite() {
-    this.demandeService.getDemandeValideesSecurite().subscribe(
+        this.loading = true;
+        this.demandeService.getDemandeValideesSecurite().subscribe(
       response => {
         this.demandesValideesSecurite = response.body
+        this.loading = false;
       },
       error => {
         console.error(error);

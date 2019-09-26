@@ -18,8 +18,8 @@ form {
     width: 50%;
     color:#f16e00;
 }
-login-form {
-    max-width: 340px;
+.login-form {
+    max-width: 420px;
 }
 
 .acc_cp{

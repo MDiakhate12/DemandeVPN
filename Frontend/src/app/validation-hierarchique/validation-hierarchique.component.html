@@ -1,7 +1,9 @@
 <app-navbar></app-navbar>
 <app-loading *ngIf="loading"></app-loading>
-<div  matRipple matRippleRadius="100" class="container-fluid" id="validation-hierarchique" hideToggle>
+<div matRipple matRippleRadius="100" class="container-fluid" id="validation-hierarchique" hideToggle>
     <div class="col-md-8 m-auto">
+        <app-validation-vide *ngIf="demandes.length == 0"></app-validation-vide>
+        
         <mat-accordion>
             <mat-expansion-panel class="animated fadeInDown" [expanded]="step === i" (opened)="setStep(i)"
                 *ngFor="let demande of demandes; index as i; first as f">

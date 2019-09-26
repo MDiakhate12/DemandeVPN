@@ -16,6 +16,7 @@ export class HistoriqueComponent implements OnInit {
   demandesAcceptees: Demande[] = [];
   demandesRefusees: Demande[] = [];
   demandesCloturees: Demande[] = [];
+  loading:boolean = false;
 
   constructor(private demandeService: DemandeService, private route: ActivatedRoute, private dialog: MatDialog) { }
 
@@ -28,11 +29,13 @@ export class HistoriqueComponent implements OnInit {
   }
 
   initDemandesAcceptees(username: string) {
+    this.loading = true;
     this.demandeService.getDemandeAccepteesOf(username).subscribe(
       responses => {
         this.demandesAcceptees = responses.body
         console.log(this.demandesAcceptees)
-      },
+        this.loading = false;
+  },
       error => {
         console.error(error);
       }
@@ -40,9 +43,11 @@ export class HistoriqueComponent implements OnInit {
   }
 
   initDemandesRefusees(username: string) {
+    this.loading = true;
     this.demandeService.getDemandeRefuseesOf(username).subscribe(
       responses => {
         this.demandesRefusees = responses.body
+        this.loading = false;
       },
       error => {
         console.error(error);
@@ -51,9 +56,11 @@ export class HistoriqueComponent implements OnInit {
   }
 
   initDemandesCloturees(username: string) {
+    this.loading = true;
     this.demandeService.getDemandeClotureesOf(username).subscribe(
       responses => {
         this.demandesCloturees = responses.body
+        this.loading = false;
       },
       error => {
         console.error(error);
