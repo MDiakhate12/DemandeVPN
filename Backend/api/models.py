@@ -25,7 +25,7 @@ class Application(models.Model):
 
     def __str__(self):
         return self.nom
-
+        
 
 class Profil(models.Model):
     user = models.OneToOneField(

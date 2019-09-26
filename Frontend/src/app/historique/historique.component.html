@@ -3,26 +3,61 @@
 <mat-tab-group color="warn">
     <mat-tab>
         <ng-template mat-tab-label>
+            <mat-icon color="warn" class="example-tab-icon">library_books</mat-icon>
+            Toutes les demandes
+        </ng-template>
+
+        <br>
+        <mat-list>
+
+            <div class="mat-display-1" mat-header>Historique des demandes cloturées</div>
+
+            <mat-divider></mat-divider>
+            <div (click)="openDetailDialog(demande)" matRipple class="animated fadeInLeft list-group"
+                *ngFor="let demande of demandesCloturees">
+                <h3 mat-subheader>{{demande.objet}}</h3>
+                <mat-list-item>
+                    <mat-icon mat-list-icon>account_box</mat-icon>
+                    <h4 mat-line>Bénéficiaire | {{demande.beneficiaire.username}}</h4>
+                    <p mat-line>Date demande | {{demande.date | date: "fullDate"}} </p>
+                    <span class="example-spacer"></span>
+                    <button class="bg-success" *ngIf="demande.validation_admin; else refused" mat-mini-fab>
+                        <mat-icon>done</mat-icon>
+                    </button>
+                    <ng-template #refused>
+                        <button class="bg-danger" mat-mini-fab>
+                            <mat-icon>close</mat-icon>
+                        </button>
+                    </ng-template>
+                </mat-list-item>
+                <mat-divider></mat-divider>
+            </div>
+        </mat-list>
+    </mat-tab>
+
+    <mat-tab>
+        <ng-template mat-tab-label>
             <mat-icon color="warn" class="example-tab-icon">done_all</mat-icon>
             Demandes acceptées
         </ng-template>
 
         <br>
-            <mat-list>
+        <mat-list>
 
-                <div class="mat-display-1" mat-header>Historique des demandes acceptées</div>
+            <div class="mat-display-1" mat-header>Historique des demandes acceptées</div>
 
+            <mat-divider></mat-divider>
+            <div (click)="openDetailDialog(demande)" matRipple class="animated fadeInLeft list-group"
+                *ngFor="let demande of demandesAcceptees">
+                <h3 mat-subheader>{{demande.objet}}</h3>
+                <mat-list-item>
+                    <mat-icon mat-list-icon>account_box</mat-icon>
+                    <h4 mat-line>Bénéficiaire | {{demande.beneficiaire.username}}</h4>
+                    <p mat-line>Date demande | {{demande.date | date: "fullDate"}} </p>
+                </mat-list-item>
                 <mat-divider></mat-divider>
-                <div (click)="openDetailDialog(demande)" matRipple class="list-group" *ngFor="let demande of demandesAcceptees">
-                    <h3 mat-subheader>{{demande.objet}}</h3>
-                    <mat-list-item>
-                        <mat-icon mat-list-icon>account_box</mat-icon>
-                        <h4 mat-line>Bénéficiaire | {{demande.beneficiaire.username}}</h4>
-                        <p mat-line>Date demande | {{demande.date | date: "fullDate"}} </p>
-                    </mat-list-item>
-                    <mat-divider></mat-divider>
-                </div>
-            </mat-list>
+            </div>
+        </mat-list>
     </mat-tab>
 
     <mat-tab>
@@ -32,16 +67,21 @@
         </ng-template>
 
         <br>
-            <pre>
-                {{ demandesRefusees | json }}
-            </pre>
-    </mat-tab>
+        <mat-list>
 
-    <mat-tab>
-        <ng-template mat-tab-label>
-            <mat-icon color="warn" class="example-tab-icon">library_books</mat-icon>
-            Toutes les demandes
-        </ng-template>
+            <div class="mat-display-1" mat-header>Historique des demandes refusées</div>
 
+            <mat-divider></mat-divider>
+            <div (click)="openDetailDialog(demande)" matRipple class="animated fadeInLeft list-group"
+                *ngFor="let demande of demandesRefusees">
+                <h3 mat-subheader>{{demande.objet}}</h3>
+                <mat-list-item>
+                    <mat-icon mat-list-icon>account_box</mat-icon>
+                    <h4 mat-line>Bénéficiaire | {{demande.beneficiaire.username}}</h4>
+                    <p mat-line>Date demande | {{demande.date | date: "fullDate"}} </p>
+                </mat-list-item>
+                <mat-divider></mat-divider>
+            </div>
+        </mat-list>
     </mat-tab>
 </mat-tab-group>

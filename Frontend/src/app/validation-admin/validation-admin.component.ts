@@ -24,6 +24,7 @@ export class ValidationAdminComponent implements OnInit {
   applications: Application[] = [];;
   demandes: Demande[] = new Array<Demande>();
   username: string;
+  loading:boolean = false;
 
   constructor(private demandeService: DemandeService, private genericService: GenericService, private router: ActivatedRoute, public dialog: MatDialog, public snackbar: MatSnackBar) { }
 
@@ -49,18 +50,22 @@ export class ValidationAdminComponent implements OnInit {
   }
 
   initDemandeEnAttenteAdmin() {
+    this.loading = true;
     this.demandeService.getDemandeEnAttenteAdminOf().subscribe(response => {
       console.log(response);
       this.demandes = response.body;
-    }
+      this.loading = false;
+  }
     );
   }
 
   validerDemande(id: number) {
-      this.demandeService.configureDemandeWithId(id).subscribe(
+    this.loading = true;
+    this.demandeService.configureDemandeWithId(id).subscribe(
         data => {
           this.initDemandeEnAttenteAdmin();
           console.log(data);
+          this.openSnackbar("Demande validée avec succés! Envoi immédiat à l'admin sécurité", 'OK', { duration: 3000, verticalPosition: 'top' });
         },
         error => {
           console.error(error);
@@ -70,10 +75,12 @@ export class ValidationAdminComponent implements OnInit {
 
 
   expirerDemande(id: number) {
+    this.loading = true;
     this.demandeService.expirationDemandeWithId(id).subscribe(
       data => {
         this.initDemandeEnAttenteAdmin();
         console.log(data);
+        this.openSnackbar("Demande expirée ! Le demandeur sera notifié de l'expiration", 'OK', { duration: 3000, verticalPosition: 'top' });
       },
       error => {
         console.error(error);
@@ -87,7 +94,6 @@ export class ValidationAdminComponent implements OnInit {
         console.log(choice);
         if (choice === 'true') {
           this.validerDemande(id);
-          this.openSnackbar("Demande validée avec succés! Envoi immédiat à l'admin sécurité", 'OK', 3000);
         } else {
           return;
         }
@@ -101,7 +107,6 @@ export class ValidationAdminComponent implements OnInit {
         console.log(choice);
         if (choice === 'true') {
           this.expirerDemande(id);
-          this.openSnackbar("Demande refusée ! Le demandeur sera notifié du refus", 'OK', 3000);
         } else {
           return;
         }

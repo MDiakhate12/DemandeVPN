@@ -4,19 +4,33 @@ from .models import *
 from django.contrib.auth.models import User
 from .constants import *
 from rest_auth.models import TokenModel
+from notifications.models import Notification
+
+
+
+
 
 class ProfilSerializer(serializers.ModelSerializer):
     class Meta:
         model = Profil
-        fields = ['is_securite', 'is_admin', 'entreprise', 'telephone', 'departement', 'superieur']
+        fields = ['is_securite', 'is_admin', 'entreprise',
+                  'telephone', 'departement', 'superieur']
 
 
 class UserSerializer(serializers.ModelSerializer):
     profil = ProfilSerializer()
     auth_token = models.CharField()
+
     class Meta:
         model = User
         fields = ('id', 'username', 'email', 'profil', 'auth_token')
+
+class SimpleUserSerializer(serializers.ModelSerializer):
+    profil = ProfilSerializer()
+
+    class Meta:
+        model = User
+        fields = ('id', 'username', 'email', 'profil')
 
 
 class ProtocoleSeriallizer(serializers.ModelSerializer):
@@ -124,3 +138,16 @@ class DemandesAdminSerializer(serializers.ModelSerializer):
 
         read_only_fields = ('id', 'objet', 'description', 'date', 'date_expiration',
                             'beneficiaire', 'demandeur', 'protocoles', 'status_demande', 'applications', 'validation_hierarchique', 'validateur_hierarchique', 'validation_securite', 'validateur_securite', 'validation_admin')
+
+class NotificationSerializer(serializers.Serializer):
+    id = serializers.IntegerField()
+    level = serializers.CharField()
+    recipient = SimpleUserSerializer()
+    unread = serializers.CharField()
+    verb = serializers.CharField()
+    description = serializers.CharField()
+    timestamp = serializers.DateTimeField()
+    public = serializers.CharField()
+    deleted = serializers.CharField()
+    slug = serializers.SlugField()
+    actor = SimpleUserSerializer()

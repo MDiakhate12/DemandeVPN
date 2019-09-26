@@ -28,6 +28,8 @@ import {
   MatRippleModule,
 } from '@angular/material';
 
+import { MatBadgeModule } from '@angular/material/badge'
+
 const MaterialComponents = [
   MatButtonModule,
   MatButtonToggleModule,
@@ -55,7 +57,8 @@ const MaterialComponents = [
   MatSnackBarModule,
   MatSortModule,
   MatTableModule,
-  MatRippleModule
+  MatRippleModule,
+  MatBadgeModule,
 ];
 
 @NgModule({

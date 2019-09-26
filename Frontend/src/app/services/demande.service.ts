@@ -12,6 +12,7 @@ import { AuthService } from './auth.service';
 export class DemandeService {
 
     baseURL = "http://127.0.0.1:8000/api/demandes/";
+    apiURL = "http://127.0.0.1:8000/api/";
     httpHeaders = new HttpHeaders({
         'Content-Type': 'application/json',
         'Authorization': 'Token ' + this.authService.getToken()
@@ -34,6 +35,11 @@ export class DemandeService {
         return this.http.post<Demande>(url, demande, { headers: this.httpHeaders, observe: 'response' });
     }
 
+    getNotificationCount(): Observable<HttpResponse<any>> {
+        let url = this.apiURL + 'notifications-unread/';
+        return this.http.get<any>(url, { headers: this.httpHeaders, observe: 'response' });
+
+    }
 
     getDemandeWithId(id: number): Observable<HttpResponse<Demande>> {
         let url = this.baseURL + id + "/";
@@ -63,6 +69,14 @@ export class DemandeService {
         let url = this.baseURL + "refusees/" + username + "/";
         return this.http.get<Demande[]>(url, { headers: this.httpHeaders, observe: 'response' }).pipe(
             tap(_ => console.log(`Fetched ${this.getDemandeRefuseesOf.name} ${username} from ${url}`)),
+            catchError(this.handleError)
+        )
+    }
+
+    getDemandeClotureesOf(username: string): Observable<HttpResponse<Demande[]>> {
+        let url = this.baseURL + "cloturees/" + username + "/";
+        return this.http.get<Demande[]>(url, { headers: this.httpHeaders, observe: 'response' }).pipe(
+            tap(_ => console.log(`Fetched ${this.getDemandeClotureesOf.name} ${username} from ${url}`)),
             catchError(this.handleError)
         )
     }

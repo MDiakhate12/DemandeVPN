@@ -28,6 +28,8 @@ import { DashboardSecuriteComponent } from './dashboard-securite/dashboard-secur
 import { DashboardAdminComponent } from './dashboard-admin/dashboard-admin.component';
 import { HistoriqueSecuriteComponent } from './historique-securite/historique-securite.component';
 import { DialogDemandeHistoriqueComponent } from './dialog-demande-historique/dialog-demande-historique.component';
+import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
+import { LoadingComponent } from './loading/loading.component';
 
 @NgModule({
   declarations: [
@@ -52,6 +54,8 @@ import { DialogDemandeHistoriqueComponent } from './dialog-demande-historique/di
     DashboardAdminComponent,
     HistoriqueSecuriteComponent,
     DialogDemandeHistoriqueComponent,
+    PageNotFoundComponent,
+    LoadingComponent,
   ],
   imports: [
     BrowserModule,

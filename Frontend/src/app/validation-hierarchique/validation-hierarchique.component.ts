@@ -24,11 +24,12 @@ export class ValidationHierarchiqueComponent implements OnInit {
   applications: Application[] = [];;
   demandes: Demande[] = new Array<Demande>();
   username: string;
+  loading: boolean = false;
 
   constructor(private demandeService: DemandeService, private genericService: GenericService, private router: ActivatedRoute, public dialog: MatDialog, public snackbar: MatSnackBar) { }
 
   ngOnInit() {
-    window.scroll(0,0);
+    window.scroll(0, 0);
     this.genericService.init(this);
     this.initDemandeEnAttenteHierarchique();
     console.log(this.router);
@@ -49,18 +50,22 @@ export class ValidationHierarchiqueComponent implements OnInit {
   }
 
   initDemandeEnAttenteHierarchique() {
+    this.loading = true;
     this.username = this.router.snapshot.paramMap.get("username");
     this.demandeService.getDemandeEnAttenteHierarchiqueOf(this.username).subscribe(response => {
       this.demandes = response.body;
+      this.loading = false;
     }
     );
   }
 
   validerDemande(id: number) {
+    this.loading = true;
     this.demandeService.acceptDemandeWithId(id).subscribe(
       data => {
         this.initDemandeEnAttenteHierarchique();
         console.log(data);
+        this.openSnackbar("Demande validée avec succés! Envoi immédiat à l'admin sécurité", 'OK', { duration: 3000, verticalPosition: 'top' });
       },
       error => {
         console.error(error);
@@ -70,10 +75,12 @@ export class ValidationHierarchiqueComponent implements OnInit {
 
 
   refuserDemande(id: number) {
+    this.loading = true;
     this.demandeService.rejectDemandeWithId(id).subscribe(
       data => {
         this.initDemandeEnAttenteHierarchique();
         console.log(data);
+        this.openSnackbar("Demande refusée ! Le demandeur sera notifié du refus", 'OK', { duration: 3000, verticalPosition: 'top' });
       },
       error => {
         console.error(error);
@@ -84,28 +91,26 @@ export class ValidationHierarchiqueComponent implements OnInit {
   openValidationDialog(id: number) {
     let dialogRef = this.dialog.open(DialogComponent);
     dialogRef.afterClosed().subscribe(choice => {
-        console.log(choice);
-        if (choice === 'true') {
-          this.validerDemande(id);
-          this.openSnackbar("Demande validée avec succés! Envoi immédiat à l'admin sécurité", 'OK', 3000);
-        } else {
-          return;
-        }
+      console.log(choice);
+      if (choice === 'true') {
+        this.validerDemande(id);
+      } else {
+        return;
       }
+    }
     )
   }
 
   openDenialDialog(id: number) {
     let dialogRef = this.dialog.open(DialogComponent);
     dialogRef.afterClosed().subscribe(choice => {
-        console.log(choice);
-        if (choice === 'true') {
-          this.refuserDemande(id);
-          this.openSnackbar("Demande refusée ! Le demandeur sera notifié du refus", 'OK', 3000);
-        } else {
-          return;
-        }
+      console.log(choice);
+      if (choice === 'true') {
+        this.refuserDemande(id);
+      } else {
+        return;
       }
+    }
     )
   }
 

@@ -27,15 +27,19 @@ PROTOCOLES = (
 )
 
 TYPES = (
-    ('validation-hierarchique','validation-hierarchique'),
-    ('validation-securite','validation-securite'),
-    ('validation-admin','validation-admin'),
-    ('refus-hierarchie','refus-hierarchie'),
-    ('refus-securite','refus-securite'),
-    ('expiration-admin','expiration-admin'),
-    ('reception-user','reception-user'),
-    ('reception-hierarchie','reception-hierarchie'),
-    ('reception-securite','reception-securite'),
-    ('reception-admin','reception-admin'),
-    ('expiration','expiration'),
+    'validation-hierarchique',
+    'validation-securite',
+    'validation-admin',
+    'refus-hierarchie',
+    'refus-securite',
+    'expiration-admin',
+    'reception-user',
+    'reception-hierarchie',
+    'reception-securite',
+    'reception-admin',
+    'expiration',
+)
+
+NOTIFICATIONS = (
+    
 )

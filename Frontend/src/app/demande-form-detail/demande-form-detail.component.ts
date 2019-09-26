@@ -17,12 +17,12 @@ export class DemandeFormDetailComponent implements OnInit {
   users: User[] = [];;
   protocoles: Protocole[] = [];;
   applications: Application[] = [];;
-  demande: Demande = new Demande();
+  demande;
 
   @Input() id; ;
   cardClasses = { }; 
 
-  constructor(private demandeService: DemandeService, private genericService: GenericService, private router: Router, private route: ActivatedRoute) { }
+  constructor(private demandeService: DemandeService, private genericService: GenericService, private route: ActivatedRoute) { }
 
   ngOnInit() {
     this.genericService.init(this);
@@ -42,9 +42,9 @@ export class DemandeFormDetailComponent implements OnInit {
 
   getDemandeWithId(id) {
     this.demandeService.getDemandeWithId(id).subscribe(
-      response => {
-        // this.demande = this.demande.deserialize(data);
-        this.demande = response.body;
+      async response => {
+        let demandeBody = Promise.resolve(response.body);
+        this.demande = await demandeBody;
         console.log(this.demande);
       }
     );

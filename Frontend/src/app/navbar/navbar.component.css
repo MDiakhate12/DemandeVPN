@@ -31,3 +31,8 @@ a {
   display: flex;
   align-items: center;
 }
+
+.initial {
+    background-color: white;
+    color: #f16e00;
+}

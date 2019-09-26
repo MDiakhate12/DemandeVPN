@@ -16,6 +16,7 @@ import { AuthService } from '../services/auth.service';
 export class DemandeComponent implements OnInit {
 
   public isOpen: boolean = false;
+  loading: boolean = false;
 
   users: User[] = [];;
   protocoles: Protocole[]= [];;
@@ -38,13 +39,13 @@ export class DemandeComponent implements OnInit {
   }
 
   onSubmit() {
-
+    this.loading = true;
     this.demandeService.sendDemande(this.demande).subscribe(
       response => {
         this.demande = response.body;
         console.log(this.demande.id);
         this.router.navigate(['/demande', this.demande.id]);
-
+        this.loading = false;
       },
       error => {
         console.error('ERREUR : ' + error);

@@ -4,11 +4,11 @@
             <mat-expansion-panel>
                 <mat-expansion-panel-header>
                     <mat-panel-title>
-                        <mat-card-title>{{ demande.objet }}</mat-card-title>
+                        <mat-card-title>{{ demande?.objet }}</mat-card-title>
                     </mat-panel-title>
                     <mat-panel-description></mat-panel-description>
                 </mat-expansion-panel-header>
-                Description : {{ demande.description }}
+                Description : {{ demande?.description }}
             </mat-expansion-panel>
         </mat-card-title>
 
@@ -21,12 +21,12 @@
 
             <mat-list-item>
                 <mat-icon color="warn" mat-list-icon>account_box</mat-icon>
-                <h4 mat-line>Demandeur : {{ demande.demandeur.username }}</h4>
+                <h4 mat-line>Demandeur : {{ demande?.demandeur.username }}</h4>
             </mat-list-item>
 
             <mat-list-item>
                 <mat-icon color="warn" mat-list-icon>account_box</mat-icon>
-                <h4 mat-line>Bénéficiaire : {{ demande.beneficiaire.username }}</h4>
+                <h4 mat-line>Bénéficiaire : {{ demande?.beneficiaire.username }}</h4>
             </mat-list-item>
 
             <mat-divider></mat-divider>
@@ -35,18 +35,18 @@
 
             <mat-list-item>
                 <mat-icon color="warn" mat-list-icon>today</mat-icon>
-                <h4 mat-line>Date de création : {{ demande.date | date: 'full' }}</h4>
+                <h4 mat-line>Date de création : {{ demande?.date | date: 'full' }}</h4>
             </mat-list-item>
             <mat-list-item>
                 <mat-icon color="warn" mat-list-icon>not_interested</mat-icon>
-                <h4 mat-line>Date d'expiration demandée : {{ demande.date_expiration | date: 'full' }}</h4>
+                <h4 mat-line>Date d'expiration demandée : {{ demande?.date_expiration | date: 'full' }}</h4>
             </mat-list-item>
 
             <mat-divider></mat-divider>
 
             <h3 mat-subheader>Applications demandées</h3>
 
-            <mat-list-item *ngFor="let application of demande.applications">
+            <mat-list-item *ngFor="let application of demande?.applications">
                 <mat-icon color="warn" mat-list-icon>apps</mat-icon>
                 <h4 mat-line>{{application.nom}} ({{application.adresse_ip}})</h4>
             </mat-list-item>
@@ -54,7 +54,7 @@
             <mat-divider></mat-divider>
 
             <h3 mat-subheader>Protocoles demandés</h3>
-            <mat-list-item *ngFor="let protocole of demande.protocoles">
+            <mat-list-item *ngFor="let protocole of demande?.protocoles">
                 <mat-icon color="warn" mat-list-icon>import_export</mat-icon>
                 <h4 mat-line>{{protocole.nom}}</h4>
             </mat-list-item>

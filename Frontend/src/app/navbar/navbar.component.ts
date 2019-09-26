@@ -30,4 +30,13 @@ export class NavbarComponent implements OnInit {
       }
     )
   }
+
+  isSecurite() {
+    let role = this.authService.isSecurite();
+    return role;
+  }
+  isAdmin() {
+    let role = this.authService.isAdmin();
+    return role;
+  }
 }

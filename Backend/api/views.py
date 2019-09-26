@@ -14,8 +14,18 @@ from rest_framework import status
 from rest_framework.exceptions import PermissionDenied
 from django.utils import timezone
 from django.db.models import Q
+from django.core.mail import send_mail
 
 STATUS = Status()
+
+# send_mail(
+#     subject='Invitation SmartMeeting',
+#     message=strip_tags(html_message),
+#     from_email='mdiakhate1297@gmail.com',
+#     recipient_list=[
+#         email for email in emails if email != request.user.email],
+#     html_message=html_message
+# )
 
 
 class CustomAuthToken(ObtainAuthToken):
@@ -34,6 +44,11 @@ class CustomAuthToken(ObtainAuthToken):
             'is_securite': user.profil.is_securite,
             'is_admin': user.profil.is_admin,
         })
+
+
+class NotificationViewSet(ModelViewSet):
+    queryset = Notification.objects.all()
+    serializer_class = NotificationSerializer
 
 
 class UserViewSet(ModelViewSet):
@@ -68,6 +83,34 @@ class DemandeDetail(RetrieveAPIView):
     lookup_field = "id"
 
 
+# class DemandeCreate(CreateAPIView):
+#     queryset = Demande.objects.all()
+#     serializer_class = DemandeCreateSerializer
+
+#     def post(self, request):
+#         print('---------------------------------------------------------------------')
+#         print(request.data)
+#         print('---------------------------------------------------------------------')
+#         serializer =  DemandeCreateSerializer(data=request.data)
+#         demande = Demande()
+#         if serializer.is_valid():
+
+#             print(demande)
+#             user = request.user
+#             demande.demandeur = user
+#             demande.validateur_hierarchique = user.profil.superieur
+#             demande.status_demande = STATUS.attente_hierarchie
+#             demande.save()
+#             serializer.save()
+#             send_mail(
+#                 subject='Nouvelle demande VPN',
+#                 message='Vous avez une nouvelle demande',
+#                 from_email=demande.demandeur.email,
+#                 recipient_list=[user.profil.superieur.email],
+#             )
+#             return Response(serializer.data, status= status.HTTP_201_CREATED)
+
+
 class DemandeCreate(CreateAPIView):
     queryset = Demande.objects.all()
     serializer_class = DemandeCreateSerializer
@@ -75,10 +118,18 @@ class DemandeCreate(CreateAPIView):
     def perform_create(self, serializer):
         demande = serializer.validated_data
         user = serializer.context['request'].user
+        print("Utilisateur : "+str(user))
         demande['demandeur'] = user
         demande['validateur_hierarchique'] = user.profil.superieur
         demande['status_demande'] = STATUS.attente_hierarchie
-        return super().perform_create(serializer)
+        super().perform_create(serializer)
+        send_mail(
+            subject='Nouvelle demande VPN',
+            message='Vous avez une nouvelle demande',
+            from_email='',
+            recipient_list=[user.profil.superieur.email],
+        )
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 
 class DemandesEnAttenteUser(ListAPIView):
@@ -86,7 +137,6 @@ class DemandesEnAttenteUser(ListAPIView):
 
     def get_queryset(self):
         username = self.kwargs['username']
-        # , date_expiration__gt=timezone.now())
         demandes = Demande.objects.filter(
             demandeur__username=username, validation_admin=False)
         return demandes
@@ -131,6 +181,21 @@ class ValidationHierarchie(RetrieveUpdateAPIView):
             demande.validation_hierarchique = True
             demande.status_demande = STATUS.attente_securite
             demande.save()
+            emails = []
+            for validateur in ValidateurSecurite.objects.all():
+                emails.append(validateur.user.email)
+            send_mail(
+                subject='Validation de votre superieur',
+                message='Votre superieur vient de valider votre demande',
+                from_email='',
+                recipient_list=[demande.demandeur.email],
+            )
+            send_mail(
+                subject='Nouvelle demande VPN',
+                message='Vous avez une nouvelle demande à valider',
+                from_email='',
+                recipient_list=emails,
+            )
 
 
 class ValidationSecurite(RetrieveUpdateAPIView):
@@ -143,6 +208,7 @@ class ValidationSecurite(RetrieveUpdateAPIView):
         user = self.request.user
         print('-------------------------------')
         print(user)
+        hasattr(user, 'profil_securite')
         print('-------------------------------')
 
         if(hasattr(user, 'profil_securite')):
@@ -154,6 +220,21 @@ class ValidationSecurite(RetrieveUpdateAPIView):
                 demande.validateur_securite = validateur_securite
                 demande.status_demande = STATUS.attente_admin
                 demande.save()
+                emails = []
+                for admin in Admin.objects.all():
+                    emails.append(admin.user.email)
+                send_mail(
+                    subject='Validation de la sécurité',
+                    message='La sécurité vient de valider votre demande',
+                    from_email='',
+                    recipient_list=[demande.demandeur.email],
+                )
+                send_mail(
+                    subject='Nouvelle demande VPN',
+                    message='Vous avez une nouvelle demande à configurer',
+                    from_email='',
+                    recipient_list=emails,
+                )
         else:
             raise PermissionDenied(
                 {"message": "Vous n'avez pas le droit de faire cette validation. Elle est reservée à la sécurité."})
@@ -167,12 +248,23 @@ class ValidationAdmin(RetrieveUpdateAPIView):
     def perform_update(self, serializer):
         demande = Demande.objects.get(pk=serializer.data["id"])
         user = self.request.user
+
+        print('------------------------------------------------')
+        print(user)
+        print(hasattr(user, 'profil_admin'))
+        print('------------------------------------------------')
+
         if(hasattr(user, 'profil_admin')):
-            validateur_admin = user.profil_admin
 
             if(demande.validation_securite == True and demande.status_demande == STATUS.attente_admin):
                 demande.validation_admin = True
                 demande.status_demande = STATUS.valide
+                send_mail(
+                    subject="Configuration demande",
+                    message="L'admin vient de configurer votre demande, veuillez consulter agassi pour voir les applications disponibles.",
+                    from_email='',
+                    recipient_list=[demande.demandeur.email],
+                )
                 demande.save()
         else:
             raise PermissionDenied(
@@ -189,6 +281,12 @@ class RefusHierarchie(RetrieveUpdateAPIView):
         demande.validation_hierarchique = False
         demande.status_demande = STATUS.refus_hierarchie
         demande.save()
+        send_mail(
+            subject="Refus supérieur",
+            message="Votre supérieur vient de refuser votre demande",
+            from_email='',
+            recipient_list=[demande.demandeur.email],
+        )
 
 
 class RefusSecurite(RetrieveUpdateAPIView):
@@ -202,6 +300,12 @@ class RefusSecurite(RetrieveUpdateAPIView):
             demande.validation_securite = False
             demande.status_demande = STATUS.refus_securite
             demande.save()
+            send_mail(
+                subject='Refus de la sécurité',
+                message='La sécurité vient de refuser votre demande',
+                from_email='',
+                recipient_list=[demande.demandeur.email],
+            )
 
 
 class DemandeAccepteesList(ListAPIView):
@@ -239,8 +343,8 @@ class DemandesCloturees(ListAPIView):
     def get_queryset(self):
         demandeur = self.kwargs['username']
         demandes = Demande.objects.filter(demandeur__profil__user__username=demandeur).filter(Q(status_demande=STATUS.valide,
-                                          validation_hierarchique=True, validation_securite=True, validation_admin=True) |
-                                          Q(status_demande=STATUS.refus_hierarchie) | Q(status_demande=STATUS.refus_securite)).order_by("-date")
+                                                                                                validation_hierarchique=True, validation_securite=True, validation_admin=True) |
+                                                                                              Q(status_demande=STATUS.refus_hierarchie) | Q(status_demande=STATUS.refus_securite)).order_by("-date")
         return demandes
 
 
@@ -255,3 +359,9 @@ class Expiration(RetrieveUpdateAPIView):
         demande.validation_admin = False
         demande.date_expiration = datetime.now()
         demande.save()
+        send_mail(
+            subject="Expiration demande",
+            message="Votre demande vient d'expirer",
+            from_email='',
+            recipient_list=[demande.demandeur.email],
+        )

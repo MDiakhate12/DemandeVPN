@@ -27,11 +27,12 @@ export class ValidationSecuriteComponent implements OnInit {
   demandes: Demande[] = new Array<Demande>();
   username: string;
   user: User = new User();
+  loading: boolean = false;
 
   constructor(private demandeService: DemandeService, private genericService: GenericService, private router: ActivatedRoute, public dialog: MatDialog, public snackbar: MatSnackBar) { }
 
   ngOnInit() {
-    window.scroll(0,0);
+    window.scroll(0, 0);
     this.genericService.init(this);
     this.initDemandeEnAttenteSecurite();
     console.log(this.router);
@@ -52,30 +53,36 @@ export class ValidationSecuriteComponent implements OnInit {
   }
 
   initDemandeEnAttenteSecurite() {
+    this.loading = true;
     this.demandeService.getDemandeEnAttenteSecuriteOf().subscribe(response => {
       this.demandes = response.body;
       console.log(response.body);
+      this.loading = false;
     }
     );
   }
 
   validerDemande(id: number) {
-      this.demandeService.validateDemandeWithId(id).subscribe(
-        _ => {
-          this.initDemandeEnAttenteSecurite();
-        },
-        error => {
-          console.error(error);
-        }
-      )
-    }
+    this.loading = true;
+    this.demandeService.validateDemandeWithId(id).subscribe(
+      _ => {
+        this.initDemandeEnAttenteSecurite();
+        this.openSnackbar("Demande validée avec succés! Envoi immédiat à l'admin réseau", 'OK', { duration: 3000, verticalPosition: 'top' });
+      },
+      error => {
+        console.error(error);
+      }
+    )
+  }
 
 
   refuserDemande(id: number) {
+    this.loading = true;
     this.demandeService.declineDemandeWithId(id).subscribe(
       data => {
         this.initDemandeEnAttenteSecurite();
         console.log(data);
+        this.openSnackbar("Demande refusée ! Le demandeur sera notifié du refus", 'OK', { duration: 3000, verticalPosition: 'top' });
       },
       error => {
         console.error(error);
@@ -89,11 +96,10 @@ export class ValidationSecuriteComponent implements OnInit {
       choice => {
         if (choice === 'true') {
           this.validerDemande(id);
-          this.openSnackbar("Demande validée avec succés! Envoi immédiat à l'admin réseau", 'OK', 3000);
         } else {
           return;
         }
-      }, 
+      },
       error => {
         this.openErrorDialog();
         console.log(error);
@@ -104,14 +110,13 @@ export class ValidationSecuriteComponent implements OnInit {
   openDenialDialog(id: number) {
     let dialogRef = this.dialog.open(DialogComponent);
     dialogRef.afterClosed().subscribe(choice => {
-        console.log(choice);
-        if (choice === 'true') {
-          this.refuserDemande(id);
-          this.openSnackbar("Demande refusée ! Le demandeur sera notifié du refus", 'OK', 3000);
-        } else {
-          return;
-        }
+      console.log(choice);
+      if (choice === 'true') {
+        this.refuserDemande(id);
+      } else {
+        return;
       }
+    }
     )
   }
 

@@ -1,6 +1,6 @@
-<mat-toolbar color="warn" id="navbar" class="sticky-top">
+<mat-toolbar color="warn" id="navbar" matRipple class="sticky-top">
     <mat-toolbar-row>
-        <a routerLink="/accueil">
+        <a routerLink="/dashboard">
             <mat-icon class="example-icon">home</mat-icon>
             <span class="align">VPN à la demande</span>
         </a>
@@ -10,15 +10,21 @@
             <span class="align">Dashboard</span>
         </a>
 
-        <a routerLink="/nouvelle-demande">
+        <a *ngIf="isSecurite() === false && isAdmin() === false" routerLink="/nouvelle-demande">
             <mat-icon class="example-icon">post_add</mat-icon>
             <span class="align">Nouvelle demande</span>
         </a>
 
         <span class="example-spacer"></span>
+        
+        <button class="initial" mat-mini-fab>
+            {{ user.username[0] | uppercase }}
+        </button>
+        
         <button mat-button [matMenuTriggerFor]="menu">
             <mat-icon>dehaze</mat-icon>
         </button>
+        
         <mat-menu #menu>
             <button mat-menu-item routerLink="/profil">
                 <a >

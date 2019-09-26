@@ -1,7 +1,9 @@
+
+
 <mat-card [(ngClass)]="cardClasses" class ="detail-card">
     <mat-card-header>
         <mat-card-title>
-            <mat-card-title>{{ demande.objet }}</mat-card-title>
+            <mat-card-title>{{ demande?.objet }}</mat-card-title>
         </mat-card-title>
     </mat-card-header>
 
@@ -14,7 +16,7 @@
             <mat-list-item>
 
                 <mat-icon color="warn" mat-list-icon>hourglass_full</mat-icon>
-                <h4 mat-line>Status : {{ demande.status_demande }}</h4>
+                <h4 mat-line>Status : {{ demande?.status_demande }}</h4>
                 <mat-checkbox disabled [checked]="checked"></mat-checkbox>
 
             </mat-list-item>
@@ -25,12 +27,12 @@
 
             <mat-list-item>
                 <mat-icon color="warn" mat-list-icon>account_box</mat-icon>
-                <h4 mat-line>Validateur hierarchique : {{ demande.validateur_hierarchique.username }}</h4>
+                <h4 mat-line>Validateur hierarchique : {{ demande?.validateur_hierarchique.username }}</h4>
             </mat-list-item>
 
-            <mat-list-item>
+            <mat-list-item *ngIf="demande?.validation_securite == true">
                 <mat-icon color="warn" mat-list-icon>account_box</mat-icon>
-                <h4 mat-line>Validateur sécurité : {{ demande.validateur_securite.user.username }}</h4>
+                <h4 mat-line>Validateur sécurité : {{ demande?.validateur_securite.user.username }}</h4>
             </mat-list-item>
 
 
@@ -41,26 +43,26 @@
             <mat-list-item> 
                 <mat-icon color="warn" mat-list-icon>trending_up</mat-icon>
                 <mat-progress-bar *ngIf="progress <= 100" mat-line color="warn" mode="determinate" [value]="progress"></mat-progress-bar>
-                <mat-progress-bar *ngIf="demande.status_demande === statuses[4]" mat-line color="warn" mode="determinate" [value]="progress"></mat-progress-bar>
+                <mat-progress-bar *ngIf="demande?.status_demande === statuses[4]" mat-line color="warn" mode="determinate" [value]="progress"></mat-progress-bar>
             </mat-list-item>
 
             <mat-list-item>
                 <mat-icon color="warn">how_to_reg</mat-icon>
                 <mat-slide-toggle labelPosition="before" [style.color]="color"
-                    [checked]="demande.validation_hierarchique" disabled>Supérieur
+                    [checked]="demande?.validation_hierarchique" disabled>Supérieur
                 </mat-slide-toggle>
             </mat-list-item>
 
             <mat-list-item>
                 <mat-icon color="warn">security</mat-icon>
-                <mat-slide-toggle labelPosition="before" [style.color]="color" [checked]="demande.validation_securite"
+                <mat-slide-toggle labelPosition="before" [style.color]="color" [checked]="demande?.validation_securite"
                     disabled>Sécurité
                 </mat-slide-toggle>
             </mat-list-item>
 
             <mat-list-item>
                 <mat-icon color="warn">rss_feed</mat-icon>
-                <mat-slide-toggle labelPosition="before" [style.color]="color" [checked]="demande.validation_admin"
+                <mat-slide-toggle labelPosition="before" [style.color]="color" [checked]="demande?.validation_admin"
                     disabled>Réseau VPN
                 </mat-slide-toggle>
             </mat-list-item>
@@ -71,24 +73,24 @@
 
             <mat-list-item>
                 <mat-icon color="warn" mat-list-icon>calendar_today</mat-icon>
-                <h4 mat-line>Date de validation hierarchique : {{ demande.date_expiration | date: 'full' }}</h4>
+                <h4 mat-line>Date de validation hierarchique : {{ demande?.date_expiration | date: 'full' }}</h4>
             </mat-list-item>
 
             <mat-list-item>
                 <mat-icon color="warn" mat-list-icon>calendar_today</mat-icon>
-                <h4 mat-line>Date de validation sécurité : {{ demande.date_expiration | date: 'full' }}</h4>
+                <h4 mat-line>Date de validation sécurité : {{ demande?.date_expiration | date: 'full' }}</h4>
             </mat-list-item>
             <mat-list-item>
                 <mat-icon color="warn" mat-list-icon>calendar_today</mat-icon>
-                <h4 mat-line>Date d'obtention du VPN : {{ demande.date_expiration | date: 'full' }}</h4>
+                <h4 mat-line>Date d'obtention du VPN : {{ demande?.date_expiration | date: 'full' }}</h4>
             </mat-list-item>
             <mat-list-item>
                 <mat-icon color="warn" mat-list-icon>calendar_today</mat-icon>
-                <h4 mat-line>Date d'expiration accordée : {{ demande.date_expiration | date: 'full' }}</h4>
+                <h4 mat-line>Date d'expiration accordée : {{ demande?.date_expiration | date: 'full' }}</h4>
             </mat-list-item>
             <mat-list-item>
                 <mat-icon color="warn" mat-list-icon>calendar_today</mat-icon>
-                <h4 mat-line>Date de fermeture aprés expiration : {{ demande.date_expiration | date: 'full' }}</h4>
+                <h4 mat-line>Date de fermeture aprés expiration : {{ demande?.date_expiration | date: 'full' }}</h4>
             </mat-list-item>
 
             <mat-divider></mat-divider>

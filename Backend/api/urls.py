@@ -2,23 +2,20 @@ from django.contrib import admin
 from django.urls import path, include
 from .views import *
 from rest_framework import routers
-import notifications.urls
 
 router = routers.DefaultRouter()
 router.register('users', UserViewSet)
 router.register('protocoles', ProtocoleList)
 router.register('applications', ApplicationList)
+router.register('notifications', NotificationViewSet)
 
 urlpatterns = [
     path('', include(router.urls)),
-    path('inbox/notifications/', include(notifications.urls, namespace='notifications')),
-
     # Login
 
     path("login/", CustomAuthToken.as_view()),
 
     path('', include("rest_auth.urls")),
-
 
     path('demandes/', DemandeList.as_view()),
     

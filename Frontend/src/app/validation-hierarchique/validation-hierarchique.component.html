@@ -1,5 +1,6 @@
 <app-navbar></app-navbar>
-<div class="container-fluid" id="validation-hierarchique" hideToggle>
+<app-loading *ngIf="loading"></app-loading>
+<div  matRipple matRippleRadius="100" class="container-fluid" id="validation-hierarchique" hideToggle>
     <div class="col-md-8 m-auto">
         <mat-accordion>
             <mat-expansion-panel class="animated fadeInDown" [expanded]="step === i" (opened)="setStep(i)"

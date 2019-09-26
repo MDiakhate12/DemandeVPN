@@ -33,7 +33,6 @@ const routes: Routes = [
   {path: 'demandes/historique-securite', component: HistoriqueSecuriteComponent, canActivate: [AuthGuard, SecuriteGuard]},
   
   {path: 'demandes/historique/:username', component: HistoriqueComponent, canActivate: [AuthGuard]},
-  {path: 'demandes/notifications/:username', component: LoginComponent, canActivate: [AuthGuard]}
 ];
 
 @NgModule({

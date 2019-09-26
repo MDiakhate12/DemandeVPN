@@ -12,7 +12,7 @@ export class DashboardComponent  implements OnInit {
 
   user: User = new User();
 
-  constructor(private authService: AuthService, private router: Router) { }
+  constructor(private authService: AuthService) { }
 
   ngOnInit() {
     this.authService.getLoggedUser().subscribe(
@@ -22,12 +22,10 @@ export class DashboardComponent  implements OnInit {
 
   isSecurite() {
     let role = this.authService.isSecurite();
-    console.log("securite from dashboard : ", role);
     return role;
   }
   isAdmin() {
     let role = this.authService.isAdmin();
-    console.log("admin from dashboard : ", role);
     return role;
   }
 }

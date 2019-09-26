@@ -28,13 +28,14 @@ export class LoginComponent implements OnInit {
   onLogin(){
     console.log(this.input);
     this.authService.login(this.input)
-    .subscribe(response => {
+    .subscribe(
+      async response => {
       console.log(response);
       for(let [key, value] of Object.entries(response)) {
       localStorage.setItem(key, (value as string));
+      await this.router.navigate(['/dashboard']);
     }
 
-      this.router.navigate(['/dashboard']);
     },
     error =>{
       console.log(this.authService);

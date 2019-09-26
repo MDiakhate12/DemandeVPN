@@ -15,6 +15,7 @@ export class HistoriqueComponent implements OnInit {
 
   demandesAcceptees: Demande[] = [];
   demandesRefusees: Demande[] = [];
+  demandesCloturees: Demande[] = [];
 
   constructor(private demandeService: DemandeService, private route: ActivatedRoute, private dialog: MatDialog) { }
 
@@ -23,6 +24,7 @@ export class HistoriqueComponent implements OnInit {
     let username = this.route.snapshot.paramMap.get('username');
     this.initDemandesAcceptees(username);
     this.initDemandesRefusees(username);
+    this.initDemandesCloturees(username);
   }
 
   initDemandesAcceptees(username: string) {
@@ -41,6 +43,17 @@ export class HistoriqueComponent implements OnInit {
     this.demandeService.getDemandeRefuseesOf(username).subscribe(
       responses => {
         this.demandesRefusees = responses.body
+      },
+      error => {
+        console.error(error);
+      }
+    )
+  }
+
+  initDemandesCloturees(username: string) {
+    this.demandeService.getDemandeClotureesOf(username).subscribe(
+      responses => {
+        this.demandesCloturees = responses.body
       },
       error => {
         console.error(error);

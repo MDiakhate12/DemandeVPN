@@ -1,3 +1,7 @@
 .list-group:hover {
     background-color: #f16e00;
 }
+
+.example-spacer {
+    flex: 1 1 auto;
+  }

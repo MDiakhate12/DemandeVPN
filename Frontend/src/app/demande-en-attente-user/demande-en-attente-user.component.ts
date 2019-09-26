@@ -16,6 +16,7 @@ import { DialogDemandeDetailComponent } from '../dialog-demande-detail/dialog-de
 export class DemandeEnAttenteUserComponent implements OnInit {
   user: User;
   demandes: Demande[] = [];
+  loading:boolean = false;
 
   constructor(private dialog: MatDialog, private authService: AuthService, private router: Router, private route: ActivatedRoute, private demandeService: DemandeService) { 
     this.user = new User
@@ -31,9 +32,11 @@ export class DemandeEnAttenteUserComponent implements OnInit {
   }
 
   initUser() {
+    this.loading = true;
     this.authService.getLoggedUser().subscribe(
       user => {
-        this.user = user
+        this.user = user;
+        this.loading = false;
         console.log(this.user)
       }
     )

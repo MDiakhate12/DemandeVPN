@@ -57,8 +57,9 @@ export class DemandeValidationDetailComponent implements OnInit {
   getDemandeWithId(id) {
     this.demandeService.getDemandeWithId(id).subscribe(
       async response => {
+        let demandeBody = Promise.resolve(response.body);
         // this.demande = this.demande.deserialize(response);
-        this.demande = response.body
+        this.demande = await demandeBody;
         let demande = Promise.resolve(this.demande);
         console.log("demande : ", this.demande);
         console.log("demandePromise : ", demande);

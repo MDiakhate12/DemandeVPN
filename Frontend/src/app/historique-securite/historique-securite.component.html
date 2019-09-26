@@ -3,16 +3,19 @@
 <mat-list>
 
     <div class="mat-display-1" mat-header>Historique des demandes validées par la Sécurité</div>
+    <div class="animated fadeInLeft">
 
-    <mat-divider></mat-divider>
-
-    <div (click)="openHistoriqueDialog(demande)" matRipple class="list-group" *ngFor="let demande of demandesValideesSecurite">
-        <h3 mat-subheader>{{demande.objet}}</h3>
-        <mat-list-item>
-            <mat-icon mat-list-icon>account_box</mat-icon>
-            <h4 mat-line>Demandeur | {{demande.demandeur.username}}</h4>
-            <p mat-line>Date demande | {{demande.date | date: "fullDate"}} </p>
-        </mat-list-item>
         <mat-divider></mat-divider>
+
+        <div (click)="openHistoriqueDialog(demande)" matRipple class="list-group"
+            *ngFor="let demande of demandesValideesSecurite">
+            <h3 mat-subheader>{{demande.objet}}</h3>
+            <mat-list-item>
+                <mat-icon mat-list-icon>account_box</mat-icon>
+                <h4 mat-line>Demandeur | {{demande.demandeur.username}}</h4>
+                <p mat-line>Date demande | {{demande.date | date: "fullDate"}} </p>
+            </mat-list-item>
+            <mat-divider></mat-divider>
+        </div>
     </div>
 </mat-list>
