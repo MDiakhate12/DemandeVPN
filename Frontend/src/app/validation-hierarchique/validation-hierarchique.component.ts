@@ -80,23 +80,30 @@ export class ValidationHierarchiqueComponent implements OnInit {
     );
   }
 
-  openDialog(id: number, action) {
+  openValidationDialog(id: number) {
     let dialogRef = this.dialog.open(DialogComponent);
-    dialogRef.afterClosed().subscribe(
-      choice => {
-
-        if (action.name === this.validerDemande.name) {
-          if (choice) {
-            this.validerDemande(id);
-            this.openSnackbar("Demande validée avec succés! Envoi immédiat à l'admin sécurité", 'OK', 3000);
-          }
-        } else if (action.name === this.refuserDemande.name) {
-          if (choice) {
-            this.refuserDemande(id);
-            this.openSnackbar("Demande refusée! Le demandeur sera notifié du refus", 'OK', 3000);
-          }
+    dialogRef.afterClosed().subscribe(choice => {
+        console.log(choice);
+        if (choice === 'true') {
+          this.validerDemande(id);
+          this.openSnackbar("Demande validée avec succés! Envoi immédiat à l'admin sécurité", 'OK', 3000);
+        } else {
+          return;
         }
+      }
+    )
+  }
 
+  openDenialDialog(id: number) {
+    let dialogRef = this.dialog.open(DialogComponent);
+    dialogRef.afterClosed().subscribe(choice => {
+        console.log(choice);
+        if (choice === 'true') {
+          this.refuserDemande(id);
+          this.openSnackbar("Demande refusée ! Le demandeur sera notifié du refus", 'OK', 3000);
+        } else {
+          return;
+        }
       }
     )
   }

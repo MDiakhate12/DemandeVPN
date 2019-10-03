@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { LoginService } from '../services/login.service';
 import { Router } from '@angular/router';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: '#app-login',
@@ -12,9 +13,9 @@ export class LoginComponent implements OnInit {
   key: String;
   message: String;
 
-  constructor(private _loginService:LoginService,
+  constructor(private authService:AuthService,
               private router: Router) {
-                if(this._loginService.loggedIn()){
+                if(this.authService.isLoggedIn()){
                   this.router.navigate(['/dashboard'])
                 }
               }
@@ -28,20 +29,25 @@ export class LoginComponent implements OnInit {
     
   }
   onLogin(){
-    this._loginService.loginUser(this.input)
+    console.log(this.input);
+    this.authService.login(this.input)
     .subscribe(
-      response => {
-        this.key=response;
-        console.log(response);
-        this.router.navigate(['/dashboard']);
-        localStorage.setItem("key",response.key);
-        
+      async response => {
+      console.log(response);
+      for(let [key, value] of Object.entries(response)) {
+      localStorage.setItem(key, (value as string));
+      await this.router.navigate(['/dashboard']).then(() => {
+        window.location.reload();
+      });
+    }
+
     },
     error =>{
-      this.message="Les informations fournies sont incorrectes.";
-      // console.log('error',error);
+      console.log(this.authService);
+      console.log('error',error);
+      console.log("Wrong credentials !");
     } 
     );
   };
- 
+
 }

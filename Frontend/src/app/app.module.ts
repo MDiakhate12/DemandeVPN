@@ -19,10 +19,11 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { ValidationSecuriteComponent } from './validation-securite/validation-securite.component';
 import { ValidationAdminComponent } from './validation-admin/validation-admin.component';
 import { DialogComponent } from './dialog/dialog.component';
+import { DialogErrorComponent } from './dialog-error/dialog-error.component';
+import { DemandeEnAttenteUserComponent } from './demande-en-attente-user/demande-en-attente-user.component';
+import { DialogDemandeDetailComponent } from './dialog-demande-detail/dialog-demande-detail.component';
+import { HistoriqueComponent } from './historique/historique.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
-import { LoginService } from './services/login.service';
-import { AuthService } from './services/auth.service';
-import { AuthGuard } from './auth/auth.guard';
 
 @NgModule({
   declarations: [
@@ -38,6 +39,10 @@ import { AuthGuard } from './auth/auth.guard';
     ValidationSecuriteComponent,
     ValidationAdminComponent,
     DialogComponent,
+    DialogErrorComponent,
+    DemandeEnAttenteUserComponent,
+    DialogDemandeDetailComponent,
+    HistoriqueComponent,
     PageNotFoundComponent
   ],
   imports: [
@@ -46,10 +51,10 @@ import { AuthGuard } from './auth/auth.guard';
     BrowserAnimationsModule,
     MaterialModule,
     FormsModule,
-    HttpClientModule
+    HttpClientModule,
   ],
-  entryComponents: [DialogComponent],
-  providers: [DemandeService, LoginService, AuthService, AuthGuard],
+  entryComponents: [DialogComponent, DialogDemandeDetailComponent, DialogErrorComponent],
+  providers: [DemandeService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

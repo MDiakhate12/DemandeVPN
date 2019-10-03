@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { DemandeService } from '../services/demande.service';
 import { Demande } from '../models/demande.model';
 import { User } from '../models/user.model';
@@ -18,26 +18,45 @@ export class DemandeFormDetailComponent implements OnInit {
   protocoles: Protocole[] = [];;
   applications: Application[] = [];;
   demande: Demande = new Demande();
-  "desactiverBoutonModif": boolean;
+
+  @Input() id; ;
+  cardClasses = { }; 
 
   constructor(private demandeService: DemandeService, private genericService: GenericService, private router: Router, private route: ActivatedRoute) { }
 
   ngOnInit() {
     this.genericService.init(this);
      let id = this.route.snapshot.paramMap.get('id');
-     this.getDemandeWithId(id);
-  } 
+
+     if(id) {
+      this.getDemandeWithId(id);
+      this.cardClasses = {'col-sm-6': id};
+    } else {
+      this.getDemandeWithId(this.id);
+      this.cardClasses = {
+        'col-sm-12': !id,
+    };
+     }
+     
+  }
 
   getDemandeWithId(id) {
     this.demandeService.getDemandeWithId(id).subscribe(
       response => {
         // this.demande = this.demande.deserialize(data);
         this.demande = response.body;
-        console.log("------------------------------Visulaize---------")
         console.log(this.demande);
-        console.log(this.demande.demandeur);
-        console.log("------------------------------Visulaize---------")
       }
     );
+  }
+  annulerDemande(id){
+    this.demandeService.cancelDemandwith(id).subscribe(
+      response => {
+        console.log(response);
+      },
+      error => {
+        console.error(error);
+      }
+    )
   }
 }

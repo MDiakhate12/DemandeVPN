@@ -27,6 +27,8 @@ class Profil(models.Model):
         User, on_delete=models.SET_NULL, null=True, related_name='agents')
     telephone = models.IntegerField(null=True, blank=True)
     departement = models.CharField(max_length=100, choices=DEPARTEMENTS)
+    is_securite = models.BooleanField(default=False)
+    is_admin = models.BooleanField(default=False)
 
     def __str__(self):
         return self.user.username

@@ -12,6 +12,7 @@ urlpatterns = [
     path('', include(router.urls)),
     
     #Login
+    path('login/', views.CustomAuthToken.as_view()),
     path('', include("rest_auth.urls")),
 
     path('demandes/', views.DemandeList.as_view()),
@@ -38,6 +39,8 @@ urlpatterns = [
     #Expiration
     path('demandes/expiration-admin/<int:id>/', views.Expiration.as_view(), name="expiration-demande"),
     
-    path('demandes/validees/securite', views.DemandesValideesSecurite.as_view(), name="demandes-validees-securite")
+    path('demandes/validees/securite', views.DemandesValideesSecurite.as_view(), name="demandes-validees-securite"),
+    path('demandes/annuler-demande/<int:id>/', views.AnnulerDemande.as_view(),name="annuler-demande")
+
 
 ]

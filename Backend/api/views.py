@@ -1,14 +1,42 @@
+from rest_framework.authtoken.models import Token
+from rest_framework.authtoken.views import ObtainAuthToken
 from django.shortcuts import render, get_object_or_404, redirect
-from rest_framework.generics import UpdateAPIView, RetrieveAPIView, CreateAPIView, ListAPIView, RetrieveUpdateAPIView
-from api.serializers import *   
+from rest_framework.generics import UpdateAPIView, RetrieveAPIView, CreateAPIView, ListAPIView, RetrieveUpdateAPIView, GenericAPIView, DestroyAPIView
+from api.serializers import *
 from api.models import *
 from rest_framework.response import Response
 from .constants import *
 from rest_framework.viewsets import ModelViewSet
 from django.contrib.auth.models import User
+from datetime import datetime
+from rest_framework.decorators import api_view, authentication_classes, permission_classes
+from rest_framework import status
+from rest_framework.exceptions import PermissionDenied
+from django.utils import timezone
 from django.db.models import Q
+from django.core.mail import send_mail
 
 STATUS = Status()
+
+class CustomAuthToken(ObtainAuthToken):
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.serializer_class(data=request.data,
+                                           context={'request': request})
+        serializer.is_valid(raise_exception=True)
+        user = serializer.validated_data['user']
+        token, created = Token.objects.get_or_create(user=user)
+        print('---------------------------------------------------')
+        print(user.is_authenticated)
+        print(user)
+        print('---------------------------------------------------')
+        return Response({
+            'token': token.key,
+            'id': user.pk,
+            'username': user.username,
+            'is_securite': user.profil.is_securite,
+            'is_admin': user.profil.is_admin,
+        })
 
 class UserViewSet(ModelViewSet):
     queryset = User.objects.all()
@@ -42,7 +70,10 @@ class DemandeRefuseesList(ListAPIView):
         demandes = Demande.objects.filter( Q(status_demande=STATUS.refus_hierarchie) | Q(status_demande=STATUS.refus_securite),demandeur__profil__user__username=demandeur).order_by("-date")
         return demandes
 
-    
+class AnnulerDemande(DestroyAPIView):
+    queryset = Demande.objects.all()
+    serializer_class = DemandeCreateSerializer
+    lookup_field = 'id'
     
 
 class DemandeUpdate(UpdateAPIView):

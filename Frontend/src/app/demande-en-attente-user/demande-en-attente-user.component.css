@@ -1,0 +1,18 @@
+* {
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+td:hover {
+    background-color: #f16e00;
+    cursor: pointer;
+}
+table {
+    box-shadow: 0 0 20px 2px;
+}
+
+thead {
+    color: white;
+    background-color: #f16e00;
+    font-size: 1.2rem;
+    font-weight: lighter;
+}

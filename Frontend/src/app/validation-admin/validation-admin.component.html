@@ -13,6 +13,11 @@
                     <mat-list>
                         <mat-list-item>
                             <mat-icon color="warn" mat-list-icon>account_box</mat-icon>
+                            <h4 mat-line>Demandeur : {{ demande.demandeur.username }}</h4>
+                        </mat-list-item>
+
+                        <mat-list-item>
+                            <mat-icon color="warn" mat-list-icon>account_box</mat-icon>
                             <h4 mat-line>Bénéficiaire : {{ demande.beneficiaire.username }}</h4>
                         </mat-list-item>
 
@@ -57,14 +62,14 @@
                     </button>
                     <button mat-button color="primary" (click)="nextStep()">Next<mat-icon>navigate_next</mat-icon>
                     </button>
-                    <button mat-button class="btn btn-danger" (click)="openDialog(demande.id, expirerDemande)">
-                            <mat-icon>not_interested</mat-icon> Faire expirer
-                        </button>
-                        <button mat-button class="btn btn-success" (click)="openDialog(demande.id, validerDemande)">
-                            <mat-icon>done</mat-icon> Valider demande
-                        </button>
+                    <button mat-button class="btn btn-danger" (click)="openDenialDialog(demande.id)">
+                        <mat-icon>not_interested</mat-icon> Refuser demande
+                    </button>
+                    <button mat-button class="btn btn-success" (click)="openValidationDialog(demande.id)">
+                        <mat-icon>done</mat-icon> Valider demande
+                    </button>
                 </mat-action-row>
-                
+
             </mat-expansion-panel>
         </mat-accordion>
     </div>

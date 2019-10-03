@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { HttpHeaders, HttpClient } from '@angular/common/http';
-import { LoginService } from './login.service';
+import { AuthService } from './auth.service';
 
 @Injectable({
   providedIn: 'root'
@@ -12,27 +12,24 @@ export class GenericService {
 
   httpHeaders = new HttpHeaders({
     'Content-Type': 'application/json',
-    'Authorization': 'Token ' + this.loginService.getToken()
+    'Authorization': 'Token ' + this.authService.getToken()
   })
-
-
-  constructor(private http: HttpClient, private loginService: LoginService) { }
+  constructor(private http: HttpClient, private authService: AuthService) { }
 
   getAllApplication (): Observable<any> {    
     let url = "applications/";
     return this.http.get(this.baseURL + url, {headers: this.httpHeaders});
-
   }
 
   getAllProtocole(): Observable<any> {
     let url = "protocoles/";
-    return this.http.get<any>(this.baseURL + url, {headers: this.httpHeaders});
+    return this.http.get(this.baseURL + url, {headers: this.httpHeaders});
   }
 
   
-  getAllUser(): Observable<any[]>{
+  getAllUser(): Observable<any>{
     let url = "users/";
-    return this.http.get<any>(this.baseURL + url, {headers: this.httpHeaders});
+    return this.http.get(this.baseURL + url, {headers: this.httpHeaders});
   }
 
   init(target:any) {
@@ -41,27 +38,24 @@ export class GenericService {
       // mapAndPush(data, attribute)
 
       data => {
-        console.log(data.results);
-        data.results.map(user => {
+        data.map(user => {
           target.users.push(user);
         })
       }
     );
     target.genericService.getAllProtocole().subscribe(
       data => {
-        data.results.map(protocole => {
+        data.map(protocole => {
           target.protocoles.push(protocole);
         })
       }
     );
     target.genericService.getAllApplication().subscribe(
       data => {
-        data.results.map(application => {
+        data.map(application => {
           target.applications.push(application);
         })
       }
     );
   }
-
-
 }

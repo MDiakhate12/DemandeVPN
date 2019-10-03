@@ -1,0 +1,17 @@
+#titre1{
+    font-size: 150px;
+    color: orangered;
+    
+}
+#pageNotFound{
+    text-align: center;
+    font-weight: bolder;
+}
+.veu{
+    background-color: orangered;
+    width: 300px;
+    font-weight: bolder;
+    height: 60px;
+    color: white;
+    
+}

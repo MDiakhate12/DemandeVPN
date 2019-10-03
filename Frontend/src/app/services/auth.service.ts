@@ -1,25 +1,78 @@
 import { Injectable } from '@angular/core';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { User } from '../models/user.model';
 
-import { Observable, of } from 'rxjs';
-import { tap, delay } from 'rxjs/operators';
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
 export class AuthService {
-  isLoggedIn = false;
 
-  // store the URL so we can redirect after logging in
-  redirectUrl: string;
+  constructor(private http: HttpClient) { }
 
-  login(): Observable<boolean> {
-    return of(true).pipe(
-      delay(1000),
-      tap(val => this.isLoggedIn = true)
-    );
+  loginURL = "http://localhost:8080/api/login/";
+  logoutURL = "http://localhost:8080/api/logout/";
+  userURL = "http://localhost:8080/api/users/";
+
+  httpHeaders = new HttpHeaders({
+    'Content-Type': 'application/json',
+    'Authorization': 'Token ' + this.getToken()
+  })
+
+  redirectURL: string;
+
+
+  login(user): Observable<any> {
+    return this.http.post(this.loginURL, user);
   }
 
-  logout(): void {
-    this.isLoggedIn = false;
+  // login(): Observable<boolean> {
+  //   return of(true).pipe(
+  //     delay(1000),
+  //     tap(val => this.isLoggedIn = true)
+  //   );
+  // }
+  logout(): Observable<any> {
+    localStorage.removeItem("token");
+    return this.http.get(this.logoutURL);
   }
+
+  getUsername() {
+    return localStorage.getItem('username');
+  }
+
+  getToken() {
+    return localStorage.getItem('token');
+  }
+
+  getUserId() {
+    return localStorage.getItem('id');
+  }
+
+  isLoggedIn() {
+    return !!this.getToken();
+  }
+
+  getUserWithId(id: number): Observable<User> {
+    let url = this.userURL + id + "/";
+    return this.http.get<User>(url, { headers: this.httpHeaders });
+  }
+
+  getLoggedUser() {
+    let id = parseInt(this.getUserId());
+    return this.getUserWithId(id);
+  }
+
+  isSecurite() {
+    let role = localStorage.getItem('is_securite');
+    return true ? role === 'true' : false;
+  }
+
+  isAdmin() {
+    let role = localStorage.getItem('is_admin');
+    return true ? role === 'true' : false;
+  }
+
+
 }

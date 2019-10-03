@@ -8,6 +8,7 @@ import { GenericService } from '../services/generic.service';
 import { ActivatedRoute } from '@angular/router';
 import { MatDialog, MatSnackBar } from '@angular/material';
 import { DialogComponent } from '../dialog/dialog.component';
+import { DialogErrorComponent } from '../dialog-error/dialog-error.component';
 
 @Component({
   selector: 'app-validation-securite',
@@ -25,6 +26,7 @@ export class ValidationSecuriteComponent implements OnInit {
   applications: Application[] = [];;
   demandes: Demande[] = new Array<Demande>();
   username: string;
+  user: User = new User();
 
   constructor(private demandeService: DemandeService, private genericService: GenericService, private router: ActivatedRoute, public dialog: MatDialog, public snackbar: MatSnackBar) { }
 
@@ -51,15 +53,15 @@ export class ValidationSecuriteComponent implements OnInit {
   initDemandeEnAttenteSecurite() {
     this.demandeService.getDemandeEnAttenteSecuriteOf().subscribe(response => {
       this.demandes = response.body;
+      console.log(response.body);
     }
     );
   }
 
   validerDemande(id: number) {
       this.demandeService.validateDemandeWithId(id).subscribe(
-        data => {
+        _ => {
           this.initDemandeEnAttenteSecurite();
-          console.log(data);
         },
         error => {
           console.error(error);
@@ -80,27 +82,41 @@ export class ValidationSecuriteComponent implements OnInit {
     );
   }
 
-  openDialog(id: number, action) {
+  openValidationDialog(id: number) {
     let dialogRef = this.dialog.open(DialogComponent);
     dialogRef.afterClosed().subscribe(
       choice => {
-
-        if (action.name === this.validerDemande.name) {
-          if (choice) {
-            this.validerDemande(id);
-            this.openSnackbar("Demande validée avec succés! Envoi immédiat à l'admin réseau", 'OK', 3000);
-          }
-        } else if (action.name === this.refuserDemande.name) {
-          if (choice) {
-            this.refuserDemande(id);
-            this.openSnackbar("Demande refusée! Le demandeur sera notifié du refus", 'OK', 3000);
-          }
+        if (choice === 'true') {
+          this.validerDemande(id);
+          this.openSnackbar("Demande validée avec succés! Envoi immédiat à l'admin réseau", 'OK', 3000);
+        } else {
+          return;
         }
-
+      }, 
+      error => {
+        this.openErrorDialog();
+        console.log(error);
       }
     )
   }
 
+  openDenialDialog(id: number) {
+    let dialogRef = this.dialog.open(DialogComponent);
+    dialogRef.afterClosed().subscribe(choice => {
+        console.log(choice);
+        if (choice === 'true') {
+          this.refuserDemande(id);
+          this.openSnackbar("Demande refusée ! Le demandeur sera notifié du refus", 'OK', 3000);
+        } else {
+          return;
+        }
+      }
+    )
+  }
+
+  openErrorDialog() {
+    this.dialog.open(DialogErrorComponent);
+  }
   openSnackbar(message, dismiss, time) {
     this.snackbar.open(message, dismiss, { duration: time });
   }
