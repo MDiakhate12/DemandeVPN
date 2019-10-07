@@ -18,12 +18,18 @@
                 <h3 mat-subheader>{{demande.objet}}</h3>
                 <mat-list-item>
                     <mat-icon mat-list-icon>account_box</mat-icon>
+                    <h4 mat-line *ngIf="isAdmin">Demandeur | {{demande.demandeur.username}}</h4>
                     <h4 mat-line>Bénéficiaire | {{demande.beneficiaire.username}}</h4>
                     <p mat-line>Date demande | {{demande.date | date: "fullDate"}} </p>
                     <span class="example-spacer"></span>
-                    <button class="bg-success" *ngIf="demande.validation_admin; else refused" mat-mini-fab>
+                    <button class="bg-success" *ngIf="demande.validation_admin; else outdated" mat-mini-fab>
                         <mat-icon>done</mat-icon>
                     </button>
+                    <ng-template #outdated>
+                        <button class="bg-warning" *ngIf="demande.status_demande == expire; else refused" mat-mini-fab>
+                            <mat-icon>timer_off</mat-icon>
+                        </button>
+                    </ng-template>
                     <ng-template #refused>
                         <button class="bg-danger" mat-mini-fab>
                             <mat-icon>close</mat-icon>
@@ -52,6 +58,7 @@
                 <h3 mat-subheader>{{demande.objet}}</h3>
                 <mat-list-item>
                     <mat-icon mat-list-icon>account_box</mat-icon>
+                    <h4 mat-line *ngIf="isAdmin">Demandeur | {{demande.demandeur.username}}</h4>
                     <h4 mat-line>Bénéficiaire | {{demande.beneficiaire.username}}</h4>
                     <p mat-line>Date demande | {{demande.date | date: "fullDate"}} </p>
                 </mat-list-item>
@@ -77,6 +84,33 @@
                 <h3 mat-subheader>{{demande.objet}}</h3>
                 <mat-list-item>
                     <mat-icon mat-list-icon>account_box</mat-icon>
+                    <h4 mat-line *ngIf="isAdmin">Demandeur | {{demande.demandeur.username}}</h4>
+                    <h4 mat-line>Bénéficiaire | {{demande.beneficiaire.username}}</h4>
+                    <p mat-line>Date demande | {{demande.date | date: "fullDate"}} </p>
+                </mat-list-item>
+                <mat-divider></mat-divider>
+            </div>
+        </mat-list>
+    </mat-tab>
+
+    <mat-tab>
+        <ng-template mat-tab-label>
+            <mat-icon color="warn" class="example-tab-icon">timer_off</mat-icon>
+            Demande expirees
+        </ng-template>
+
+        <br>
+        <mat-list>
+
+            <div class="mat-display-1" mat-header>Historique des demandes expirées</div>
+
+            <mat-divider></mat-divider>
+            <div (click)="openDetailDialog(demande)" matRipple class="animated fadeInLeft list-group"
+                *ngFor="let demande of demandesExpirees">
+                <h3 mat-subheader>{{demande.objet}}</h3>
+                <mat-list-item>
+                    <mat-icon mat-list-icon>account_box</mat-icon>
+                    <h4 mat-line *ngIf="isAdmin">Demandeur | {{demande.demandeur.username}}</h4>
                     <h4 mat-line>Bénéficiaire | {{demande.beneficiaire.username}}</h4>
                     <p mat-line>Date demande | {{demande.date | date: "fullDate"}} </p>
                 </mat-list-item>

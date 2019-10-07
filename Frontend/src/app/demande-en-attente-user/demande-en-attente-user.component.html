@@ -1,6 +1,7 @@
 <app-navbar></app-navbar>
 
 <app-loading *ngIf="loading"></app-loading>
+
 <div id="app-demande-en-attente-user">
     <div class="container">
         <div class="row">
@@ -14,15 +15,14 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr *ngFor="let demande of demandes" (click)="openDetailDialog(demande.id)">
+                    <tr id="row-{{demande.id}}"  *ngFor="let demande of demandes; index as i" (click)="openDetailDialog(demande)">
                         <th scope="row">{{demande.id}}</th>
                         <td>{{demande.objet}}</td>
                         <td>{{demande.status_demande}}</td>
                         <td>{{demande.date | date: "fullDate" }}</td>
                     </tr>
                 </tbody>
-            </table> 
+            </table>
         </div>
     </div>
-
 </div>

@@ -8,6 +8,12 @@ import { GenericService } from '../services/generic.service';
 import { ActivatedRoute } from '@angular/router';
 import { MatDialog, MatSnackBar } from '@angular/material';
 import { DialogComponent } from '../dialog/dialog.component';
+import { DialogAdminCredentialFormComponent } from '../dialog-admin-credential-form/dialog-admin-credential-form.component';
+
+export interface Credentials {
+  username:string;
+  password:string;
+}
 
 @Component({
   selector: 'app-validation-admin',
@@ -25,6 +31,9 @@ export class ValidationAdminComponent implements OnInit {
   demandes: Demande[] = new Array<Demande>();
   username: string;
   loading:boolean = false;
+
+  vpnUsername:string;
+  vpnPassword:string;
 
   constructor(private demandeService: DemandeService, private genericService: GenericService, private router: ActivatedRoute, public dialog: MatDialog, public snackbar: MatSnackBar) { }
 
@@ -59,13 +68,13 @@ export class ValidationAdminComponent implements OnInit {
     );
   }
 
-  validerDemande(id: number) {
+  validerDemande(id: number, result: Credentials) {
     this.loading = true;
-    this.demandeService.configureDemandeWithId(id).subscribe(
+    this.demandeService.configureDemandeWithId(id, result).subscribe(
         data => {
           this.initDemandeEnAttenteAdmin();
           console.log(data);
-          this.openSnackbar("Demande validée avec succés! Envoi immédiat à l'admin sécurité", 'OK', { duration: 3000, verticalPosition: 'top' });
+          this.openSnackbar("Demande validée avec succés! Le demandeur sera notifié de la configuration !", 'OK', { duration: 3000, verticalPosition: 'top' });
         },
         error => {
           console.error(error);
@@ -89,12 +98,14 @@ export class ValidationAdminComponent implements OnInit {
   }
 
   openValidationDialog(id: number) {
-    let dialogRef = this.dialog.open(DialogComponent);
-    dialogRef.afterClosed().subscribe(choice => {
-        console.log(choice);
-        if (choice === 'true') {
-          this.validerDemande(id);
+    let dialogRef = this.dialog.open(DialogAdminCredentialFormComponent, { data: { username: this.vpnUsername, password: this.vpnPassword } });
+
+    dialogRef.afterClosed().subscribe(result => {
+        if (result.username && result.password) {
+          this.validerDemande(id, result);
+          console.info(result)
         } else {
+          console.log("Annulation")
           return;
         }
       }

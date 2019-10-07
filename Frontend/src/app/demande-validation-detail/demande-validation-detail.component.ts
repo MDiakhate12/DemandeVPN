@@ -5,7 +5,7 @@ import { User } from '../models/user.model';
 import { Protocole } from '../models/protocole.model';
 import { Application } from '../models/application.model';
 import { GenericService } from '../services/generic.service';
-import { Router, ActivatedRoute } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-demande-validation-detail',

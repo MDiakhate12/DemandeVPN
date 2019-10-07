@@ -6,6 +6,52 @@
     margin: 20px;
 }
 
+.detail-dialog {
+    margin: 20px;
+    box-sizing: border-box;
+    max-height: 650px;
+    max-width: 100%;
+}
+
 mat-tab > * {
+    overflow: hidden;
+}
+
+
+.dialog-tab-group {
+    max-width: 800px;
+    box-sizing: border-box;
+    overflow: hidden;
+}
+
+br.ng-star-inserted {
+    display: none;
+}
+
+br.ng-star-inserted {
+    display: none;
+}
+
+.mat-tab-body-content {
+    height: 100%;
+    overflow: hidden;
+}
+
+
+
+#mat-tab-content-0-1 #mat-tab-content-0-1 > div {
+    overflow: hidden;
+}
+
+
+.mat-tab-body-content, .ng-trigger, .ng-trigger-translateTab {
+    overflow: hidden;
+}
+
+#mat-tab-content-1-1 > div {
+    overflow: hidden;
+}
+
+.mat-tab-body-content.ng-trigger.ng-trigger-translateTab {
     overflow: hidden;
 }

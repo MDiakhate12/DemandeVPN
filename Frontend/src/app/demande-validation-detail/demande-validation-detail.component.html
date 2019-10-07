@@ -17,7 +17,6 @@
 
                 <mat-icon color="warn" mat-list-icon>hourglass_full</mat-icon>
                 <h4 mat-line>Status : {{ demande?.status_demande }}</h4>
-                <mat-checkbox disabled [checked]="checked"></mat-checkbox>
 
             </mat-list-item>
 
@@ -27,12 +26,12 @@
 
             <mat-list-item>
                 <mat-icon color="warn" mat-list-icon>account_box</mat-icon>
-                <h4 mat-line>Validateur hierarchique : {{ demande?.validateur_hierarchique.username }}</h4>
+                <h4 mat-line>Validateur hierarchique : {{ demande?.validateur_hierarchique?.username }}</h4>
             </mat-list-item>
 
             <mat-list-item *ngIf="demande?.validation_securite == true">
                 <mat-icon color="warn" mat-list-icon>account_box</mat-icon>
-                <h4 mat-line>Validateur sécurité : {{ demande?.validateur_securite.user.username }}</h4>
+                <h4 mat-line>Validateur sécurité : {{ demande?.validateur_securite?.user.username }}</h4>
             </mat-list-item>
 
 
@@ -40,10 +39,10 @@
 
             <h3 mat-subheader>Progression</h3>
 
-            <mat-list-item> 
+            <mat-list-item *ngIf="progress <= 100"> 
                 <mat-icon color="warn" mat-list-icon>trending_up</mat-icon>
                 <mat-progress-bar *ngIf="progress <= 100" mat-line color="warn" mode="determinate" [value]="progress"></mat-progress-bar>
-                <mat-progress-bar *ngIf="demande?.status_demande === statuses[4]" mat-line color="warn" mode="determinate" [value]="progress"></mat-progress-bar>
+                <h4 *ngIf="demande?.status_demande === statuses[4]" mat-line color="warn">Demande Expirée</h4>
             </mat-list-item>
 
             <mat-list-item>
@@ -67,7 +66,7 @@
                 </mat-slide-toggle>
             </mat-list-item>
 
-            <mat-divider></mat-divider>
+            <!-- <mat-divider></mat-divider>
 
             <h3 mat-subheader>Historisation</h3>
 
@@ -91,7 +90,7 @@
             <mat-list-item>
                 <mat-icon color="warn" mat-list-icon>calendar_today</mat-icon>
                 <h4 mat-line>Date de fermeture aprés expiration : {{ demande?.date_expiration | date: 'full' }}</h4>
-            </mat-list-item>
+            </mat-list-item> -->
 
             <mat-divider></mat-divider>
 
@@ -105,5 +104,3 @@
     <mat-card-actions></mat-card-actions>
     <mat-card-footer></mat-card-footer>
 </mat-card>
-
-<br>

@@ -1,0 +1,20 @@
+<div id="app-dialog-admin-credential-form">
+    <h4 mat-dialog-title>Motif de refus</h4>
+    <div mat-dialog-content>Precisez les motifs de cette demande de connexion VPN</div>
+    <div mat-dialog-actions>
+        <form method="GET" class="row">
+            <mat-form-field appearance="outline" color="warn" class="col-sm-12 mat-focused">
+                <mat-label class="ml">Motif de refus</mat-label>
+                <textarea [formControl]="motif" required minlength="10" placeholder="Ecrire ici..." class="ml" matInput [(ngModel)]="data.motif" name="motif"></textarea>
+                <mat-error *ngIf="motif.invalid">{{getErrorMessage()}}</mat-error>
+
+            </mat-form-field>
+
+
+            <button class="btn btn-danger col-sm-5" mat-raised-button
+                mat-dialog-close mat-dialog-close="false">Annuler</button>
+            <button type="submit" (click)="getMotif(data)" class="btn btn-success col-sm-5" mat-raised-button>Confirmer</button>
+        </form>
+
+    </div>
+</div>

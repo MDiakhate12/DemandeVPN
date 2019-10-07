@@ -9,6 +9,7 @@ import { ActivatedRoute } from '@angular/router';
 import { MatDialog, MatSnackBar } from '@angular/material';
 import { DialogComponent } from '../dialog/dialog.component';
 import { DialogErrorComponent } from '../dialog-error/dialog-error.component';
+import { DialogMotifRefusComponent } from '../dialog-motif-refus/dialog-motif-refus.component';
 
 @Component({
   selector: 'app-validation-securite',
@@ -21,7 +22,9 @@ export class ValidationSecuriteComponent implements OnInit {
   panelOpenState = true;
   step = 0;
 
-  users: User[] = [];;
+  users: User[] = [];
+  motif: string= '';
+;
   protocoles: Protocole[] = [];;
   applications: Application[] = [];;
   demandes: Demande[] = new Array<Demande>();
@@ -68,6 +71,7 @@ export class ValidationSecuriteComponent implements OnInit {
       _ => {
         this.initDemandeEnAttenteSecurite();
         this.openSnackbar("Demande validée avec succés! Envoi immédiat à l'admin réseau", 'OK', { duration: 3000, verticalPosition: 'top' });
+        this.loading = false;
       },
       error => {
         console.error(error);
@@ -76,13 +80,14 @@ export class ValidationSecuriteComponent implements OnInit {
   }
 
 
-  refuserDemande(id: number) {
+  refuserDemande(id: number, motif:string) {
     this.loading = true;
-    this.demandeService.declineDemandeWithId(id).subscribe(
+    this.demandeService.declineDemandeWithId(id, motif).subscribe(
       data => {
         this.initDemandeEnAttenteSecurite();
         console.log(data);
         this.openSnackbar("Demande refusée ! Le demandeur sera notifié du refus", 'OK', { duration: 3000, verticalPosition: 'top' });
+        this.loading = false;
       },
       error => {
         console.error(error);
@@ -108,17 +113,20 @@ export class ValidationSecuriteComponent implements OnInit {
   }
 
   openDenialDialog(id: number) {
-    let dialogRef = this.dialog.open(DialogComponent);
-    dialogRef.afterClosed().subscribe(choice => {
-      console.log(choice);
-      if (choice === 'true') {
-        this.refuserDemande(id);
+    let dialogRef = this.dialog.open(DialogMotifRefusComponent, { data: { motif: this.motif } });
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(result);
+      if (result.motif) {
+        this.refuserDemande(id, result.motif);
+        console.log(result.motif)
       } else {
         return;
       }
     }
     )
   }
+
+  
 
   openErrorDialog() {
     this.dialog.open(DialogErrorComponent);

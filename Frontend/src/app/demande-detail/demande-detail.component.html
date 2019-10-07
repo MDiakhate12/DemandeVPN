@@ -1,6 +1,7 @@
-<app-navbar></app-navbar>
+<app-navbar *ngIf="!data"></app-navbar>
+<app-loading *ngIf="loading"></app-loading>
 
-<mat-tab-group color="warn">
+<mat-tab-group #tabGroup [ngClass]="tabGroupClasses" color="warn">
     <mat-tab>
         <ng-template mat-tab-label>
             <mat-icon color="warn" class="example-tab-icon">question_answer</mat-icon>
@@ -8,8 +9,8 @@
         </ng-template>
 
         <br>
-        <div class="detail">
-            <app-demande-form-detail></app-demande-form-detail>
+        <div [ngClass]="dialogClass">
+            <app-demande-form-detail (deleted)="fireInitDemande($event)" (slide)="slideTo($event)" [id]="data?.demande.id"></app-demande-form-detail>
         </div>
     </mat-tab>
 
@@ -18,19 +19,23 @@
             <mat-icon color="warn" class="example-tab-icon">autorenew</mat-icon>
             Etat d'avancement
         </ng-template>
-    
+
         <br>
-        <div class="detail">
-            <app-demande-validation-detail></app-demande-validation-detail>
+        <div [ngClass]="dialogClass">
+            <app-demande-validation-detail [id]="data?.demande.id"></app-demande-validation-detail>
         </div>
     </mat-tab>
 
-    <mat-tab>
+    <mat-tab *ngIf="data?.demande.status_demande == statuses[0]">
         <ng-template mat-tab-label>
             <mat-icon color="warn" class="example-tab-icon">edit</mat-icon>
             Modifier demande
         </ng-template>
 
-        Content 3
+        <br>
+        <div [ngClass]="dialogClass">
+            <app-demande-form (updated)="emitModalClose($event)" [id]="data?.demande.id"></app-demande-form>
+        </div>
     </mat-tab>
+
 </mat-tab-group>

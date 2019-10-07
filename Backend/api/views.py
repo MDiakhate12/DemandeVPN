@@ -1,20 +1,21 @@
 from rest_framework.authtoken.models import Token
 from rest_framework.authtoken.views import ObtainAuthToken
 from django.shortcuts import render, get_object_or_404, redirect
-from rest_framework.generics import UpdateAPIView, RetrieveAPIView, CreateAPIView, ListAPIView, RetrieveUpdateAPIView, GenericAPIView
+from rest_framework.generics import UpdateAPIView, RetrieveAPIView, CreateAPIView, ListAPIView, RetrieveUpdateAPIView, GenericAPIView, DestroyAPIView
 from api.serializers import *
 from api.models import *
 from rest_framework.response import Response
 from .constants import *
 from rest_framework.viewsets import ModelViewSet
 from django.contrib.auth.models import User
-from datetime import datetime
+from datetime import datetime, timedelta
 from rest_framework.decorators import api_view, authentication_classes, permission_classes
 from rest_framework import status
 from rest_framework.exceptions import PermissionDenied
 from django.utils import timezone
 from django.db.models import Q
 from django.core.mail import send_mail
+from api.expiration import *
 
 STATUS = Status()
 
@@ -76,7 +77,7 @@ class DemandeList(ListAPIView):
 
 class DemandeUpdate(UpdateAPIView):
     queryset = Demande.objects.all()
-    serializer_class = DemandeCreateSerializer
+    serializer_class = DemandeUpdateSerializer
     lookup_field = "id"
 
 
@@ -86,32 +87,10 @@ class DemandeDetail(RetrieveAPIView):
     lookup_field = "id"
 
 
-# class DemandeCreate(CreateAPIView):
-#     queryset = Demande.objects.all()
-#     serializer_class = DemandeCreateSerializer
-
-#     def post(self, request):
-#         print('---------------------------------------------------------------------')
-#         print(request.data)
-#         print('---------------------------------------------------------------------')
-#         serializer =  DemandeCreateSerializer(data=request.data)
-#         demande = Demande()
-#         if serializer.is_valid():
-
-#             print(demande)
-#             user = request.user
-#             demande.demandeur = user
-#             demande.validateur_hierarchique = user.profil.superieur
-#             demande.status_demande = STATUS.attente_hierarchie
-#             demande.save()
-#             serializer.save()
-#             send_mail(
-#                 subject='Nouvelle demande VPN',
-#                 message='Vous avez une nouvelle demande',
-#                 from_email=demande.demandeur.email,
-#                 recipient_list=[user.profil.superieur.email],
-#             )
-#             return Response(serializer.data, status= status.HTTP_201_CREATED)
+class DemandeDelete(DestroyAPIView):
+    queryset = Demande.objects.all()
+    serializer_class = DemandeListSerializer
+    lookup_field = "id"
 
 
 class DemandeCreate(CreateAPIView):
@@ -141,7 +120,7 @@ class DemandesEnAttenteUser(ListAPIView):
     def get_queryset(self):
         username = self.kwargs['username']
         demandes = Demande.objects.filter(
-            demandeur__username=username, validation_admin=False)
+            demandeur__username=username, validation_admin=False).filter(Q(status_demande=STATUS.attente_admin) | Q(status_demande=STATUS.attente_hierarchie) | Q(status_demande=STATUS.attente_securite)).order_by("-date")
         return demandes
 
 
@@ -248,12 +227,13 @@ class ValidationAdmin(RetrieveUpdateAPIView):
     serializer_class = DemandesAdminSerializer
     lookup_field = "id"
 
-    def perform_update(self, serializer):
+    def perform_update(self, serializer, **kwargs):
         demande = Demande.objects.get(pk=serializer.data["id"])
         user = self.request.user
-
+        vpnUsername = self.kwargs['username']
+        vpnPassword = self.kwargs['password']
         print('------------------------------------------------')
-        print(user)
+        print(self.kwargs)
         print(hasattr(user, 'profil_admin'))
         print('------------------------------------------------')
 
@@ -262,13 +242,18 @@ class ValidationAdmin(RetrieveUpdateAPIView):
             if(demande.validation_securite == True and demande.status_demande == STATUS.attente_admin):
                 demande.validation_admin = True
                 demande.status_demande = STATUS.valide
-                send_mail(
-                    subject="Configuration demande",
-                    message="L'admin vient de configurer votre demande, veuillez consulter agassi pour voir les applications disponibles.",
-                    from_email='',
-                    recipient_list=[demande.demandeur.email],
-                )
+                # send_mail(
+                #     subject="Configuration demande",
+                #     message="""L'admin vient de configurer votre demande, veuillez consulter agassi pour voir les applications disponibles.\n
+                #     Veuillez trouver ci dessous les credentials de votre reseau VPN\n
+                #     username = {}\n
+                #     password = {}""".format(vpnUsername, vpnPassword),
+                #     from_email='',
+                #     recipient_list=[demande.demandeur.email],
+                # )
                 demande.save()
+                programmer_notification_test(demande, 8)
+
         else:
             raise PermissionDenied(
                 {"message": "Vous n'avez pas le droit de faire cette validation. Elle est reservée à l'admin."})
@@ -284,9 +269,14 @@ class RefusHierarchie(RetrieveUpdateAPIView):
         demande.validation_hierarchique = False
         demande.status_demande = STATUS.refus_hierarchie
         demande.save()
+        motif = self.kwargs['motif']
+
         send_mail(
             subject="Refus supérieur",
-            message="Votre supérieur vient de refuser votre demande",
+            message="""Votre supérieur vient de refuser votre demande\n
+                Motif : \n
+                "{}"
+                """.format(motif),
             from_email='',
             recipient_list=[demande.demandeur.email],
         )
@@ -299,13 +289,18 @@ class RefusSecurite(RetrieveUpdateAPIView):
 
     def perform_update(self, serializer):
         demande = Demande.objects.get(pk=serializer.data["id"])
+        motif = self.kwargs['motif']
+
         if(demande.validation_hierarchique == True):
             demande.validation_securite = False
             demande.status_demande = STATUS.refus_securite
             demande.save()
             send_mail(
                 subject='Refus de la sécurité',
-                message='La sécurité vient de refuser votre demande',
+                message="""La sécurité vient de refuser votre demande\n
+                Motif : \n
+                "{}"
+                """.format(motif),
                 from_email='',
                 recipient_list=[demande.demandeur.email],
             )
@@ -316,8 +311,13 @@ class DemandeAccepteesList(ListAPIView):
 
     def get_queryset(self):
         demandeur = self.kwargs['username']
-        demandes = Demande.objects.filter(demandeur__profil__user__username=demandeur, status_demande=STATUS.valide,
-                                          validation_hierarchique=True, validation_securite=True, validation_admin=True).order_by("-date")
+
+        if(hasattr(self.request.user, 'profil_admin') and demandeur == 'admin'):
+            demandes = Demande.objects.filter(status_demande=STATUS.valide,
+                                              validation_hierarchique=True, validation_securite=True, validation_admin=True).order_by("-date")
+        else:
+            demandes = Demande.objects.filter(demandeur__profil__user__username=demandeur, status_demande=STATUS.valide,
+                                              validation_hierarchique=True, validation_securite=True, validation_admin=True).order_by("-date")
         return demandes
 
 
@@ -326,8 +326,45 @@ class DemandeRefuseesList(ListAPIView):
 
     def get_queryset(self):
         demandeur = self.kwargs['username']
-        demandes = Demande.objects.filter(Q(status_demande=STATUS.refus_hierarchie) | Q(
-            status_demande=STATUS.refus_securite), demandeur__profil__user__username=demandeur).order_by("-date")
+
+        if(hasattr(self.request.user, 'profil_admin') and demandeur == 'admin'):
+            demandes = Demande.objects.filter(Q(status_demande=STATUS.refus_hierarchie) | Q(
+                status_demande=STATUS.refus_securite)).order_by("-date")
+        else:
+            demandes = Demande.objects.filter(Q(status_demande=STATUS.refus_hierarchie) | Q(
+                status_demande=STATUS.refus_securite), demandeur__profil__user__username=demandeur).order_by("-date")
+        return demandes
+
+
+class DemandeExpireesList(ListAPIView):
+    serializer_class = DemandeListSerializer
+
+    def get_queryset(self):
+        demandeur = self.kwargs['username']
+
+        if(hasattr(self.request.user, 'profil_admin') and demandeur == 'admin'):
+            demandes = Demande.objects.filter(
+                Q(status_demande=STATUS.expire)).order_by("-date")
+        else:
+            demandes = Demande.objects.filter(demandeur__profil__user__username=demandeur).filter(
+                Q(status_demande=STATUS.expire)).order_by("-date")
+        return demandes
+
+
+class DemandesCloturees(ListAPIView):
+    serializer_class = DemandesAdminSerializer
+
+    def get_queryset(self):
+        demandeur = self.kwargs['username']
+
+        if(hasattr(self.request.user, 'profil_admin') and demandeur == 'admin'):
+            demandes = Demande.objects.filter(Q(status_demande=STATUS.valide,
+                                                validation_hierarchique=True, validation_securite=True, validation_admin=True) |
+                                              Q(status_demande=STATUS.refus_hierarchie) | Q(status_demande=STATUS.refus_securite) | Q(status_demande=STATUS.expire)).order_by("-date")
+        else:
+            demandes = Demande.objects.filter(demandeur__profil__user__username=demandeur).filter(Q(status_demande=STATUS.valide,
+                                                                                                    validation_hierarchique=True, validation_securite=True, validation_admin=True) |
+                                                                                                  Q(status_demande=STATUS.refus_hierarchie) | Q(status_demande=STATUS.refus_securite) | Q(status_demande=STATUS.expire)).order_by("-date")
         return demandes
 
 
@@ -337,17 +374,6 @@ class DemandesValideesSecurite(ListAPIView):
     def get_queryset(self):
         demandes = Demande.objects.filter(
             validation_hierarchique=True, validation_securite=True).order_by("-date")
-        return demandes
-
-
-class DemandesCloturees(ListAPIView):
-    serializer_class = DemandesAdminSerializer
-
-    def get_queryset(self):
-        demandeur = self.kwargs['username']
-        demandes = Demande.objects.filter(demandeur__profil__user__username=demandeur).filter(Q(status_demande=STATUS.valide,
-                                                                                                validation_hierarchique=True, validation_securite=True, validation_admin=True) |
-                                                                                              Q(status_demande=STATUS.refus_hierarchie) | Q(status_demande=STATUS.refus_securite)).order_by("-date")
         return demandes
 
 
@@ -368,3 +394,43 @@ class Expiration(RetrieveUpdateAPIView):
             from_email='',
             recipient_list=[demande.demandeur.email],
         )
+
+
+def send_expiration_notification(demande, jours):
+
+    print("Notifying expiration to {}...".format(demande.demandeur))
+    send_mail(
+        subject="Expiration demande",
+        message="Votre demande <<{}>> expire dans {} jours".format(
+            demande.objet, jours),
+        from_email='',
+        recipient_list=[demande.demandeur.email],
+    )
+    print("Sent successfully !")
+
+
+def programmer_notification(demande, jours):
+    date_notification = (demande.date_expiration - (demande.date_expiration - timedelta(days=jours))).total_seconds()
+    notification_thread = threading.Timer(date_notification, send_expiration_notification, args=[demande, jours])
+    notification_thread.daemon = True
+    notification_thread.start()
+
+
+def programmer_notification_test(demande, jours):
+    date_notification = (demande.date_expiration - (demande.date_expiration - timedelta(seconds=jours))).total_seconds()
+    return threading.Timer(date_notification, write, args=[demande, jours], ).start()
+
+def write(demande, jours):
+    print('---------------------------------')
+    print("Thread running...")
+    print(demande.objet + "  " + str(jours))
+    print('---------------------------------')
+    return
+
+
+
+if __name__ == '__main__':
+    print("-------------------------------------FROM MAIN-------------------------------------")
+
+
+print(__name__)

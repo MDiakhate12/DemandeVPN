@@ -8,6 +8,7 @@ import { GenericService } from '../services/generic.service';
 import { ActivatedRoute } from '@angular/router';
 import { MatDialog, MatSnackBar } from '@angular/material';
 import { DialogComponent } from '../dialog/dialog.component';
+import { DialogMotifRefusComponent } from '../dialog-motif-refus/dialog-motif-refus.component';
 
 @Component({
   selector: '#validation-hierarchique',
@@ -19,7 +20,9 @@ export class ValidationHierarchiqueComponent implements OnInit {
   panelOpenState = true;
   step = 0;
 
-  users: User[] = [];;
+  users: User[] = [];
+  motif: string = '';
+  ;
   protocoles: Protocole[] = [];;
   applications: Application[] = [];;
   demandes: Demande[] = new Array<Demande>();
@@ -66,6 +69,7 @@ export class ValidationHierarchiqueComponent implements OnInit {
         this.initDemandeEnAttenteHierarchique();
         console.log(data);
         this.openSnackbar("Demande validée avec succés! Envoi immédiat à l'admin sécurité", 'OK', { duration: 3000, verticalPosition: 'top' });
+        this.loading = false;
       },
       error => {
         console.error(error);
@@ -74,13 +78,14 @@ export class ValidationHierarchiqueComponent implements OnInit {
   }
 
 
-  refuserDemande(id: number) {
+  refuserDemande(id: number, motif: string) {
     this.loading = true;
-    this.demandeService.rejectDemandeWithId(id).subscribe(
+    this.demandeService.rejectDemandeWithId(id, motif).subscribe(
       data => {
         this.initDemandeEnAttenteHierarchique();
         console.log(data);
         this.openSnackbar("Demande refusée ! Le demandeur sera notifié du refus", 'OK', { duration: 3000, verticalPosition: 'top' });
+        this.loading = false;
       },
       error => {
         console.error(error);
@@ -102,11 +107,11 @@ export class ValidationHierarchiqueComponent implements OnInit {
   }
 
   openDenialDialog(id: number) {
-    let dialogRef = this.dialog.open(DialogComponent);
-    dialogRef.afterClosed().subscribe(choice => {
-      console.log(choice);
-      if (choice === 'true') {
-        this.refuserDemande(id);
+    let dialogRef = this.dialog.open(DialogMotifRefusComponent, { data: { motif: this.motif } });
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(result);
+      if (result.motif) {
+        this.refuserDemande(id, result.motif);
       } else {
         return;
       }

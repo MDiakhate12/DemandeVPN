@@ -2,9 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { DemandeService } from '../services/demande.service';
 import { ActivatedRoute } from '@angular/router';
 import { Demande } from '../models/demande.model';
-import { DialogDemandeDetailComponent } from '../dialog-demande-detail/dialog-demande-detail.component';
 import { MatDialog } from '@angular/material';
-import { DialogDemandeHistoriqueComponent } from '../dialog-demande-historique/dialog-demande-historique.component';
+import { DemandeDetailComponent } from '../demande-detail/demande-detail.component';
 
 @Component({
   selector: 'app-historique',
@@ -16,16 +15,24 @@ export class HistoriqueComponent implements OnInit {
   demandesAcceptees: Demande[] = [];
   demandesRefusees: Demande[] = [];
   demandesCloturees: Demande[] = [];
+  demandesExpirees: Demande[] = [];
   loading:boolean = false;
+  expire: string;
+  isAdmin: boolean = false;
 
   constructor(private demandeService: DemandeService, private route: ActivatedRoute, private dialog: MatDialog) { }
 
   ngOnInit() {
 
+    this.expire = this.demandeService.STATUS[4]
     let username = this.route.snapshot.paramMap.get('username');
+    if(username === 'admin') {
+      this.isAdmin = true;
+    }
     this.initDemandesAcceptees(username);
     this.initDemandesRefusees(username);
     this.initDemandesCloturees(username);
+    this.initDemandesExpirees(username);
   }
 
   initDemandesAcceptees(username: string) {
@@ -55,6 +62,19 @@ export class HistoriqueComponent implements OnInit {
     )
   }
 
+  initDemandesExpirees(username: string) {
+    this.loading = true;
+    this.demandeService.getDemandesExpireesOf(username).subscribe(
+      responses => {
+        this.demandesExpirees = responses.body
+        this.loading = false;
+      },
+      error => {
+        console.error(error);
+      }
+    )
+  }
+
   initDemandesCloturees(username: string) {
     this.loading = true;
     this.demandeService.getDemandeClotureesOf(username).subscribe(
@@ -69,7 +89,7 @@ export class HistoriqueComponent implements OnInit {
   }
 
   openDetailDialog(demande) {
-    let dialogRef = this.dialog.open(DialogDemandeHistoriqueComponent, { data: {demande: demande} } );
+    let dialogRef = this.dialog.open(DemandeDetailComponent, { data: {demande: demande} } );
     console.log(dialogRef); 
   }
 }

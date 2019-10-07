@@ -1,3 +1,4 @@
+<app-loading *ngIf="loading && id"></app-loading>
 <mat-card [(ngClass)]="cardClasses" class="detail-card">
     <mat-card-header>
         <mat-card-title>
@@ -21,12 +22,12 @@
 
             <mat-list-item>
                 <mat-icon color="warn" mat-list-icon>account_box</mat-icon>
-                <h4 mat-line>Demandeur : {{ demande?.demandeur.username }}</h4>
+                <h4 mat-line>Demandeur : {{ demande?.demandeur?.username }}</h4>
             </mat-list-item>
 
             <mat-list-item>
                 <mat-icon color="warn" mat-list-icon>account_box</mat-icon>
-                <h4 mat-line>Bénéficiaire : {{ demande?.beneficiaire.username }}</h4>
+                <h4 mat-line>Bénéficiaire : {{ demande?.beneficiaire?.username }}</h4>
             </mat-list-item>
 
             <mat-divider></mat-divider>
@@ -62,16 +63,13 @@
     </mat-card-content>
     <mat-card-actions>
         <mat-list-item>
-            <button mat-raised-button color="primary">
+            <button class="change-btn" *ngIf="demande?.status_demande == (statuses[0] || statuses[1] || statuses[2])" [disabled]="demande?.status_demande != statuses[0]" (click)="fireSlideToUpdate()" mat-raised-button color="primary">
                 <mat-icon>edit</mat-icon>Modifier demande
             </button>
-            <button mat-raised-button color="warn">
+            <button (click)="openDeleteDialog(demande.id)" *ngIf="demande?.status_demande == (statuses[0] || statuses[1] || statuses[2])" class="change-btn" mat-raised-button color="warn">
                 <mat-icon>delete</mat-icon> Annuler demande
             </button>
         </mat-list-item>
 
     </mat-card-actions>
-    <mat-card-footer></mat-card-footer>
 </mat-card>
-
-<br>

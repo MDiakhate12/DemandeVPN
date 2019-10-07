@@ -15,8 +15,8 @@
                 </pre>sticky
 
             <pre>
-                    {{ user | json }}
-                </pre>
+                {{ user | json }}
+            </pre>
 
         </mat-sidenav>
 
@@ -26,58 +26,7 @@
             </button>
 
             <div class="container col-sm-12 col-md-6">
-                <form class="animated fadeInLeft" method="POST">
-
-                    <mat-form-field appearance="fill">
-                        <mat-label>Objet</mat-label>
-                        <input [(ngModel)]="demande.objet" name="objet" matInput>
-                    </mat-form-field>
-
-                    <mat-form-field appearance="fill">
-                        <mat-label>Bénéficiaire</mat-label>
-                        <mat-select [(value)]="demande.beneficiaire">
-                            <mat-option *ngFor="let user of users" [value]="user.id">
-                                {{user.username}}
-                            </mat-option>
-                        </mat-select>
-                    </mat-form-field>
-
-
-
-                    <mat-form-field appearance="fill">
-                        <mat-label>Date d'expiration</mat-label>
-                        <input [(ngModel)]="demande.date_expiration" name="date_expiration" matInput
-                            [matDatepicker]="picker1">
-                        <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
-                        <mat-datepicker #picker1></mat-datepicker>
-                    </mat-form-field>
-
-                    <mat-form-field appearance="fill">
-                        <mat-label>Application</mat-label>
-                        <mat-select [(value)]="demande.applications" multiple>
-                            <mat-option *ngFor="let application of applications" [value]="application.id">
-                                {{ application.nom }} ({{ application.adresse_ip }})
-                            </mat-option>
-                        </mat-select>
-                    </mat-form-field>
-
-                    <mat-form-field appearance="fill">
-                        <mat-label>Procotoles</mat-label>
-                        <mat-select [(value)]="demande.protocoles" multiple>
-                            <mat-option *ngFor="let protocole of protocoles" [value]="protocole.id">
-                                {{protocole.nom}}
-                            </mat-option>
-                        </mat-select>
-                    </mat-form-field>
-
-                    <mat-form-field appearance="fill">
-                        <mat-label>Description</mat-label>
-                        <textarea [(ngModel)]="demande.description" name="description" rows="12" matInput></textarea>
-                    </mat-form-field>
-
-                    <button mat-raised-button name="submit" (click)="onSubmit()" class="btn btn-lg btn-block"
-                        id="submit" type="submit">Envoyer demande <mat-icon>send</mat-icon></button>
-                </form>
+                <app-demande-form (loading)="loading=$event"></app-demande-form>
             </div>
 
         </mat-sidenav-content>

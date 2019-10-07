@@ -11,11 +11,15 @@ import { User } from '../models/user.model';
 export class NavbarComponent implements OnInit {
 
   user: User = new User();
+  initial: string;
   constructor( private authService: AuthService, private router: Router) { }
 
   ngOnInit() {
     this.authService.getLoggedUser().subscribe(
-      user => this.user = user
+      user => {
+        this.user = user;
+        this.initial = user.username[0]
+      }
     );
   }
 

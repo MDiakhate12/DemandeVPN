@@ -1,0 +1,28 @@
+mat-form-field {
+    display: block;
+}
+
+form {
+    margin-top: 40px;
+    height: 800px;
+    box-shadow: 0 0 25px;
+    padding: 30px;
+    border-radius: 10px;
+    opacity: 1;
+}
+
+
+#submit {
+    background-color: #f16e00;
+    color: white;
+}
+
+.test { 
+    max-width: 790px;
+    max-height: 650px; 
+    margin-top: auto!important;
+}
+
+.large-page {
+    
+}

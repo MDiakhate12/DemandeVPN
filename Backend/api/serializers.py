@@ -7,7 +7,9 @@ from rest_auth.models import TokenModel
 from notifications.models import Notification
 
 
-
+class ProfilSerializer(serializers.Serializer):
+    username = serializers.CharField()
+    password = serializers.CharField()
 
 
 class ProfilSerializer(serializers.ModelSerializer):
@@ -24,6 +26,7 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ('id', 'username', 'email', 'profil', 'auth_token')
+
 
 class SimpleUserSerializer(serializers.ModelSerializer):
     profil = ProfilSerializer()
@@ -90,6 +93,22 @@ class DemandeCreateSerializer(serializers.ModelSerializer):
         )
 
 
+class DemandeUpdateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Demande
+        fields = '__all__'
+        read_only_fields = (
+            'date',
+            'demandeur',
+            'status_demande',
+            'validation_hierarchique',
+            'validateur_hierarchique',
+            'validation_securite',
+            'validateur_securite',
+            'validation_admin'
+        )
+
+
 class DemandesHierarchieSerializer(serializers.ModelSerializer):
     demandeur = UserSerializer(read_only=True)
     beneficiaire = UserSerializer(read_only=True)
@@ -138,6 +157,7 @@ class DemandesAdminSerializer(serializers.ModelSerializer):
 
         read_only_fields = ('id', 'objet', 'description', 'date', 'date_expiration',
                             'beneficiaire', 'demandeur', 'protocoles', 'status_demande', 'applications', 'validation_hierarchique', 'validateur_hierarchique', 'validation_securite', 'validateur_securite', 'validation_admin')
+
 
 class NotificationSerializer(serializers.Serializer):
     id = serializers.IntegerField()
