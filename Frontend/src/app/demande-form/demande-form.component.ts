@@ -116,7 +116,11 @@ export class DemandeFormComponent implements OnInit {
         this.updateDemande(demande)
       } else {
         this.loading.emit(true);
-        this.demandeService.sendDemande(this.demande).subscribe(
+        let demande = this.demande as any;
+        demande.beneficiaire = this.benef;
+        demande.applications = this.apps;
+        demande.protocoles = this.prots;
+        this.demandeService.sendDemande(demande).subscribe(
           response => {
             this.demande = response.body;
             console.log(this.demande.id);

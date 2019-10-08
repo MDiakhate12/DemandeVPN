@@ -17,17 +17,8 @@ from django.db.models import Q
 from django.core.mail import send_mail
 from api.expiration import *
 from post_office import mail
-
+import threading
 STATUS = Status()
-
-# send_mail(
-#     subject='Invitation SmartMeeting',
-#     message=strip_tags(html_message),
-#     from_email='mdiakhate1297@gmail.com',
-#     recipient_list=[
-#         email for email in emails if email != request.user.email],
-#     html_message=html_message
-# )
 
 
 class CustomAuthToken(ObtainAuthToken):
@@ -105,6 +96,10 @@ class DemandeCreate(CreateAPIView):
         demande['demandeur'] = user
         demande['validateur_hierarchique'] = user.profil.superieur
         demande['status_demande'] = STATUS.attente_hierarchie
+
+        if(demande['beneficiaire'] is None):
+            demande['beneficiaire'] = user
+
         super().perform_create(serializer)
         send_mail(
             subject='Nouvelle demande VPN',
@@ -433,7 +428,6 @@ def write(demande, jours):
     return
 
 
-
 def send():
     demande = Demande.objects.get(pk=121)
     mail.send(['mdiakhate1297@gmail.com'],
@@ -441,6 +435,9 @@ def send():
               subject='Welcome!',
               message='Welcome home!',
               html_message='Welcome, <b>home</b>!',
-              scheduled_time = demande.date_expiration + timedelta(seconds=10),
+              scheduled_time=demande.date_expiration + timedelta(seconds=10),
+                priority='now'
               )
+
+
 send()
