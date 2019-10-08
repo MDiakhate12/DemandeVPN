@@ -8,7 +8,7 @@ from rest_framework.response import Response
 from .constants import *
 from rest_framework.viewsets import ModelViewSet
 from django.contrib.auth.models import User
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, date
 from rest_framework.decorators import api_view, authentication_classes, permission_classes
 from rest_framework import status
 from rest_framework.exceptions import PermissionDenied
@@ -16,6 +16,7 @@ from django.utils import timezone
 from django.db.models import Q
 from django.core.mail import send_mail
 from api.expiration import *
+from post_office import mail
 
 STATUS = Status()
 
@@ -242,17 +243,17 @@ class ValidationAdmin(RetrieveUpdateAPIView):
             if(demande.validation_securite == True and demande.status_demande == STATUS.attente_admin):
                 demande.validation_admin = True
                 demande.status_demande = STATUS.valide
-                # send_mail(
-                #     subject="Configuration demande",
-                #     message="""L'admin vient de configurer votre demande, veuillez consulter agassi pour voir les applications disponibles.\n
-                #     Veuillez trouver ci dessous les credentials de votre reseau VPN\n
-                #     username = {}\n
-                #     password = {}""".format(vpnUsername, vpnPassword),
-                #     from_email='',
-                #     recipient_list=[demande.demandeur.email],
-                # )
+                send_mail(
+                    subject="Configuration demande {}".format(demande.id),
+                    message="""L'admin vient de configurer votre demande, veuillez consulter agassi pour voir les applications disponibles.\n
+                    Veuillez trouver ci dessous les credentials de votre reseau VPN\n
+                    username = {}\n
+                    password = {}""".format(vpnUsername, vpnPassword),
+                    from_email='',
+                    recipient_list=[demande.demandeur.email],
+                )
                 demande.save()
-                programmer_notification_test(demande, 8)
+                programmer_notification(demande, 5)
 
         else:
             raise PermissionDenied(
@@ -410,27 +411,36 @@ def send_expiration_notification(demande, jours):
 
 
 def programmer_notification(demande, jours):
-    date_notification = (demande.date_expiration - (demande.date_expiration - timedelta(days=jours))).total_seconds()
-    notification_thread = threading.Timer(date_notification, send_expiration_notification, args=[demande, jours])
+    date_notification = (demande.date_expiration -
+                         (demande.date_expiration - timedelta(days=jours))).total_seconds()
+    notification_thread = threading.Timer(
+        date_notification, send_expiration_notification, args=[demande, jours])
     notification_thread.daemon = True
     notification_thread.start()
 
 
 def programmer_notification_test(demande, jours):
-    date_notification = (demande.date_expiration - (demande.date_expiration - timedelta(seconds=jours))).total_seconds()
+    date_notification = (demande.date_expiration -
+                         (demande.date_expiration - timedelta(seconds=jours)))
     return threading.Timer(date_notification, write, args=[demande, jours], ).start()
+
 
 def write(demande, jours):
     print('---------------------------------')
     print("Thread running...")
-    print(demande.objet + "  " + str(jours))
+    print(demande.objet + " " + str(jours))
     print('---------------------------------')
     return
 
 
 
-if __name__ == '__main__':
-    print("-------------------------------------FROM MAIN-------------------------------------")
-
-
-print(__name__)
+def send():
+    demande = Demande.objects.get(pk=121)
+    mail.send(['mdiakhate1297@gmail.com'],
+              'ept.itday@gmail.com',
+              subject='Welcome!',
+              message='Welcome home!',
+              html_message='Welcome, <b>home</b>!',
+              scheduled_time = demande.date_expiration + timedelta(seconds=10),
+              )
+send()

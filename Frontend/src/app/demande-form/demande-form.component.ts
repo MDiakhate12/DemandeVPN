@@ -2,8 +2,6 @@ import { Component, OnInit, Output, EventEmitter, Input, ViewChild, Optional } f
 import { DemandeService } from '../services/demande.service';
 import { Demande } from '../models/demande.model';
 import { User } from '../models/user.model';
-import { Protocole } from '../models/protocole.model';
-import { Application } from '../models/application.model';
 import { GenericService } from '../services/generic.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { AuthService } from '../services/auth.service';
@@ -11,6 +9,8 @@ import { DialogComponent } from '../dialog/dialog.component';
 import { MatDialog, MatSnackBar, MatDialogRef } from '@angular/material';
 import { DemandeDetailComponent } from '../demande-detail/demande-detail.component';
 import { FormControl, Validators } from '@angular/forms';
+import { Application } from '../models/application.model';
+import { Protocole } from '../models/protocole.model';
 
 
 @Component({
@@ -20,7 +20,6 @@ import { FormControl, Validators } from '@angular/forms';
 })
 export class DemandeFormComponent implements OnInit {
 
-  public isOpen: boolean = false;
   @Output() loading = new EventEmitter();
   @Output() updated = new EventEmitter();
   @Input() id: number;
@@ -29,16 +28,19 @@ export class DemandeFormComponent implements OnInit {
   formClasses = {}
 
   users: User[] = [];
-  protocoles: Protocole[] = [];
-  applications: Application[] = [];
   demande: Demande = new Demande();
   user: User = new User();
+  applications: Application[] = new Array<Application>();
+  protocoles: Protocole[] = new Array<Protocole>();
 
   objet = new FormControl('', Validators.required);
   beneficiaire = new FormControl('', Validators.required);
   date_expiration = new FormControl('', Validators.required);
   applis = new FormControl('', Validators.required);
   protos = new FormControl('', Validators.required);
+  benef: number;
+  apps: number[] = [];
+  prots: number[] = [];
 
   validations = [
     this.objet,
@@ -50,11 +52,7 @@ export class DemandeFormComponent implements OnInit {
 
   valid: boolean = false;
 
-  @ViewChild('apps', { static: false }) apps;
-  @ViewChild('prots', { static: false }) prots;
-
   constructor(@Optional() public dialogRef: MatDialogRef<DemandeDetailComponent>, private demandeService: DemandeService, private genericService: GenericService, private router: Router, private authService: AuthService, private dialog: MatDialog, private snackbar: MatSnackBar, private route: ActivatedRoute) {
-    console.log(this.applications);
     this.authService.getLoggedUser().subscribe(
       user => {
         this.user = user;
@@ -70,7 +68,14 @@ export class DemandeFormComponent implements OnInit {
     if (this.id) {
       this.demandeService.getDemandeWithId(this.id).subscribe(
         response => {
-          this.demande = response.body
+          this.demande = response.body;
+          this.benef = response.body.beneficiaire.id;
+          this.apps = response.body.applications.map(
+            app => { return app.id }
+          )
+          this.prots = response.body.protocoles.map(
+            prot => { return prot.id }
+          )
         }
       )
       this.rows = 5;
@@ -81,7 +86,9 @@ export class DemandeFormComponent implements OnInit {
     } else if (id) {
 
       this.demandeService.getDemandeWithId(parseInt(id)).subscribe(
-        response => this.demande = response.body
+        response => {
+          this.demande = response.body;
+        }
       )
       this.formClasses = {
         'col-md-6': true,
@@ -124,7 +131,7 @@ export class DemandeFormComponent implements OnInit {
     }
   }
 
-  updateDemande(demande: Demande) {
+  updateDemande(demande) {
     let dialogRef = this.dialog.open(DialogComponent);
 
     dialogRef.afterClosed().subscribe(
@@ -132,6 +139,9 @@ export class DemandeFormComponent implements OnInit {
         if (choice) {
           this.localLoading = true;
           demande.id = this.id | this.demande.id;
+          demande.beneficiaire = this.benef;
+          demande.applications = this.apps;
+          demande.protocoles = this.prots;
           this.demandeService.updateDemande(demande).subscribe(
             data => {
               console.log(data)
@@ -147,7 +157,7 @@ export class DemandeFormComponent implements OnInit {
     )
   }
 
-  getErrorMessage(){
+  getErrorMessage() {
     return "Ce champs est obligatoire"
   }
 }
