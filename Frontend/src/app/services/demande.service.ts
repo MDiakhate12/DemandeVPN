@@ -12,8 +12,8 @@ import { Credentials } from '../validation-admin/validation-admin.component';
 
 export class DemandeService {
 
-    baseURL = "http://127.0.0.1:8000/api/demandes/";
-    apiURL = "http://127.0.0.1:8000/api/";
+    baseURL = "http://127.0.0.1:8080/api/demandes/";
+    apiURL = "http://127.0.0.1:8080/api/";
     httpHeaders = new HttpHeaders({
         'Content-Type': 'application/json',
         'Authorization': 'Token ' + this.authService.getToken()

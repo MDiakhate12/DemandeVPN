@@ -8,6 +8,10 @@ mat-card {
     box-shadow: 0 0 20px 2px!important;
     height: 222px;
     cursor: pointer;
+    border-color: #f16e00;
+    border-style: outset;
+    box-shadow: #f16e00;
+    border-width: 5px;
 }
 
 mat-card-content mat-icon {

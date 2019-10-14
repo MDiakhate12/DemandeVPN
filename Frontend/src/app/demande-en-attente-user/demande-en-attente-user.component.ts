@@ -6,6 +6,7 @@ import { DemandeService } from '../services/demande.service';
 import { Demande } from '../models/demande.model';
 import { MatDialog } from '@angular/material';
 import { DemandeDetailComponent } from '../demande-detail/demande-detail.component';
+import { SearchService } from '../search.service';
 
 
 @Component({
@@ -22,11 +23,20 @@ export class DemandeEnAttenteUserComponent implements OnInit, OnChanges {
   demandes: Demande[] = [];
   loading: boolean = false;
   afterUpdate = {}
+  motCle: String;
+  selectedWord : String="demandeurUsername";
+  choix: String;
+  words: any[];
 
-  constructor(private dialog: MatDialog, private authService: AuthService, private router: Router, private route: ActivatedRoute, private demandeService: DemandeService) {
+
+
+
+  constructor(private dialog: MatDialog, private authService: AuthService, private router: Router, private route: ActivatedRoute, private demandeService: DemandeService, private _search: SearchService) {
     this.user = new User
+    this.words =  this._search.words;
+    
   }
-
+  
 
   ngOnInit() {
     window.scroll(0, 0);
@@ -49,7 +59,7 @@ export class DemandeEnAttenteUserComponent implements OnInit, OnChanges {
     this.loading = true;
     this.demandeService.getDemandeEnAttenteOf(username).subscribe(
       response => {
-        this.demandes = response.body
+        this.demandes = response.body.results
         console.log(this.demandes);
         this.loading = false;
       }
@@ -78,6 +88,35 @@ export class DemandeEnAttenteUserComponent implements OnInit, OnChanges {
         }
       }
     )
+  }
+  onWordSelection(){
+    if(this.selectedWord==="beneficiaireUsername"){
+      console.log("FROM BENEFICIARE")
+      console.log("Selected word : "+this.selectedWord)
+    
+  }}
+  Search(){
+    
+    // this._search.Search(this.motCle, this.selectedWord, this.demandes)
+    if(this.motCle != ""){
+      
+      this.demandes = this.demandes.filter(
+        responses=>{
+          if(this.selectedWord==="objet"){
+          return responses.objet.toLocaleLowerCase().match(this.motCle.toLocaleLowerCase());
+          }     else if(this.selectedWord==="demandeurUsername"){
+            return responses.demandeur.username.toLocaleLowerCase().match(this.motCle.toLocaleLowerCase());
+          } else if(this.selectedWord==="beneficiaireUsername"){
+            return responses.beneficiaire.username.toLocaleLowerCase().match(this.motCle.toLocaleLowerCase());
+          }
+        })
+    }else if (this.motCle == ""){
+      this.ngOnInit();
+    }
+  }
+  clearSearchField(){
+    this.motCle="";
+    this.ngOnInit();
   }
 
 }

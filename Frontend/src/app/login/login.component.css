@@ -1,14 +1,36 @@
 mat-form-field {
     display: block;
 }
-
+#image{
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+    position: relative;
+    width:50%;
+    margin-top: 100p;
+}
+img{
+    height: 100px;
+    margin-left: auto;
+    margin-right: auto;
+    font-size: 100px;
+}
+#demande{
+    color:  #f16e00;
+    font-size: 20px;
+}
 form {
-    height: 400px;
+    height: 470px;
     position: relative;
     top: 70px;
     box-shadow: 0 0 25px;
     padding: 30px;
     border-radius: 10px;
+    margin-left: auto;
+    margin-right: auto;
+    border-style: ridge;
+    border-width: 10px;
+    
 }
 .acc_c{
     font-size: 100px;
@@ -37,6 +59,8 @@ mat-sidenav-container {
 
 form {
     opacity: 1;
+    background-color: white;
+    backdrop-filter: blur(3px)
 }
 
 #menu-btn {

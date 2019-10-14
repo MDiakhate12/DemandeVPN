@@ -62,7 +62,7 @@ export class ValidationAdminComponent implements OnInit {
     this.loading = true;
     this.demandeService.getDemandeEnAttenteAdminOf().subscribe(response => {
       console.log(response);
-      this.demandes = response.body;
+      this.demandes = response.body.results;
       this.loading = false;
   }
     );

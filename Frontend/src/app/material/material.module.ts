@@ -26,6 +26,7 @@ import {
   MatSortModule,
   MatTableModule,
   MatRippleModule,
+  MatRadioModule
 } from '@angular/material';
 
 import { MatBadgeModule } from '@angular/material/badge'
@@ -59,6 +60,7 @@ const MaterialComponents = [
   MatTableModule,
   MatRippleModule,
   MatBadgeModule,
+  MatRadioModule,
 ];
 
 @NgModule({

@@ -58,7 +58,7 @@ export class ValidationSecuriteComponent implements OnInit {
   initDemandeEnAttenteSecurite() {
     this.loading = true;
     this.demandeService.getDemandeEnAttenteSecuriteOf().subscribe(response => {
-      this.demandes = response.body;
+      this.demandes = response.body.results;
       console.log(response.body);
       this.loading = false;
     }

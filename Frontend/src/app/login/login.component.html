@@ -1,14 +1,22 @@
 <div id="app-login" class="container-fluid">
+
     <div class="row">
+
         <div class="form-container col-sm-12 offset-md-4 col-md-4 p-5">
-            <div #alert class="error-message animated flash alert alert-danger alert-dismissible fade show" role="alert"
+
+            <!-- <div #alert class="error-message animated flash alert alert-danger alert-dismissible fade show" role="alert"
                 *ngIf="credentials == false">
                 <strong>{{ getCredentialsErrorMessage() }}</strong>
-            </div>
+            </div> -->
+
             <form action="" class="login-form" method="post">
-                <div class="acc_cp">
+                <div id="image" class="">
+                    <img src="../../assets/img/1200x630bb.png" alt="" />
+                    <h6 id="demande">Demande VPN</h6>
+                </div><br>
+                <!-- <div class="acc_cp">
                     <mat-icon class="acc_c">account_circle</mat-icon>
-                </div><br><br> <br><br>
+                </div><br><br> <br><br> -->
 
                 <div class="mt-20">
                     <mat-form-field appearance="outline" color="warn" class="mat-focused">
@@ -18,7 +26,6 @@
                         <mat-error *ngIf="username.invalid">{{ getRequiredErrorMessage() }}</mat-error>
                     </mat-form-field>
                 </div>
-
                 <div>
                     <mat-form-field appearance="outline" color="warn">
                         <mat-label class="ml">Password</mat-label>

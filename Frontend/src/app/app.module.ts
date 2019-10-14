@@ -33,6 +33,7 @@ import { ValidationVideComponent } from './validation-vide/validation-vide.compo
 import { DialogAdminCredentialFormComponent } from './dialog-admin-credential-form/dialog-admin-credential-form.component';
 import { DemandeFormComponent } from './demande-form/demande-form.component';
 import { DialogMotifRefusComponent } from './dialog-motif-refus/dialog-motif-refus.component';
+import {NgxMatSelectSearchModule} from 'ngx-mat-select-search'
 
 @NgModule({
   declarations: [
@@ -70,7 +71,8 @@ import { DialogMotifRefusComponent } from './dialog-motif-refus/dialog-motif-ref
     FormsModule,
     HttpClientModule,
     MaterialModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    NgxMatSelectSearchModule
   ],
   entryComponents: [DialogComponent, DialogErrorComponent, DialogDemandeHistoriqueComponent, DialogAdminCredentialFormComponent, DemandeDetailComponent, DialogMotifRefusComponent],
   providers: [DemandeService],

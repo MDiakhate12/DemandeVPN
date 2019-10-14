@@ -2,6 +2,13 @@
 <app-loading *ngIf="loading"></app-loading>
 <mat-list>
 
+        <mat-form-field>
+                <input matInput #myInput type="text" placeholder="Search..." [(ngModel)]="motCle" (keyup)="Search($event)"
+                    autocomplete="on">
+                <button mat-button mat-icon-button matSuffix (click)="clearSearchField()" *ngIf="motCle">
+                    <mat-icon>close</mat-icon>
+                </button>
+            </mat-form-field>
     <div class="mat-display-1" mat-header>Historique des demandes validées par la Sécurité</div>
     <div class="animated fadeInLeft">
 

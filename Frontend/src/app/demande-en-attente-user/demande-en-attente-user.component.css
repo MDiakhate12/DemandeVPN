@@ -26,3 +26,19 @@ thead {
 }
 
 
+#searchAndRadio{
+    float: right;
+    height:320px;
+    /* border-color: #f16e00; */
+    border-width: 1px;
+    border-style: outset;
+    background-color: white;
+}
+.example-radio-group {
+    display: flex;
+    flex-direction: column;
+    margin: 15px 0;
+  }
+  .example-radio-button {
+    margin: 5px;
+  }

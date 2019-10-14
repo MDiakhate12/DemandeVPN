@@ -11,10 +11,13 @@
         </a>
 
         <a *ngIf="isSecurite() === false && isAdmin() === false" routerLink="/nouvelle-demande">
-            <mat-icon class="example-icon">post_add</mat-icon>
+            <mat-icon class="example-icon">note_add</mat-icon>
             <span class="align">Nouvelle demande</span>
         </a>
 
+        <span class="example-spacer"></span>
+        
+       
         <span class="example-spacer"></span>
         
         <button class="initial" mat-mini-fab>
@@ -26,15 +29,15 @@
         </button>
         
         <mat-menu #menu>
-            <button mat-menu-item routerLink="/profil">
+            <!-- <button mat-menu-item routerLink="/profil">
                 <a >
                     <mat-icon class="example-icon example-icon-menu">person_outline</mat-icon>
                     <span class="align">Mon Profil</span>
                 </a>
-            </button>
+            </button> -->
             <button mat-menu-item (click)="logout()">
                 <a>
-                    <mat-icon class="example-icon example-icon-menu">logout</mat-icon>
+                    <mat-icon class="example-icon example-icon-menu">exit_to_app</mat-icon>
                     <span class="align">Deconnexion</span>
                 </a>
             </button>

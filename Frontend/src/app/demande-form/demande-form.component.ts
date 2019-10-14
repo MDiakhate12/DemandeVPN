@@ -5,12 +5,14 @@ import { User } from '../models/user.model';
 import { Protocole } from '../models/protocole.model';
 import { Application } from '../models/application.model';
 import { GenericService } from '../services/generic.service';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';  
 import { AuthService } from '../services/auth.service';
 import { DialogComponent } from '../dialog/dialog.component';
 import { MatDialog, MatSnackBar, MatDialogRef } from '@angular/material';
 import { DemandeDetailComponent } from '../demande-detail/demande-detail.component';
 import { FormControl, Validators } from '@angular/forms';
+import { filter, tap, takeUntil, debounceTime, map, delay } from 'rxjs/operators';
+import { Subject, ReplaySubject } from 'rxjs';
 
 
 @Component({
@@ -31,7 +33,7 @@ export class DemandeFormComponent implements OnInit {
   users: User[] = [];
   protocoles: Protocole[] = [];
   applications: Application[] = [];
-  demande: Demande = new Demande();
+  demande: Demande= new Demande() ;
   user: User = new User();
 
   objet = new FormControl('', Validators.required);
@@ -39,6 +41,10 @@ export class DemandeFormComponent implements OnInit {
   date_expiration = new FormControl('', Validators.required);
   applis = new FormControl('', Validators.required);
   protos = new FormControl('', Validators.required);
+  beneficiaireFilteringCtrl = new FormControl('', Validators.required);
+  public searching: boolean = false;
+  public filteredServerSideBeneficiaires: ReplaySubject<User> = new ReplaySubject<User>(1);
+  protected _onDestroy = new Subject<void>();
 
   validations = [
     this.objet,
@@ -52,6 +58,8 @@ export class DemandeFormComponent implements OnInit {
 
   @ViewChild('apps', { static: false }) apps;
   @ViewChild('prots', { static: false }) prots;
+  motCle: string;
+  selectedWord: string;
 
   constructor(@Optional() public dialogRef: MatDialogRef<DemandeDetailComponent>, private demandeService: DemandeService, private genericService: GenericService, private router: Router, private authService: AuthService, private dialog: MatDialog, private snackbar: MatSnackBar, private route: ActivatedRoute) {
     console.log(this.applications);
@@ -88,6 +96,29 @@ export class DemandeFormComponent implements OnInit {
         'large-page': true
       }
     }
+    this.beneficiaireFilteringCtrl.valueChanges
+      .pipe(
+        filter(search => !!search),
+        tap(() => this.searching = true),
+        takeUntil(this._onDestroy),
+        debounceTime(200),
+        map(search => {
+          if (!this.users){
+            return [];
+          }
+          return this.users.filter(
+            user => user.username.toLowerCase().indexOf(search) > -1);
+        }),
+        delay(500)
+      )
+      .subscribe(filteredUsers => {
+        this.searching = false;
+        this.filteredServerSideBeneficiaires.next(filteredUsers);
+      },
+      error => {
+        this.searching = false;
+      
+      });
 
   }
 
@@ -150,4 +181,14 @@ export class DemandeFormComponent implements OnInit {
   getErrorMessage(){
     return "Ce champs est obligatoire"
   }
+
+Search(){
+    
+  // this._search.Search(this.motCle, this.selectedWord, this.demandes)
+  if(this.motCle != ""){
+        return this.demande.beneficiaire.username.toLocaleLowerCase().match(this.motCle.toLocaleLowerCase());
+        };     
+  
+
+}
 }

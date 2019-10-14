@@ -9,11 +9,13 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
     background-position: center center;
 }
 #app-login{
-    background-image: url('./assets/img/curves_left.jpg');
+    /* background-image: url('./assets/img/1200x630bb.png'); */
     background-size: cover;
     background-position: center center;
     height: 100%;
     width: 100%;
+    background-color: #f16e00;
+    /* filter: blur(2px) */
 }
 
 #app-demande {
@@ -36,14 +38,14 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 }
 
 #app-dashboard {
-    background-image: url('./assets/img/curves_down.jpg');
-    background-size: cover;
+    /* background-image: url('./assets/img/'); */
+    background-size: 100% 100%;
     background-position: center center;
     height: 100%;
 }
 
 #app-demande-en-attente-user {
-    background-image: url('./assets/img/curves_down.jpg');
+    /* background-image: url('./assets/img/curves_down.jpg'); */
     background-size: 100% 100%;
     background-position: center center;
     height: 100%;

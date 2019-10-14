@@ -13,6 +13,7 @@ export class HistoriqueSecuriteComponent implements OnInit {
 
   demandesValideesSecurite: Demande[] = [];
   loading: boolean = false;
+  motCle: String;
 
   constructor(private demandeService: DemandeService, private dialog: MatDialog) { }
 
@@ -24,7 +25,7 @@ export class HistoriqueSecuriteComponent implements OnInit {
         this.loading = true;
         this.demandeService.getDemandeValideesSecurite().subscribe(
       response => {
-        this.demandesValideesSecurite = response.body
+        this.demandesValideesSecurite = response.body.results
         this.loading = false;
       },
       error => {
@@ -37,5 +38,21 @@ export class HistoriqueSecuriteComponent implements OnInit {
   openHistoriqueDialog(demande) {
     let dialogRef = this.dialog.open(DialogDemandeHistoriqueComponent, { data: {demande: demande} } );
     console.log(dialogRef); 
+  }
+  Search(){
+    if(this.motCle != ""){
+      
+      this.demandesValideesSecurite = this.demandesValideesSecurite.filter(
+        responses=>{
+          
+          return responses.demandeur.username.toLocaleLowerCase().match(this.motCle.toLocaleLowerCase());
+        })
+    }else if (this.motCle == ""){
+      this.ngOnInit();
+    }
+  }
+  clearSearchField(){
+    this.motCle="";
+    this.ngOnInit();
   }
 }

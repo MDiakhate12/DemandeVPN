@@ -8,7 +8,7 @@ import { AuthService } from './auth.service';
 })
 export class GenericService {
 
-  baseURL = "http://localhost:8000/api/";
+  baseURL = "http://localhost:8080/api/";
 
   httpHeaders = new HttpHeaders({
     'Content-Type': 'application/json',
@@ -38,21 +38,21 @@ export class GenericService {
       // mapAndPush(data, attribute)
 
       data => {
-        data.map(user => {
+        data.results.map(user => {
           target.users.push(user);
         })
       }
     );
     target.genericService.getAllProtocole().subscribe(
       data => {
-        data.map(protocole => {
+        data.results.map(protocole => {
           target.protocoles.push(protocole);
         })
       }
     );
     target.genericService.getAllApplication().subscribe(
       data => {
-        data.map(application => {
+        data.results.map(application => {
           target.applications.push(application);
         })
       }

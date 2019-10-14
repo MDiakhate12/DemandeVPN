@@ -1,5 +1,7 @@
 mat-form-field {
     display: block;
+    background-color: white;
+    border-radius: 5px;
 }
 
 form {
@@ -9,6 +11,12 @@ form {
     padding: 30px;
     border-radius: 10px;
     opacity: 1;
+    border-width: 10px;
+    border-color: #f16e00;
+    border-style: dashed;
+    box-shadow: #f16e00;
+    
+    
 }
 
 

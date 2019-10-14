@@ -5,3 +5,6 @@
 .example-spacer {
     flex: 1 1 auto;
   }
+#searchbarId{
+    float: right;
+}

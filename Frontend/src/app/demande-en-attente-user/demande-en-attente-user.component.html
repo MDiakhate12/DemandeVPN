@@ -3,8 +3,24 @@
 <app-loading *ngIf="loading"></app-loading>
 
 <div id="app-demande-en-attente-user">
+    <div id="searchAndRadio" class="jumbotron animated fadeInDown">
+        
+        <mat-form-field id="searchbarId" appearance="outline" color="warn">
+            <mat-label class="ml">Search</mat-label>
+            <input matInput type="text" placeholder="Search" [(ngModel)]="motCle" (input)="Search()">
+            <button mat-button mat-icon-button matSuffix (click)="clearSearchField()" *ngIf="motCle">
+                <mat-icon>add</mat-icon>
+            </button>
+        </mat-form-field>
+        <mat-radio-group aria-label="Select an option" [(ngModel)]="selectedWord" class="example-radio-group">
+            <mat-radio-button *ngFor="let word of words" [value]="word.value" class="example-radio-button" color="warn">
+                {{word.viewValue}}</mat-radio-button>
+        </mat-radio-group>
+
+    </div>
     <div class="container">
         <div class="row">
+
             <table class="table table-hover mt-5 animated fadeInDown">
                 <thead>
                     <tr>
@@ -15,7 +31,8 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr id="row-{{demande.id}}"  *ngFor="let demande of demandes; index as i" (click)="openDetailDialog(demande)">
+                    <tr id="row-{{demande.id}}" *ngFor="let demande of demandes; index as i"
+                        (click)="openDetailDialog(demande)">
                         <th scope="row">{{demande.id}}</th>
                         <td>{{demande.objet}}</td>
                         <td>{{demande.status_demande}}</td>

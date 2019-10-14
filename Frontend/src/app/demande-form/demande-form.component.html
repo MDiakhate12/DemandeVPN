@@ -11,6 +11,9 @@
     <mat-form-field appearance="fill">
         <mat-label>Bénéficiaire</mat-label>
         <mat-select required [formControl]="beneficiaire" [(value)]="demande.beneficiaire" name="beneficiaire">
+           
+<input matInput type="text" placeholder="Search" [(ngModel)]="motCle" (input)="Search()" name="search">
+
             <mat-option *ngFor="let user of users" [value]="user.id">
                 {{user.username}}
             </mat-option>

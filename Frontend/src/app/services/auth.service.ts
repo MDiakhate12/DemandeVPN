@@ -5,15 +5,15 @@ import { User } from '../models/user.model';
 
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: "root"
 })
 export class AuthService {
 
   constructor(private http: HttpClient) { }
 
-  loginURL = "http://localhost:8000/api/login/";
-  logoutURL = "http://localhost:8000/api/logout/";
-  userURL = "http://localhost:8000/api/users/";
+  loginURL = "http://localhost:8080/api/login/";
+  logoutURL = "http://localhost:8080/api/logout/";
+  userURL = "http://localhost:8080/api/users/";
 
   httpHeaders = new HttpHeaders({
     'Content-Type': 'application/json',

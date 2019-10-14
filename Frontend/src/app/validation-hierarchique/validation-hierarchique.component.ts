@@ -56,7 +56,7 @@ export class ValidationHierarchiqueComponent implements OnInit {
     this.loading = true;
     this.username = this.router.snapshot.paramMap.get("username");
     this.demandeService.getDemandeEnAttenteHierarchiqueOf(this.username).subscribe(response => {
-      this.demandes = response.body;
+      this.demandes = response.body.results;
       this.loading = false;
     }
     );
