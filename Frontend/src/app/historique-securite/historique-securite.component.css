@@ -2,3 +2,32 @@
     background-color: #f16e00;
 }
 
+#searchAndRadio{
+    float: right;
+    height:320px;
+    position: absolute;
+    right: 0px;
+    /* border-color: #f16e00; */
+    border-width: 1px;
+    border-style: outset;
+    background-color: white;
+    margin-right: 0px;
+}
+.example-radio-group {
+    display: flex;
+    flex-direction: column;
+    margin: 15px 0;
+  }
+  .example-radio-button {
+    margin: 5px;
+  }
+
+.example-spacer {
+    flex: 1 1 auto;
+  }
+#searchbarId{
+    float: right;
+}
+/* #app-historique-securite{
+  display:inline;
+} */

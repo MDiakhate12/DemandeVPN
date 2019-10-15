@@ -128,16 +128,34 @@ export class HistoriqueComponent implements OnInit {
         })
         this.demandesAcceptees = this.demandesAcceptees.filter(
           responses=>{
-            return responses.demandeur.username.toLocaleLowerCase().match(this.motCle.toLocaleLowerCase());
-        });
+            if(this.selectedWord==="objet"){
+              return responses.objet.toLocaleLowerCase().match(this.motCle.toLocaleLowerCase());
+              }     else if(this.selectedWord==="demandeurUsername"){
+                return responses.demandeur.username.toLocaleLowerCase().match(this.motCle.toLocaleLowerCase());
+              } else if(this.selectedWord==="beneficiaireUsername"){
+                return responses.beneficiaire.username.toLocaleLowerCase().match(this.motCle.toLocaleLowerCase());
+              }
+            });
         this.demandesRefusees = this.demandesRefusees.filter(
           responses=>{
-            return responses.demandeur.username.toLocaleLowerCase().match(this.motCle.toLocaleLowerCase());
-        });
+            if(this.selectedWord==="objet"){
+              return responses.objet.toLocaleLowerCase().match(this.motCle.toLocaleLowerCase());
+              }     else if(this.selectedWord==="demandeurUsername"){
+                return responses.demandeur.username.toLocaleLowerCase().match(this.motCle.toLocaleLowerCase());
+              } else if(this.selectedWord==="beneficiaireUsername"){
+                return responses.beneficiaire.username.toLocaleLowerCase().match(this.motCle.toLocaleLowerCase());
+              }
+            });
         this.demandesExpirees = this.demandesExpirees.filter(
           responses=>{
-            return responses.demandeur.username.toLocaleLowerCase().match(this.motCle.toLocaleLowerCase());
-        });
+            if(this.selectedWord==="objet"){
+              return responses.objet.toLocaleLowerCase().match(this.motCle.toLocaleLowerCase());
+              }     else if(this.selectedWord==="demandeurUsername"){
+                return responses.demandeur.username.toLocaleLowerCase().match(this.motCle.toLocaleLowerCase());
+              } else if(this.selectedWord==="beneficiaireUsername"){
+                return responses.beneficiaire.username.toLocaleLowerCase().match(this.motCle.toLocaleLowerCase());
+              }
+            });
     }else if (this.motCle == ""){
       this.ngOnInit();
     }

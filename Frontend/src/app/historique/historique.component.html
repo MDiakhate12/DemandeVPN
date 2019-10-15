@@ -1,137 +1,143 @@
 <app-navbar></app-navbar>
 <app-loading *ngIf="loading"></app-loading>
-<div>
-    <mat-form-field id="searchbarId" appearance="outline" color="warn">
-        <mat-label class="ml">Search</mat-label>
-        <input matInput type="text" placeholder="Search" [(ngModel)]="motCle" (input)="Search()">
-        <button mat-button mat-icon-button matSuffix (click)="clearSearchField()" *ngIf="motCle">
-            <mat-icon>close</mat-icon>
-        </button>
-    </mat-form-field>
-    <div>
-        <mat-radio-group aria-label="Select an option" [(ngModel)]="selectedWord">
-            <mat-radio-button *ngFor="let word of words" [value]="word.value">{{word.viewValue}}</mat-radio-button>
-        </mat-radio-group>
-    </div>
-</div>
-<mat-tab-group color="warn">
+<div id="app-demande-en-attente-user">
+    <div class="row">
+        <div class="col-sm-5 col-md-9">
+            <mat-tab-group color="warn">
 
-    <mat-tab>
-        <ng-template mat-tab-label>
-            <mat-icon color="warn" class="example-tab-icon">library_books</mat-icon>
-            Toutes les demandes
-        </ng-template>
-
-        <br>
-        <mat-list>
-
-            <div class="mat-display-1" mat-header>Historique des demandes cloturées</div>
-
-            <mat-divider></mat-divider>
-            <div (click)="openDetailDialog(demande)" matRipple class="animated fadeInLeft list-group"
-                *ngFor="let demande of demandesCloturees">
-                <h3 mat-subheader>{{demande.objet}}</h3>
-                <mat-list-item>
-                    <mat-icon mat-list-icon>account_box</mat-icon>
-                    <h4 mat-line *ngIf="isAdmin">Demandeur | {{demande.demandeur.username}}</h4>
-                    <h4 mat-line>Bénéficiaire | {{demande.beneficiaire.username}}</h4>
-                    <p mat-line>Date demande | {{demande.date | date: "fullDate"}} </p>
-                    <span class="example-spacer"></span>
-                    <button class="bg-success" *ngIf="demande.validation_admin; else outdated" mat-mini-fab>
-                        <mat-icon>done</mat-icon>
-                    </button>
-                    <ng-template #outdated>
-                        <button class="bg-warning" *ngIf="demande.status_demande == expire; else refused" mat-mini-fab>
-                            <mat-icon>timer_off</mat-icon>
-                        </button>
+                <mat-tab>
+                    <ng-template mat-tab-label>
+                        <mat-icon color="warn" class="example-tab-icon">library_books</mat-icon>
+                        Toutes les demandes
                     </ng-template>
-                    <ng-template #refused>
-                        <button class="bg-danger" mat-mini-fab>
-                            <mat-icon>close</mat-icon>
-                        </button>
+
+                    <br>
+                    <mat-list>
+
+                        <div class="mat-display-1" mat-header>Historique des demandes cloturées</div>
+
+                        <mat-divider></mat-divider>
+                        <div (click)="openDetailDialog(demande)" matRipple class="animated fadeInLeft list-group"
+                            *ngFor="let demande of demandesCloturees">
+                            <h3 mat-subheader>{{demande.objet}}</h3>
+                            <mat-list-item>
+                                <mat-icon mat-list-icon>account_box</mat-icon>
+                                <h4 mat-line *ngIf="isAdmin">Demandeur | {{demande.demandeur.username}}</h4>
+                                <h4 mat-line>Bénéficiaire | {{demande.beneficiaire.username}}</h4>
+                                <p mat-line>Date demande | {{demande.date | date: "fullDate"}} </p>
+                                <span class="example-spacer"></span>
+                                <button class="bg-success" *ngIf="demande.validation_admin; else outdated" mat-mini-fab>
+                                    <mat-icon>done</mat-icon>
+                                </button>
+                                <ng-template #outdated>
+                                    <button class="bg-warning" *ngIf="demande.status_demande == expire; else refused"
+                                        mat-mini-fab>
+                                        <mat-icon>timer_off</mat-icon>
+                                    </button>
+                                </ng-template>
+                                <ng-template #refused>
+                                    <button class="bg-danger" mat-mini-fab>
+                                        <mat-icon>close</mat-icon>
+                                    </button>
+                                </ng-template>
+                            </mat-list-item>
+                            <mat-divider></mat-divider>
+                        </div>
+                    </mat-list>
+                </mat-tab>
+
+                <mat-tab>
+                    <ng-template mat-tab-label>
+                        <mat-icon color="warn" class="example-tab-icon">done_all</mat-icon>
+                        Demandes acceptées
                     </ng-template>
-                </mat-list-item>
-                <mat-divider></mat-divider>
-            </div>
-        </mat-list>
-    </mat-tab>
 
-    <mat-tab>
-        <ng-template mat-tab-label>
-            <mat-icon color="warn" class="example-tab-icon">done_all</mat-icon>
-            Demandes acceptées
-        </ng-template>
+                    <br>
+                    <mat-list>
 
-        <br>
-        <mat-list>
+                        <div class="mat-display-1" mat-header>Historique des demandes acceptées</div>
 
-            <div class="mat-display-1" mat-header>Historique des demandes acceptées</div>
+                        <mat-divider></mat-divider>
+                        <div (click)="openDetailDialog(demande)" matRipple class="animated fadeInLeft list-group"
+                            *ngFor="let demande of demandesAcceptees">
+                            <h3 mat-subheader>{{demande.objet}}</h3>
+                            <mat-list-item>
+                                <mat-icon mat-list-icon>account_box</mat-icon>
+                                <h4 mat-line *ngIf="isAdmin">Demandeur | {{demande.demandeur.username}}</h4>
+                                <h4 mat-line>Bénéficiaire | {{demande.beneficiaire.username}}</h4>
+                                <p mat-line>Date demande | {{demande.date | date: "fullDate"}} </p>
+                            </mat-list-item>
+                            <mat-divider></mat-divider>
+                        </div>
+                    </mat-list>
+                </mat-tab>
 
-            <mat-divider></mat-divider>
-            <div (click)="openDetailDialog(demande)" matRipple class="animated fadeInLeft list-group"
-                *ngFor="let demande of demandesAcceptees">
-                <h3 mat-subheader>{{demande.objet}}</h3>
-                <mat-list-item>
-                    <mat-icon mat-list-icon>account_box</mat-icon>
-                    <h4 mat-line *ngIf="isAdmin">Demandeur | {{demande.demandeur.username}}</h4>
-                    <h4 mat-line>Bénéficiaire | {{demande.beneficiaire.username}}</h4>
-                    <p mat-line>Date demande | {{demande.date | date: "fullDate"}} </p>
-                </mat-list-item>
-                <mat-divider></mat-divider>
-            </div>
-        </mat-list>
-    </mat-tab>
+                <mat-tab>
+                    <ng-template mat-tab-label>
+                        <mat-icon color="warn" class="example-tab-icon">not_interested</mat-icon>
+                        Demande refusées
+                    </ng-template>
 
-    <mat-tab>
-        <ng-template mat-tab-label>
-            <mat-icon color="warn" class="example-tab-icon">not_interested</mat-icon>
-            Demande refusées
-        </ng-template>
+                    <br>
+                    <mat-list>
 
-        <br>
-        <mat-list>
+                        <div class="mat-display-1" mat-header>Historique des demandes refusées</div>
 
-            <div class="mat-display-1" mat-header>Historique des demandes refusées</div>
+                        <mat-divider></mat-divider>
+                        <div (click)="openDetailDialog(demande)" matRipple class="animated fadeInLeft list-group"
+                            *ngFor="let demande of demandesRefusees">
+                            <h3 mat-subheader>{{demande.objet}}</h3>
+                            <mat-list-item>
+                                <mat-icon mat-list-icon>account_box</mat-icon>
+                                <h4 mat-line *ngIf="isAdmin">Demandeur | {{demande.demandeur.username}}</h4>
+                                <h4 mat-line>Bénéficiaire | {{demande.beneficiaire.username}}</h4>
+                                <p mat-line>Date demande | {{demande.date | date: "fullDate"}} </p>
+                            </mat-list-item>
+                            <mat-divider></mat-divider>
+                        </div>
+                    </mat-list>
+                </mat-tab>
 
-            <mat-divider></mat-divider>
-            <div (click)="openDetailDialog(demande)" matRipple class="animated fadeInLeft list-group"
-                *ngFor="let demande of demandesRefusees">
-                <h3 mat-subheader>{{demande.objet}}</h3>
-                <mat-list-item>
-                    <mat-icon mat-list-icon>account_box</mat-icon>
-                    <h4 mat-line *ngIf="isAdmin">Demandeur | {{demande.demandeur.username}}</h4>
-                    <h4 mat-line>Bénéficiaire | {{demande.beneficiaire.username}}</h4>
-                    <p mat-line>Date demande | {{demande.date | date: "fullDate"}} </p>
-                </mat-list-item>
-                <mat-divider></mat-divider>
-            </div>
-        </mat-list>
-    </mat-tab>
+                <mat-tab>
+                    <ng-template mat-tab-label>
+                        <mat-icon color="warn" class="example-tab-icon">timer_off</mat-icon>
+                        Demande expirees
+                    </ng-template>
 
-    <mat-tab>
-        <ng-template mat-tab-label>
-            <mat-icon color="warn" class="example-tab-icon">timer_off</mat-icon>
-            Demande expirees
-        </ng-template>
+                    <br>
+                    <mat-list>
 
-        <br>
-        <mat-list>
+                        <div class="mat-display-1" mat-header>Historique des demandes expirées</div>
 
-            <div class="mat-display-1" mat-header>Historique des demandes expirées</div>
+                        <mat-divider></mat-divider>
+                        <div (click)="openDetailDialog(demande)" matRipple class="animated fadeInLeft list-group"
+                            *ngFor="let demande of demandesExpirees">
+                            <h3 mat-subheader>{{demande.objet}}</h3>
+                            <mat-list-item>
+                                <mat-icon mat-list-icon>account_box</mat-icon>
+                                <h4 mat-line *ngIf="isAdmin">Demandeur | {{demande.demandeur.username}}</h4>
+                                <h4 mat-line>Bénéficiaire | {{demande.beneficiaire.username}}</h4>
+                                <p mat-line>Date demande | {{demande.date | date: "fullDate"}} </p>
+                            </mat-list-item>
+                            <mat-divider></mat-divider>
+                        </div>
+                    </mat-list>
+                </mat-tab>
 
-            <mat-divider></mat-divider>
-            <div (click)="openDetailDialog(demande)" matRipple class="animated fadeInLeft list-group"
-                *ngFor="let demande of demandesExpirees">
-                <h3 mat-subheader>{{demande.objet}}</h3>
-                <mat-list-item>
-                    <mat-icon mat-list-icon>account_box</mat-icon>
-                    <h4 mat-line *ngIf="isAdmin">Demandeur | {{demande.demandeur.username}}</h4>
-                    <h4 mat-line>Bénéficiaire | {{demande.beneficiaire.username}}</h4>
-                    <p mat-line>Date demande | {{demande.date | date: "fullDate"}} </p>
-                </mat-list-item>
-                <mat-divider></mat-divider>
-            </div>
-        </mat-list>
-    </mat-tab>
+            </mat-tab-group>
+        </div>
+        <div id="searchAndRadio" class="jumbotron animated fadeInDown">
+            <mat-form-field id="searchbarId" appearance="outline" color="warn">
+                <mat-label class="ml">Search</mat-label>
+                <input matInput type="text" placeholder="Search" [(ngModel)]="motCle" (input)="Search()">
+                <button mat-button mat-icon-button matSuffix (click)="clearSearchField()" *ngIf="motCle">
+                    <mat-icon>add</mat-icon>
+                </button>
+            </mat-form-field><br><br><br>
+            <mat-radio-group aria-label="Select an option" [(ngModel)]="selectedWord" class="example-radio-group">
+                <mat-radio-button *ngFor="let word of words" [value]="word.value" class="example-radio-button"
+                    color="warn">
+                    {{word.viewValue}}</mat-radio-button>
+            </mat-radio-group>
 
-</mat-tab-group>
+        </div>

@@ -7,7 +7,7 @@ router = routers.DefaultRouter()
 router.register('users', UserViewSet)
 router.register('protocoles', ProtocoleList)
 router.register('applications', ApplicationList)
-router.register('notifications', NotificationViewSet)
+
 
 urlpatterns = [
     path('', include(router.urls)),

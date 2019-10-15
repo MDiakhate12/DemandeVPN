@@ -4,7 +4,7 @@ from .models import *
 from django.contrib.auth.models import User
 from .constants import *
 from rest_auth.models import TokenModel
-from notifications.models import Notification
+
 
 
 class ProfilSerializer(serializers.Serializer):

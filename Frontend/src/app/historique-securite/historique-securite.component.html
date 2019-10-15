@@ -1,28 +1,44 @@
 <app-navbar></app-navbar>
 <app-loading *ngIf="loading"></app-loading>
-<mat-list>
+<div id="app-historique-securite">
+   
+        <div class="row">
+            <div class="col-sm-5 col-md-9">
+            <mat-list>
 
-        <mat-form-field>
-                <input matInput #myInput type="text" placeholder="Search..." [(ngModel)]="motCle" (keyup)="Search($event)"
-                    autocomplete="on">
+                <div class="mat-display-1" mat-header>Historique des demandes validées par la Sécurité</div>
+                <div class="animated fadeInLeft">
+
+                    <mat-divider></mat-divider>
+
+                    <div (click)="openHistoriqueDialog(demande)" matRipple class="list-group"
+                        *ngFor="let demande of demandesValideesSecurite">
+                        <h3 mat-subheader>{{demande.objet}}</h3>
+                        <mat-list-item>
+                            <mat-icon mat-list-icon>account_box</mat-icon>
+                            <h4 mat-line>Demandeur | {{demande.demandeur.username}}</h4>
+                            <p mat-line>Date demande | {{demande.date | date: "fullDate"}} </p>
+                        </mat-list-item>
+                        <mat-divider></mat-divider>
+                    </div>
+                </div>
+            </mat-list>
+            </div>
+            
+        <div id="searchAndRadio" class="jumbotron animated fadeInDown">
+            <mat-form-field id="searchbarId" appearance="outline" color="warn">
+                <mat-label class="ml">Search</mat-label>
+                <input matInput type="text" placeholder="Search" [(ngModel)]="motCle" (input)="Search()">
                 <button mat-button mat-icon-button matSuffix (click)="clearSearchField()" *ngIf="motCle">
-                    <mat-icon>close</mat-icon>
+                    <mat-icon>add</mat-icon>
                 </button>
-            </mat-form-field>
-    <div class="mat-display-1" mat-header>Historique des demandes validées par la Sécurité</div>
-    <div class="animated fadeInLeft">
+            </mat-form-field><br><br><br>
+            <mat-radio-group aria-label="Select an option" [(ngModel)]="selectedWord" class="example-radio-group">
+                <mat-radio-button *ngFor="let word of words" [value]="word.value" class="example-radio-button"
+                    color="warn">
+                    {{word.viewValue}}</mat-radio-button>
+            </mat-radio-group>
 
-        <mat-divider></mat-divider>
-
-        <div (click)="openHistoriqueDialog(demande)" matRipple class="list-group"
-            *ngFor="let demande of demandesValideesSecurite">
-            <h3 mat-subheader>{{demande.objet}}</h3>
-            <mat-list-item>
-                <mat-icon mat-list-icon>account_box</mat-icon>
-                <h4 mat-line>Demandeur | {{demande.demandeur.username}}</h4>
-                <p mat-line>Date demande | {{demande.date | date: "fullDate"}} </p>
-            </mat-list-item>
-            <mat-divider></mat-divider>
-        </div>
+        </div><br>
     </div>
-</mat-list>
+</div>

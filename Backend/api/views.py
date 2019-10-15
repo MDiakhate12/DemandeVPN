@@ -50,11 +50,6 @@ class CustomAuthToken(ObtainAuthToken):
         })
 
 
-class NotificationViewSet(ModelViewSet):
-    queryset = Notification.objects.all()
-    serializer_class = NotificationSerializer
-
-
 class UserViewSet(ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer

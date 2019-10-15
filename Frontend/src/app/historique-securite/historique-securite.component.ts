@@ -14,6 +14,12 @@ export class HistoriqueSecuriteComponent implements OnInit {
   demandesValideesSecurite: Demande[] = [];
   loading: boolean = false;
   motCle: String;
+  selectedWord : String="demandeurUsername";
+  words = [
+    {value: "demandeurUsername", viewValue: "Demandeur"},
+    {value: "beneficiaireUsername", viewValue: "Bénéficiaire"},
+    {value: "objet", viewValue: "Objet de la demande"}
+  ]
 
   constructor(private demandeService: DemandeService, private dialog: MatDialog) { }
 
@@ -40,12 +46,19 @@ export class HistoriqueSecuriteComponent implements OnInit {
     console.log(dialogRef); 
   }
   Search(){
+    
+    // this._search.Search(this.motCle, this.selectedWord, this.demandes)
     if(this.motCle != ""){
       
       this.demandesValideesSecurite = this.demandesValideesSecurite.filter(
         responses=>{
-          
-          return responses.demandeur.username.toLocaleLowerCase().match(this.motCle.toLocaleLowerCase());
+          if(this.selectedWord==="objet"){
+          return responses.objet.toLocaleLowerCase().match(this.motCle.toLocaleLowerCase());
+          }     else if(this.selectedWord==="demandeurUsername"){
+            return responses.demandeur.username.toLocaleLowerCase().match(this.motCle.toLocaleLowerCase());
+          } else if(this.selectedWord==="beneficiaireUsername"){
+            return responses.beneficiaire.username.toLocaleLowerCase().match(this.motCle.toLocaleLowerCase());
+          }
         })
     }else if (this.motCle == ""){
       this.ngOnInit();
