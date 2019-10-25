@@ -1,67 +1,53 @@
-import { Component, OnInit, OnChanges } from '@angular/core';
-import { AuthService } from '../services/auth.service';
-import { Router, ActivatedRoute } from '@angular/router';
-import { User } from '../models/user.model';
+import { Component, OnInit } from '@angular/core';
 import { DemandeService } from '../services/demande.service';
 import { Demande } from '../models/demande.model';
-import { MatDialog } from '@angular/material';
+import { ActivatedRoute } from '@angular/router';
 import { DemandeDetailComponent } from '../demande-detail/demande-detail.component';
+import { MatDialog } from '@angular/material';
+import { DialogComponent } from '../dialog/dialog.component';
+import { DialogMotifRefusComponent } from '../dialog-motif-refus/dialog-motif-refus.component';
 import { SearchService } from '../search.service';
-
+import { DialogSuspensionComponent } from '../dialog-suspension/dialog-suspension.component';
+import { DialogProlongationComponent } from '../dialog-prolongation/dialog-prolongation.component';
 
 @Component({
-  selector: '#app-demande-en-attente-user',
-  templateUrl: './demande-en-attente-user.component.html',
-  styleUrls: ['./demande-en-attente-user.component.css']
+  selector: 'app-demande-en-cours',
+  templateUrl: './demande-en-cours.component.html',
+  styleUrls: ['./demande-en-cours.component.css']
 })
-export class DemandeEnAttenteUserComponent implements OnInit, OnChanges {
-  ngOnChanges() {
-    let username = this.route.snapshot.paramMap.get('username');
-    this.initDemandeEnAttenteUser(username);
-  }
-  user: User;
+export class DemandeEnCoursComponent implements OnInit {
   demandes: Demande[] = [];
-  loading: boolean = false;
-  afterUpdate = {}
-  motCle: String;
-  selectedWord : String="demandeurUsername";
-  choix: String;
+  loading:boolean = false;
+  motif: any;
+  message = "motif de suspension"
+  motCle: string;
+  selectedWord: string;
   words: any[];
+  
 
-
-
-
-  constructor(private dialog: MatDialog, private authService: AuthService, private router: Router, private route: ActivatedRoute, private demandeService: DemandeService, private _search: SearchService) {
-    this.user = new User
+  constructor(private demandeService : DemandeService, private route: ActivatedRoute, private dialog: MatDialog, private _search: SearchService) { 
+    this.selectedWord="demandeurUsername";
     this.words =  this._search.words;
-    
   }
   
 
   ngOnInit() {
-    window.scroll(0, 0);
-    this.initUser();
     let username = this.route.snapshot.paramMap.get('username');
-    this.initDemandeEnAttenteUser(username);
-    console.log(this.user);
+    this.initDemandesAcceptees(username)
   }
 
-  initUser() {
-    this.authService.getLoggedUser().subscribe(
-      user => {
-        this.user = user;
-        console.log(this.user)
-      }
-    )
-  }
 
-  initDemandeEnAttenteUser(username: string) {
-    this.loading = false;
-    this.demandeService.getDemandeEnAttenteOf(username).subscribe(
-      response => {
-        this.demandes = response.body.results
-        console.log(this.demandes);
+
+  initDemandesAcceptees(username: string) {
+    this.loading = true;
+    this.demandeService.getDemandeAccepteesOf(username).subscribe(
+      responses => {
+        this.demandes = responses.body.results
+        
         this.loading = false;
+  },
+      error => {
+        console.error(error);
       }
     )
   }
@@ -79,7 +65,7 @@ export class DemandeEnAttenteUserComponent implements OnInit, OnChanges {
           document.querySelector("#row-" + demande.id).classList.add('animated', 'flash')
 
           setTimeout(_ => {
-            this.initDemandeEnAttenteUser(username)
+            this.initDemandesAcceptees(username)
           }, 1000)
           this.loading = false
         } else {
@@ -89,12 +75,34 @@ export class DemandeEnAttenteUserComponent implements OnInit, OnChanges {
       }
     )
   }
-  onWordSelection(){
-    if(this.selectedWord==="beneficiaireUsername"){
-      console.log("FROM BENEFICIARE")
-      console.log("Selected word : "+this.selectedWord)
+  suspendre(id: number) {
+    event.stopPropagation()
+
+    let dialogRef = this.dialog.open(DialogSuspensionComponent, { data: { motif: this.motif} });
+    dialogRef.afterClosed().subscribe(result => {
     
-  }}
+      if (result.motif) {
+        // this.refuserDemande(id, result.motif);
+      } else {
+        return;
+      }
+    }
+    )
+  }
+  prolonger(id: number) {
+    event.stopPropagation()
+
+    let dialogRef = this.dialog.open(DialogProlongationComponent, { data: { motif: this.motif} });
+    dialogRef.afterClosed().subscribe(result => {
+    
+      if (result.motif) {
+        // this.refuserDemande(id, result.motif);
+      } else {
+        return;
+      }
+    }
+    )
+  }
   Search(){
     
     // this._search.Search(this.motCle, this.selectedWord, this.demandes)
@@ -112,12 +120,11 @@ export class DemandeEnAttenteUserComponent implements OnInit, OnChanges {
         })
     }else if (this.motCle == ""){
       let username = this.route.snapshot.paramMap.get('username');
-      this.initDemandeEnAttenteUser(username);
+      this.initDemandesAcceptees(username);
     }
   }
   clearSearchField(){
     this.motCle="";
     this.ngOnInit();
   }
-
 }

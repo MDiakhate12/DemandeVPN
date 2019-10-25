@@ -17,6 +17,8 @@ class Status(object):
     expire =  "Demande expirée, VNP fermé"
     refus_hierarchie = "Refus du supérieur hierarchique"
     refus_securite =  "Refus de la sécurité"
+    attente_prolongation = "Demande en attente de la validation hierarchique"
+    
 
 
 PROTOCOLES = (

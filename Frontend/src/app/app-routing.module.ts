@@ -14,6 +14,7 @@ import { AdminGuard } from './guards/admin.guard';
 import { HierarchieGuard } from './guards/hierarchie.guard';
 import { HistoriqueComponent } from './historique/historique.component';
 import { HistoriqueSecuriteComponent } from './historique-securite/historique-securite.component';
+import {DemandeEnCoursComponent} from './demande-en-cours/demande-en-cours.component'
 
 const routes: Routes = [
   // {path: '', component: DashboardComponent, pathMatch: 'full'},
@@ -27,8 +28,9 @@ const routes: Routes = [
   {path: 'validation-admin', component:  ValidationAdminComponent, canActivate: [AuthGuard, AdminGuard]},
   {path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard]},
   {path: 'login', component: LoginComponent},
+  {path: 'demandes/en-cours/:username', component: DemandeEnCoursComponent, canActivate:[AuthGuard]},
   // {path: 'demandes/:username', component: LoginComponent},
-  {path: 'demandes/en-attente/:username', component: DemandeEnAttenteUserComponent, canActivate: [AuthGuard]},
+  {path: 'demandes/en-attente/:username', component: DemandeEnAttenteUserComponent, canActivate: [AuthGuard, HierarchieGuard]},
 
   {path: 'demandes/historique-securite', component: HistoriqueSecuriteComponent, canActivate: [AuthGuard, SecuriteGuard]},
   

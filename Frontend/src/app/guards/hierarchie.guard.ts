@@ -16,9 +16,7 @@ export class HierarchieGuard implements CanActivate {
     let usernameFromURL = route.paramMap.get('username');
     let username = this.authService.getUsername();
 
-    console.log("éééééééééééééééééééééééééééééééééééééééé")
     console.log(usernameFromURL)
-    console.log("éééééééééééééééééééééééééééééééééééééééé")
     console.log(username)
 
 

@@ -24,17 +24,20 @@
                         <input [formControl]="username" required class="ml" matInput [(ngModel)]="input.username"
                             name="username">
                         <mat-error *ngIf="username.invalid">{{ getRequiredErrorMessage() }}</mat-error>
+                        <button mat-icon-button matSuffix >
+                            <mat-icon >person</mat-icon>
+                        </button>
                     </mat-form-field>
                 </div>
                 <div>
                     <mat-form-field appearance="outline" color="warn">
                         <mat-label class="ml">Password</mat-label>
-                        <input [formControl]="password" required class="ml" matInput [type]="hide ? 'password' : 'text'"
+                        <input [formControl]="password" required class="ml" matInput [type]="hide ? 'text' : 'password'"
                             [(ngModel)]="input.password" name="password">
                         <mat-error *ngIf="password.invalid">{{ getRequiredErrorMessage() }}</mat-error>
                         <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'"
                             [attr.aria-pressed]="hide">
-                            <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                            <mat-icon>{{hide ? 'visibility' : 'visibility_off'}}</mat-icon>
                         </button>
                     </mat-form-field>
                 </div>

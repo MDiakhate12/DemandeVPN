@@ -30,7 +30,7 @@
                 <mat-label class="ml">Search</mat-label>
                 <input matInput type="text" placeholder="Search" [(ngModel)]="motCle" (input)="Search()">
                 <button mat-button mat-icon-button matSuffix (click)="clearSearchField()" *ngIf="motCle">
-                    <mat-icon>add</mat-icon>
+                    <mat-icon>cancel</mat-icon>
                 </button>
             </mat-form-field><br><br><br>
             <mat-radio-group aria-label="Select an option" [(ngModel)]="selectedWord" class="example-radio-group">

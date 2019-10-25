@@ -1,0 +1,45 @@
+* {
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+td:hover {
+    background-color: #f16e00;
+    cursor: pointer;
+}
+table {
+    box-shadow: 0 0 20px 2px;
+    opacity: 1;
+    background-color: whitesmoke;
+    color: black;
+}
+
+thead {
+    color: white;
+    background-color: #f16e00;
+    font-size: 1.2rem;
+    font-weight: lighter;
+}
+
+.orange {
+    background-color: #f16e00;
+    color: white;
+}
+#searchAndRadio{
+    float: right;
+    height:320px;
+    /* border-color: #f16e00; */
+    border-width: 1px;
+    border-style: outset;
+    background-color: white;
+}
+.example-radio-group {
+    display: flex;
+    flex-direction: column;
+    margin: 15px 0;
+  }
+  .example-radio-button {
+    margin: 5px;
+  }
+  /* .susbtn{
+    -ms-layout-grid: 3px;
+  } */

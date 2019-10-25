@@ -1,28 +1,40 @@
 mat-form-field {
     display: block;
-    background-color: white;
-    border-radius: 5px;
+    /* background-color: lightgray; */
+    border-radius: 2px;
+    /* box-shadow: 0 -10px -20px; */
+    opacity: 1;
 }
+/* mat-select{
+    background-color: #f16e00;
+} */
 
 form {
     margin-top: 40px;
-    height: 800px;
+    height: 700px;
     box-shadow: 0 0 25px;
     padding: 30px;
     border-radius: 10px;
     opacity: 1;
-    border-width: 10px;
-    border-color: #f16e00;
-    border-style: dashed;
+    /* border-width: 10px; */
+    /* background-image: url("../../assets/img/yellow-orange-polka-dots-hexagon-1920x1080-c2-ffe4b5-ff8c00-l2-119-136-a-40-f-4.png"); */
+    /* border-color:black; */
+    border-style: ridge;
     box-shadow: #f16e00;
+    
+    background-color: white;
     
     
 }
-
+mat-label{
+    font-weight: bolder;
+    color: #f16e00;
+}
 
 #submit {
     background-color: #f16e00;
     color: white;
+    box-shadow: 0 0 25px;
 }
 
 .test { 
@@ -30,7 +42,45 @@ form {
     max-height: 650px; 
     margin-top: auto!important;
 }
+textarea{
+    height: 90px;
+}
 
 .large-page {
     
+}
+
+mat-icon,mat-datepicker-toggle{
+    color: #f16e00;
+}
+input{
+    width:600px;
+    border-width: 0px;    
+    
+}
+#searchSelect{
+    display:flex;
+}
+
+.title {
+    color: #f16e00;
+    position: relative;
+    top: 100px;
+    left: 330px;    
+}
+
+
+#im1{
+    position: absolute;
+    right:0px;
+}
+.fibre {
+    position: relative;
+    left: -15px;
+}
+
+.subtitle {
+    position: relative;
+    left: 200px;
+    top: 50px;   
 }

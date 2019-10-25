@@ -33,7 +33,10 @@ import { ValidationVideComponent } from './validation-vide/validation-vide.compo
 import { DialogAdminCredentialFormComponent } from './dialog-admin-credential-form/dialog-admin-credential-form.component';
 import { DemandeFormComponent } from './demande-form/demande-form.component';
 import { DialogMotifRefusComponent } from './dialog-motif-refus/dialog-motif-refus.component';
-import {NgxMatSelectSearchModule} from 'ngx-mat-select-search'
+import {NgxMatSelectSearchModule} from 'ngx-mat-select-search';
+import { DemandeEnCoursComponent } from './demande-en-cours/demande-en-cours.component';
+import { DialogSuspensionComponent } from './dialog-suspension/dialog-suspension.component';
+import { DialogProlongationComponent } from './dialog-prolongation/dialog-prolongation.component'
 
 @NgModule({
   declarations: [
@@ -63,6 +66,9 @@ import {NgxMatSelectSearchModule} from 'ngx-mat-select-search'
     DialogAdminCredentialFormComponent,
     DemandeFormComponent,
     DialogMotifRefusComponent,
+    DemandeEnCoursComponent,
+    DialogSuspensionComponent,
+    DialogProlongationComponent,
   ],
   imports: [
     BrowserModule,
@@ -74,8 +80,8 @@ import {NgxMatSelectSearchModule} from 'ngx-mat-select-search'
     ReactiveFormsModule,
     NgxMatSelectSearchModule
   ],
-  entryComponents: [DialogComponent, DialogErrorComponent, DialogDemandeHistoriqueComponent, DialogAdminCredentialFormComponent, DemandeDetailComponent, DialogMotifRefusComponent],
-  providers: [DemandeService],
+  entryComponents: [DialogComponent, DialogErrorComponent, DialogDemandeHistoriqueComponent, DialogAdminCredentialFormComponent, DemandeDetailComponent, DialogMotifRefusComponent, DialogSuspensionComponent, DialogProlongationComponent],
+  providers: [DemandeService, DialogMotifRefusComponent],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

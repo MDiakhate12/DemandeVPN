@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter, Input, ViewChild, Optional } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, Input, ViewChild, Optional, ElementRef } from '@angular/core';
 import { DemandeService } from '../services/demande.service';
 import { Demande } from '../models/demande.model';
 import { User } from '../models/user.model';
@@ -29,7 +29,6 @@ export class DemandeFormComponent implements OnInit {
   localLoading: boolean = false;
   rows = 12;
   formClasses = {}
-
   users: User[] = [];
   protocoles: Protocole[] = [];
   applications: Application[] = [];
@@ -61,7 +60,7 @@ export class DemandeFormComponent implements OnInit {
   motCle: string;
   selectedWord: string;
 
-  constructor(@Optional() public dialogRef: MatDialogRef<DemandeDetailComponent>, private demandeService: DemandeService, private genericService: GenericService, private router: Router, private authService: AuthService, private dialog: MatDialog, private snackbar: MatSnackBar, private route: ActivatedRoute) {
+  constructor(@Optional() public dialogRef: MatDialogRef<DemandeDetailComponent>, private demandeService: DemandeService, private genericService: GenericService, private router: Router, private authService: AuthService, private dialog: MatDialog, private snackbar: MatSnackBar, private route: ActivatedRoute, private _genericService: GenericService) {
     console.log(this.applications);
     this.authService.getLoggedUser().subscribe(
       user => {
@@ -96,29 +95,29 @@ export class DemandeFormComponent implements OnInit {
         'large-page': true
       }
     }
-    this.beneficiaireFilteringCtrl.valueChanges
-      .pipe(
-        filter(search => !!search),
-        tap(() => this.searching = true),
-        takeUntil(this._onDestroy),
-        debounceTime(200),
-        map(search => {
-          if (!this.users){
-            return [];
-          }
-          return this.users.filter(
-            user => user.username.toLowerCase().indexOf(search) > -1);
-        }),
-        delay(500)
-      )
-      .subscribe(filteredUsers => {
-        this.searching = false;
-        this.filteredServerSideBeneficiaires.next(filteredUsers);
-      },
-      error => {
-        this.searching = false;
+    // this.beneficiaireFilteringCtrl.valueChanges
+    //   .pipe(
+    //     filter(search => !!search),
+    //     tap(() => this.searching = true),
+    //     takeUntil(this._onDestroy),
+    //     debounceTime(200),
+    //     map(search => {
+    //       if (!this.users){
+    //         return [];
+    //       }
+    //       return this.users.filter(
+    //         user => user.username.toLowerCase().indexOf(search) > -1);
+    //     }),
+    //     delay(500)
+    //   )
+    //   .subscribe(filteredUsers => {
+    //     this.searching = false;
+    //     this.filteredServerSideBeneficiaires.next(filteredUsers);
+    //   },
+    //   error => {
+    //     this.searching = false;
       
-      });
+    //   });
 
   }
 
@@ -186,9 +185,21 @@ Search(){
     
   // this._search.Search(this.motCle, this.selectedWord, this.demandes)
   if(this.motCle != ""){
-        return this.demande.beneficiaire.username.toLocaleLowerCase().match(this.motCle.toLocaleLowerCase());
-        };     
-  
-
+       this._genericService.getAllUser().subscribe( users=> {
+            this.users = this.users.filter(
+               responses=>{
+                 return responses.username.toLocaleLowerCase().match(this.motCle.toLocaleLowerCase());
+               }
+            )
+        })
+        }else{
+          this.ngOnInit();
+        }
 }
+
+clearSearchField(){
+  this.ngOnInit();
+  this.motCle="";
+}
+
 }

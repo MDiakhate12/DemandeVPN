@@ -1,23 +1,19 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
-import { Validators, FormControl } from '@angular/forms';
-
+import { FormControl, Validators } from '@angular/forms';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
 @Component({
-  selector: 'app-dialog-motif-refus',
-  templateUrl: './dialog-motif-refus.component.html',
-  styleUrls: ['./dialog-motif-refus.component.css']
+  selector: 'app-dialog-prolongation',
+  templateUrl: './dialog-prolongation.component.html',
+  styleUrls: ['./dialog-prolongation.component.css']
 })
-export class DialogMotifRefusComponent implements OnInit {
-
+export class DialogProlongationComponent implements OnInit {
   motif = new FormControl('', [Validators.minLength(10), Validators.required]);
- public message = "refus au demandeur'"
 
-  constructor(public dialogRef: MatDialogRef<DialogMotifRefusComponent>, @Inject(MAT_DIALOG_DATA) public data: any) { }
+  constructor(public dialogRef: MatDialogRef<DialogProlongationComponent>, @Inject(MAT_DIALOG_DATA) public data: any) { }
 
   ngOnInit() {
   }
-
   getMotif(data) {
     console.log(this.motif.valid)
     if (data.motif && this.motif.valid) {
@@ -29,15 +25,11 @@ export class DialogMotifRefusComponent implements OnInit {
     }
   }
 
-setMessage(message: string){
-  this.message = message;
-}
   getErrorMessage() {
     if(this.motif.hasError('minlength'))
       return  'Entrez au moins ' + this.motif.getError('minlength').requiredLength +' caractères'
     if(this.motif.hasError('required'))
-      return 'Vous devez donner un motif de ' + this.message
+      return 'Vous devez donner un motif de prolongation'
   }
-
 
 }

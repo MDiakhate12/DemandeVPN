@@ -1,0 +1,28 @@
+<div >
+        <h4 mat-dialog-title>Motif de prolongation</h4>
+        <div mat-dialog-content>Veuillez préciser la date et le motif de la prolongation de cette demande</div>
+        <div mat-dialog-actions>
+            <form method="GET" class="row">
+                    <mat-form-field appearance="outline" color="warn" class="col-sm-12 mat-focused">
+                            <mat-label>Date d'expiration</mat-label>
+                            <input required   name="date_expiration"
+                              matInput [matDatepicker]="picker1">
+                            <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                            <mat-datepicker #picker1></mat-datepicker>
+                            <mat-error *ngIf="valid == false">{{getErrorMessage()}}</mat-error>
+                          </mat-form-field>
+                <mat-form-field appearance="outline" color="warn" class="col-sm-12 mat-focused">
+                    <mat-label class="ml">Motif de prolongation</mat-label>
+                    <textarea [formControl]="motif" required minlength="10" placeholder="Ecrire ici..." class="ml" matInput [(ngModel)]="data.motif" name="motif"></textarea>
+                    <mat-error *ngIf="motif.invalid">{{getErrorMessage()}}</mat-error>
+    
+                </mat-form-field>
+    
+    
+                <button class="btn btn-danger col-sm-5" mat-raised-button
+                    mat-dialog-close mat-dialog-close="false">Annuler</button>
+                <button type="submit" (click)="getMotif(data)" class="btn btn-success col-sm-5" mat-raised-button>Confirmer</button>
+            </form>
+    
+        </div>
+    </div>

@@ -27,6 +27,7 @@
                         <th scope="col">Objet</th>
                         <th scope="col">Status actuel</th>
                         <th scope="col">Date d'envoi</th>
+                        <th scope="col">Action</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -36,6 +37,7 @@
                         <td>{{demande.objet}}</td>
                         <td>{{demande.status_demande}}</td>
                         <td>{{demande.date | date: "fullDate" }}</td>
+                        <td><button class="btn-danger susbtn" (click)="suspendre(demande.id, $event)">Suspendre</button> | <button (click)="prolonger(demande.id, $event)" class="btn-info susbtn">Prolonger</button></td>
                     </tr>
                 </tbody>
             </table>

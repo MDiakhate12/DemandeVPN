@@ -30,6 +30,7 @@ import {
 } from '@angular/material';
 
 import { MatBadgeModule } from '@angular/material/badge'
+import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 
 const MaterialComponents = [
   MatButtonModule,
@@ -61,6 +62,7 @@ const MaterialComponents = [
   MatRippleModule,
   MatBadgeModule,
   MatRadioModule,
+  NgxMatSelectSearchModule
 ];
 
 @NgModule({

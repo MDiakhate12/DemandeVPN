@@ -10,12 +10,16 @@ from rest_framework.viewsets import ModelViewSet
 from django.contrib.auth.models import User
 from datetime import datetime, timedelta
 from rest_framework.decorators import api_view, authentication_classes, permission_classes
-from rest_framework import status
+from rest_framework import status, filters
 from rest_framework.exceptions import PermissionDenied
 from django.utils import timezone
 from django.db.models import Q
 from django.core.mail import send_mail
 from api.expiration import *
+from api.Logs.logger import connexion_logger
+
+
+# logging.basicConfig(filename="fichierlog.log", level=logging.INFO, format='%(asctime)s:%(name)s:%(message)s')
 
 STATUS = Status()
 
@@ -37,10 +41,7 @@ class CustomAuthToken(ObtainAuthToken):
         serializer.is_valid(raise_exception=True)
         user = serializer.validated_data['user']
         token, created = Token.objects.get_or_create(user=user)
-        print('---------------------------------------------------')
-        print(user.is_authenticated)
-        print(user)
-        print('---------------------------------------------------')
+        connexion_logger.info(user.username + " vient de se connecter")
         return Response({
             'token': token.key,
             'id': user.pk,
@@ -48,11 +49,14 @@ class CustomAuthToken(ObtainAuthToken):
             'is_securite': user.profil.is_securite,
             'is_admin': user.profil.is_admin,
         })
+        
 
 
 class UserViewSet(ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
+    filter_backends  = (filters.SearchFilter,)
+    search_fields = ["username"]
 
 
 class ApplicationList(ModelViewSet):

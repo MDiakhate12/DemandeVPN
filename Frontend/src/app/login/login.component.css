@@ -9,6 +9,13 @@ mat-form-field {
     width:50%;
     margin-top: 100p;
 }
+mat-label{
+    font-weight: bolder;
+    color: #f16e00;
+}
+mat-icon{
+    color: grey;
+}
 img{
     height: 100px;
     margin-left: auto;
